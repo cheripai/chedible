@@ -1,3 +1,4 @@
+import datetime
 from FIXME import db
 
 
@@ -15,8 +16,6 @@ class Restaurant(db.model):
 
 class Dish(db.model):
     
-    import datetime
-
     __tablename__ = "dish"
 
     id = db.Column(db.Integer, primary_key=True)
