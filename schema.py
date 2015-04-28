@@ -1,5 +1,5 @@
 import datetime
-from FIXME import db
+from chedible import db
 
 
 class Restaurant(db.Model):
@@ -29,7 +29,7 @@ class Dish(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     date = db.Column(db.Date, default=datetime.datetime.utcnow())
-    price = db.Column(db.Float, precision=2, nullable=True)
+    price = db.Column(db.Float(Precision=2), nullable=True)
     image = db.Column(db.String, nullable=True)
     dairy = db.Column(db.Boolean, nullable=True)
     egg = db.Column(db.Boolean, nullable=True)
