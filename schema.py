@@ -2,7 +2,7 @@ import datetime
 from FIXME import db
 
 
-class Restaurant(db.model):
+class Restaurant(db.Model):
     
     __tablename__ = "restaurants"
 
@@ -22,7 +22,7 @@ class Restaurant(db.model):
         return '<Restaurant {}'.format(self.name)
 
 
-class Dish(db.model):
+class Dish(db.Model):
     
     __tablename__ = "dishes"
 
