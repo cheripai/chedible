@@ -21,7 +21,7 @@ class Restaurant(db.Model):
     def __repr__(self):
         return '<Restaurant {}'.format(self.name)
 
-
+# FIXME: Change from boolean values to integer (dont know, true, false) -> dropdown menu
 class Dish(db.Model):
     
     __tablename__ = "dishes"
