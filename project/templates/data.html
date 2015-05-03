@@ -1,0 +1,18 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {% for d in data %}
+                    <tr>
+                        <td>{{ d.name }}</td>
+                        <td>{{ d.notes }}</td>
+                    </tr>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
