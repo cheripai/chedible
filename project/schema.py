@@ -69,3 +69,25 @@ class Dish(db.Model):
 
     def __repr__(self):
         return '<Dish {}>'.format(self.name)
+
+
+# FIXME: How should this be adapted to integrate with Google and Facebook user services
+class User(db.Model):
+
+    __tablename__ == "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False, unique=True)
+    date = db.Column(db.Date, default=datetime.datetime.utcnow())
+    image = db.Column(db.String, nullable=True)
+    score = db.Column(db.Integer, default=0)
+    dishes = db.relationship('Dish', backref='user')
+   
+    def __init__(self, name, image):
+        self.name = name
+        self.date = datetime.datetime.utcnow()
+        self.image = image
+        self.score = 0
+
+    def __repr__(self):
+        return '<User {}>'.format(self.name)
