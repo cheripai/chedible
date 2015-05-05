@@ -74,7 +74,7 @@ class Dish(db.Model):
 # FIXME: How should this be adapted to integrate with Google and Facebook user services
 class User(db.Model):
 
-    __tablename__ == "users"
+    __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False, unique=True)
