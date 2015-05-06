@@ -60,9 +60,10 @@ class Dish(db.Model):
     wheat = db.Column(db.Boolean, nullable=True)
     notes = db.Column(db.String, nullable=True)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __init__(self, name, price, image, beef, dairy, egg, fish, gluten, meat, 
-                 nut, pork, poultry, shellfish, soy, wheat, notes, restaurant_id):
+                 nut, pork, poultry, shellfish, soy, wheat, notes, restaurant_id, user_id):
         self.name = name
         self.date = datetime.datetime.utcnow()
         self.price = price
@@ -81,6 +82,7 @@ class Dish(db.Model):
         self.wheat = wheat
         self.notes = notes
         self.restaurant_id = restaurant_id
+        self.user_id = user_id
 
     def __repr__(self):
         return '<Dish {}>'.format(self.name)

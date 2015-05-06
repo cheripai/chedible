@@ -21,18 +21,27 @@ pwd = os.path.abspath(os.path.dirname(__file__))
 project = os.path.basename(pwd)
 full_path = pwd.strip(project)
 
+# We set the env variable testing to true 
+# so that project/_config.py will create a new test database
+os.environ['TESTING'] = '1'
+
 
 try:
-    from project import app
+    from project import app, db
+    from db_create import db_create
 except ImportError:
     sys.path.append(full_path)
-    from project import app
+    from project import app, db
+    from db_create import db_create
 
 
 def before_feature(context, feature):
     app.config['TESTING'] = True
     context.client = app.test_client()
+    context.db = db
+    db_create()
     
 
 def after_feature(context, feature):
-    pass
+    os.environ['TESTING'] = '0'
+    os.remove('project/test.db')

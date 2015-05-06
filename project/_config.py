@@ -14,9 +14,20 @@
 
 
 import os
+from project import app
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 DATABASE = 'data.db'
-DATABASE_PATH = os.path.join(basedir, DATABASE)
+TEST_DATABASE = 'test.db'
+
+try:
+    os.environ['TESTING']
+    if int(os.environ['TESTING']) == 1:
+        DATABASE_PATH = os.path.join(basedir, TEST_DATABASE)
+    else:
+        DATABASE_PATH = os.path.join(basedir, DATABASE)
+except KeyError:
+    DATABASE_PATH = os.path.join(basedir, DATABASE)
+
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + DATABASE_PATH
