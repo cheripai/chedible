@@ -26,19 +26,6 @@ def visit(context):
     context.page = context.client.get('/', follow_redirects=True)
 
 
-@when(u'we add restaurant "{text}"')
-def db_add(context, text):
-    from project.schema import Restaurant
-    restaurant = Restaurant(text, 'test', 'test')
-    context.db.session.add(restaurant)
-
-
 @then(u'we should see the text "{text}"')
 def text(context, text):
     assert text in str(context.page.data)
-
-
-@then(u'we should see "{text}" in restaurants')
-def db_check(context, text):
-    from project.schema import Restaurant
-    assert text in str(context.db.session.query(Restaurant).first().name)
