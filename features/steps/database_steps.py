@@ -43,11 +43,11 @@ def db_delete(context, text, table):
 @then(u'we should see "{text}" in "{table}"')
 def db_add_check(context, text, table):
     if table == "restaurants":
-        assert text in str(context.db.session.query(Restaurant).first().name)
+        assert context.db.session.query(Restaurant).filter_by(name=text).first() is not None
     elif table == "dishes":
-        assert text in str(context.db.session.query(Dish).first().name)
+        assert context.db.session.query(Dish).filter_by(name=text).first() is not None
     else:
-        assert text in str(context.db.session.query(User).first().name)
+        assert context.db.session.query(User).filter_by(name=text).first() is not None
 
 
 @then(u'we should not see "{text}" in "{table}"')
