@@ -26,6 +26,11 @@ def visit(context):
     context.page = context.client.get('/', follow_redirects=True)
 
 
+@when(u'we search "{table}" for "{text}"')
+def search_restaurant(context, table, text):
+    context.page = context.client.get('/search/{}/{}'.format(table, text))
+
+
 @then(u'we should see the text "{text}"')
 def text(context, text):
     assert text in str(context.page.data)

@@ -15,7 +15,7 @@
 
 from flask import Flask, render_template 
 from project import app, db
-from project.schema import Restaurant, Dish
+from project.schema import Restaurant, Dish, User
 
 
 @app.route('/')
@@ -23,7 +23,20 @@ def main():
     return render_template('index.html', )
 
 
-@app.route('/db/')
-def display_db():
-    data = db.session.query(Dish)
-    return render_template('db.html', data=data)
+@app.route('/search/<table>/<query>')
+def display_db(table, query):
+    message = "No entries found"
+
+    if table == "dishes":
+        data = db.session.query(Dish).filter_by(name=query)
+    elif table == "restaurants":
+        data = db.session.query(Restaurant).filter_by(name=query)
+    elif table == "users":
+        data = db.session.query(User).filter_by(name=query)
+    else:
+        return render_template('search.html', message=message)
+
+    if data.first() is not None:
+        message = ""
+
+    return render_template('search.html', message=message, data=data)

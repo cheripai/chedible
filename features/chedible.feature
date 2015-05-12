@@ -13,10 +13,29 @@
 #    limitations under the License.
 
 
-Feature: Functioning of application skeleton
+Feature: General function of application
 
 
 Scenario: page is visited
     Given chedible is set up
     When we visit the page
     Then we should see the text "chedible"
+
+
+Scenario: search for non-existing restaurant
+    Given chedible is set up
+    When we search "restaurants" for "test"
+    Then we should see the text "No entries found"
+
+
+Scenario: search for existing restaurant
+    Given chedible is set up
+    When we add "test" to "restaurants" 
+    When we search "restaurants" for "test"
+    Then we should see the text "test"
+
+
+Scenario: search non-existing table
+    Given chedible is set up
+    When we search "test" for "test"
+    Then we should see the text "No entries found"
