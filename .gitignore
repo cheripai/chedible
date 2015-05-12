@@ -59,3 +59,5 @@ target/
 # Swap files
 *.swp
 .*.swp
+*.swo
+.*.swo
