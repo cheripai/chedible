@@ -28,11 +28,11 @@ def display_db(table, query):
     message = "No entries found"
 
     if table == "dishes":
-        data = db.session.query(Dish).filter_by(name=query)
+        data = db.session.query(Dish).filter(Dish.name.contains(query))
     elif table == "restaurants":
-        data = db.session.query(Restaurant).filter_by(name=query)
+        data = db.session.query(Restaurant).filter(Restaurant.name.contains(query))
     elif table == "users":
-        data = db.session.query(User).filter_by(name=query)
+        data = db.session.query(User).filter(User.name.contains(query))
     else:
         return render_template('search.html', message=message)
 
