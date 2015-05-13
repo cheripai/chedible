@@ -1,6 +1,7 @@
 #chedible
 
-
+### Python 3 Whoosh implementation package
+pip install git+git://github.com/miguelgrinberg/flask-whooshalchemy.git
 
 ###License
 Copyright 2015 Dat Do
