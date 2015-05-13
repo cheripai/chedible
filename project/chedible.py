@@ -13,7 +13,7 @@
 #    limitations under the License.
 
 
-from flask import Flask, render_template 
+from flask import Flask, render_template, redirect, url_for, request
 from project import app, db
 from project.schema import Restaurant, Dish, User
 
@@ -23,8 +23,13 @@ def main():
     return render_template('index.html', )
 
 
-@app.route('/search/<table>/<query>')
-def display_db(table, query):
+@app.route('/search', methods=['POST'])
+def search():
+    return redirect(url_for('search_results', table='restaurants', query=request.form['query']))
+
+
+@app.route('/search_results/<table>/<query>')
+def search_results(table, query):
     message = "No entries found"
 
     if table == "dishes":

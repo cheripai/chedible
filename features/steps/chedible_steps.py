@@ -28,7 +28,7 @@ def visit(context):
 
 @when(u'we search "{table}" for "{text}"')
 def search_restaurant(context, table, text):
-    context.page = context.client.get('/search/{}/{}'.format(table, text))
+    context.page = context.client.get('/search_results/{}/{}'.format(table, text))
 
 
 @then(u'we should see the text "{text}"')
