@@ -1,5 +1,5 @@
 # Setting up PostgreSQL for development 
-#### A step-by-step guide through hell
+#### *A guide through hell in ten easy steps*
 
 
 1. Install PostgreSQL
@@ -24,4 +24,11 @@
 8. Run behave to ensure that the database is working properly. 
 
    ``` behave ```
-9. Woohoo!
+9. Initialize the primary database
+
+   ```python db_create.py```
+   
+10. Run the server
+
+   ```python run.py```
+   
