@@ -1,6 +1,5 @@
 # Setting up PostgreSQL for development 
 #### A step-by-step guide through hell
-###### By Dat Do
 
 
 1. Install PostgreSQL
