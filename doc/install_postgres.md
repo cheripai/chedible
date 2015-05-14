@@ -22,5 +22,7 @@
 7. Run behave to ensure that the database is working properly
 
    ```cd /path/to/chedible```
+   
    ```workon chedible```
+   
    ```behave```
