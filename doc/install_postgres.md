@@ -18,7 +18,10 @@
 6. Create the databases used for our development purposes
 
    ```createdb data.db && createdb test.db```
-7. Run behave to ensure that the database is working properly
+7. Set up virtualenv
 
-   ```cd /path/to/chedible && workon chedble && behave```
-   
+   ```cd /path/to/chedible && workon chedble && pip install -r requirements.txt```
+8. Run behave to ensure that the database is working properly. 
+
+   ``` behave ```
+9. Woohoo!
