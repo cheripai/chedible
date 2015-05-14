@@ -1,7 +1,7 @@
 # Setting up PostgreSQL for development 
-##### By Dat Do
+#### A step-by-step guide through hell
+###### By Dat Do
 
-###### A step-by-step guide through hell
 
 1. Install PostgreSQL
 2. Make your user account a PostgreSQL admin
