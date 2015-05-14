@@ -21,7 +21,6 @@ DATABASE = 'data.db'
 TEST_DATABASE = 'test.db'
 
 try:
-    os.environ['TESTING']
     if int(os.environ['TESTING']) == 1:
         DATABASE_PATH = TEST_DATABASE
     else:
