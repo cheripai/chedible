@@ -14,7 +14,7 @@
    ```initdb --locale en_US.UTF-8 -E UTF8 -D '/var/lib/postgres/data'```
 5. Start PostgreSQL and enable to run as a startup process. *Required. Command is Linux systemd only*
 
-   ```systemctl enable postgresql.service``` 
+   ```systemctl start postgresql.service && systemctl enable postgresql.service``` 
 6. Create the databases used for our development purposes and exit postgres
 
    ```createdb data.db && createdb test.db && exit```
