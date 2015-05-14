@@ -15,9 +15,9 @@
 5. Start PostgreSQL and enable to run as a startup process. *Required. Command is Linux systemd only*
 
    ```systemctl enable postgresql.service``` 
-6. Create the databases used for our development purposes
+6. Create the databases used for our development purposes and exit postgres
 
-   ```createdb data.db && createdb test.db```
+   ```createdb data.db && createdb test.db && exit```
 7. Set up virtualenv
 
    ```cd /path/to/chedible && workon chedble && pip install -r requirements.txt```
