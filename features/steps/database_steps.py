@@ -23,7 +23,7 @@ def db_add(context, text, table):
         entry = Restaurant(text, 'test', 'test')
     elif table == "dishes":
         entry = Dish(text, 0.00, '', None, None, None, None, None, 
-                     None, None, None, None, None, None, None, '', 0, 0)  
+                     None, None, None, None, None, None, None, '', None, None)  
     else:
         entry = User(text, '')
     context.db.session.add(entry)

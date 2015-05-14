@@ -44,5 +44,3 @@ def before_feature(context, feature):
 
 def after_feature(context, feature):
     os.environ['TESTING'] = '0'
-    if os.path.isfile('project/test.db'):
-        os.remove('project/test.db')
