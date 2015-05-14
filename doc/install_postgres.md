@@ -5,7 +5,7 @@
 1. Install PostgreSQL
 2. Make your user account a PostgreSQL admin
 
-   ```sudo -u postgresl createuser -s $USER```
+   ```sudo -u postgres createuser -s $USER```
 3. Log in as the PostgreSQL user
 
    ```sudo -i -u postgres```
