@@ -1,5 +1,5 @@
-# Setting up PostgreSQL for development
-### By Dat Do
+# Setting up PostgreSQL for development 
+##### By Dat Do
 
 ###### A step-by-step guide through hell
 
@@ -18,12 +18,8 @@
    ```systemctl enable postgresql.service``` 
 6. Create the databases used for our development purposes
 
-   ```createdb {data.db | test.db}```
+   ```createdb data.db && createdb test.db```
 7. Run behave to ensure that the database is working properly
 
-   ```cd /path/to/chedible```
-   
-   ```workon chedible```
-   
-   ```behave```
+   ```cd /path/to/chedible && workon chedble && behave```
    
