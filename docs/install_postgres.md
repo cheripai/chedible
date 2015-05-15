@@ -9,10 +9,10 @@
 3. Log in as the PostgreSQL user
 
    ```sudo -i -u postgres```
-4. Initialize the database cluster. *Might be Linux only*
+4. Initialize the database cluster
 
    ```initdb --locale en_US.UTF-8 -E UTF8 -D '/var/lib/postgres/data'```
-5. Start PostgreSQL and enable to run as a startup process. *Required. Command is Linux systemd only*
+5. Start PostgreSQL and enable to run as a startup process. *For systemd only*
 
    ```systemctl start postgresql.service && systemctl enable postgresql.service``` 
 6. Create the databases used for our development purposes and exit postgres
