@@ -27,6 +27,7 @@ def db_add(context, text, table):
     else:
         entry = User(text, '')
     context.db.session.add(entry)
+    context.db.session.commit()
 
 
 @when(u'we delete "{text}" from "{table}"')
@@ -37,23 +38,21 @@ def db_delete(context, text, table):
         entry = context.db.session.query(Dish).filter_by(name=text)
     else:
         entry = context.db.session.query(User).filter_by(name=text)
+    assert entry.first() is not None
     entry.delete()
+    context.db.session.commit()
 
 
 @when(u'we update "{text}" in "{table}" with "{text_update}"')
 def db_update(context, text, text_update, table):
     if table == "restaurants":
-	entry = context.db.session.query(Restaurant).filter_by(name=text)
-	new_entry = Restaurant(text_update, 'test', 'test')
+        entry = context.db.session.query(Restaurant).filter_by(name=text)
     elif table == "dishes":
-	entry = context.db.session.query(Dish).filter_by(name=text)
-	new_entry = Dish(text_update, 0.00, '', None, None, None, None, None,
-			None, None, None, None, None, None, None, '', None, None)
+        entry = context.db.session.query(Dish).filter_by(name=text)
     else:
-	entry = context.db.session.query(User).filter_by(name=text)
-	new_entry = User(text_update, '')
-    entry.delete()
-    context.db.session.add(new_entry)
+        entry = context.db.session.query(User).filter_by(name=text)
+    entry.first().name = text_update
+    context.db.session.commit()
 
 
 @then(u'we should see "{text}" in "{table}"')

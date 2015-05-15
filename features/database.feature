@@ -34,28 +34,12 @@ Scenario: entry is added to Users table
     Then we should see "test" in "users"
 
 
-Scenario: entry is deleted from Restaurants table
-    Given chedible is set up
-    When we delete "test" from "restaurants"
-    Then we should not see "test" in "restaurants"
-
-
-Scenario: entry is deleted from Dishes table
-    Given chedible is set up
-    When we delete "test" from "dishes"
-    Then we should not see "test" in "dishes"
-
-
-Scenario: entry is deleted from Users table
-    Given chedible is set up
-    When we delete "test" from "users"
-    Then we should not see "test" in "users"
-
 Scenario: entry is updated in Restaurants table
     Given chedible is set up
     When we update "test" in "restaurants" with "test_update"
     Then we should see "test_update" in "restaurants"
     And we should not see "test" in "restaurants"
+
 
 Scenario: entry is updated in Dishes table
     Given chedible is set up
@@ -63,8 +47,27 @@ Scenario: entry is updated in Dishes table
     Then we should see "test_update" in "dishes"
     And we should not see "test" in "dishes"
 
+
 Scenario: entry is updated in Users table
     Given chedible is set up
     When we update "test" in "users" with "test_update"
     Then we should see "test_update" in "users"
     And we should not see "test" in "users"
+
+
+Scenario: entry is deleted from Restaurants table
+    Given chedible is set up
+    When we delete "test_update" from "restaurants"
+    Then we should not see "test" in "restaurants"
+
+
+Scenario: entry is deleted from Dishes table
+    Given chedible is set up
+    When we delete "test_update" from "dishes"
+    Then we should not see "test" in "dishes"
+
+
+Scenario: entry is deleted from Users table
+    Given chedible is set up
+    When we delete "test_update" from "users"
+    Then we should not see "test" in "users"
