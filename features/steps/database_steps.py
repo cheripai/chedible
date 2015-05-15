@@ -40,6 +40,22 @@ def db_delete(context, text, table):
     entry.delete()
 
 
+@when(u'we update "{text}" in "{table}" with "{text_update}"')
+def db_update(context, text, text_update, table):
+    if table == "restaurants":
+	entry = context.db.session.query(Restaurant).filter_by(name=text)
+	new_entry = Restaurant(text_update, 'test', 'test')
+    elif table == "dishes":
+	entry = context.db.session.query(Dish).filter_by(name=text)
+	new_entry = Dish(text_update, 0.00, '', None, None, None, None, None,
+			None, None, None, None, None, None, None, '', None, None)
+    else:
+	entry = context.db.session.query(User).filter_by(name=text)
+	new_entry = User(text_update, '')
+    entry.delete()
+    context.db.session.add(new_entry)
+
+
 @then(u'we should see "{text}" in "{table}"')
 def db_add_check(context, text, table):
     if table == "restaurants":

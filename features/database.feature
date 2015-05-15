@@ -50,3 +50,21 @@ Scenario: entry is deleted from Users table
     Given chedible is set up
     When we delete "test" from "users"
     Then we should not see "test" in "users"
+
+Scenario: entry is updated in Restaurants table
+    Given chedible is set up
+    When we update "test" in "restaurants" with "test_update"
+    Then we should see "test_update" in "restaurants"
+    And we should not see "test" in "restaurants"
+
+Scenario: entry is updated in Dishes table
+    Given chedible is set up
+    When we update "test" in "dishes" with "test_update"
+    Then we should see "test_update" in "dishes"
+    And we should not see "test" in "dishes"
+
+Scenario: entry is updated in Users table
+    Given chedible is set up
+    When we update "test" in "users" with "test_update"
+    Then we should see "test_update" in "users"
+    And we should not see "test" in "users"
