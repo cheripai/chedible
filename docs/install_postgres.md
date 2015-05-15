@@ -1,4 +1,4 @@
-# Setting up PostgreSQL for development 
+# Setting up PostgreSQL for development on Linux
 #### *A guide through hell in ten easy steps*
 
 
