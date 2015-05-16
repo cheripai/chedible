@@ -16,6 +16,7 @@
 from flask import Flask, render_template, redirect, url_for, request
 from project import app, db
 from project.schema import Restaurant, Dish, User
+from sqlalchemy_searchable import search
 
 
 @app.route('/')
@@ -31,13 +32,14 @@ def search():
 @app.route('/search_results/<table>/<query>')
 def search_results(table, query):
     message = "No entries found"
+    MAX_QUERIES = 50
 
     if table == "dishes":
-        data = db.session.query(Dish).filter(Dish.name.contains(query))
+        data = Dish.query.search(query).limit(MAX_QUERIES)
     elif table == "restaurants":
-        data = db.session.query(Restaurant).filter(Restaurant.name.contains(query))
+        data = Restaurant.query.search(query).limit(MAX_QUERIES)
     elif table == "users":
-        data = db.session.query(User).filter(User.name.contains(query))
+        data = User.query.search(query).limit(MAX_QUERIES)
     else:
         return render_template('search.html', message=message)
 

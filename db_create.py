@@ -18,6 +18,7 @@ from project.schema import Dish
 
 def db_create():
     db.drop_all()
+    db.configure_mappers()
     db.create_all()
     db.session.commit()
 

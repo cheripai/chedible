@@ -15,12 +15,19 @@
 
 import datetime
 from project import db
-from sqlalchemy_searchable import make_searchable
+from flask.ext.sqlalchemy import BaseQuery
+from sqlalchemy_searchable import SearchQueryMixin
 from sqlalchemy_utils.types import TSVectorType
+from sqlalchemy_searchable import make_searchable
+make_searchable()
+
+
+class RestaurantQuery(BaseQuery, SearchQueryMixin):
+    pass
 
 
 class Restaurant(db.Model):
-    
+    query_class = RestaurantQuery
     __tablename__ = "restaurants"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -29,7 +36,7 @@ class Restaurant(db.Model):
     image = db.Column(db.String, nullable=True)
     dishes = db.relationship('Dish', backref='restaurant')
     search_vector = db.Column(TSVectorType('name', 'category'))
-    # should there be location? and how will we reference multiple locations
+    # FIXME: should there be location? and how will we reference multiple locations
 
     def __init__(self, name, category, image):
         self.name = name
@@ -40,8 +47,12 @@ class Restaurant(db.Model):
         return '<Restaurant {}'.format(self.name)
 
 
+class DishQuery(BaseQuery, SearchQueryMixin):
+    pass
+
+
 class Dish(db.Model):
-    
+    query_class = DishQuery   
     __tablename__ = "dishes"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -92,9 +103,13 @@ class Dish(db.Model):
         return '<Dish {}>'.format(self.name)
 
 
+class UserQuery(BaseQuery, SearchQueryMixin):
+    pass
+
+
 # FIXME: How should this be adapted to integrate with Google and Facebook user services
 class User(db.Model):
-
+    query_class = UserQuery   
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
