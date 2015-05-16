@@ -34,3 +34,8 @@ def search_restaurant(context, table, text):
 @then(u'we should see the text "{text}"')
 def text(context, text):
     assert text in str(context.page.data)
+
+
+@then(u'we should not see the text "{text}"')
+def not_text(context, text):
+    assert text not in str(context.page.data)

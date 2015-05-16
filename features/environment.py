@@ -36,6 +36,7 @@ except ImportError:
 
 
 def before_feature(context, feature):
+    app.config['DEBUG'] = False
     app.config['TESTING'] = True
     context.client = app.test_client()
     context.db = db
