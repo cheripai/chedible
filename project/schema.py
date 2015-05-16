@@ -15,6 +15,8 @@
 
 import datetime
 from project import db
+from sqlalchemy_searchable import make_searchable
+from sqlalchemy_utils.types import TSVectorType
 
 
 class Restaurant(db.Model):
@@ -26,6 +28,7 @@ class Restaurant(db.Model):
     category = db.Column(db.String, nullable=True)
     image = db.Column(db.String, nullable=True)
     dishes = db.relationship('Dish', backref='restaurant')
+    search_vector = db.Column(TSVectorType('name', 'category'))
     # should there be location? and how will we reference multiple locations
 
     def __init__(self, name, category, image):
@@ -61,6 +64,7 @@ class Dish(db.Model):
     notes = db.Column(db.String, nullable=True)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    search_vector = db.Column(TSVectorType('name'))
 
     def __init__(self, name, price, image, beef, dairy, egg, fish, gluten, meat, 
                  nut, pork, poultry, shellfish, soy, wheat, notes, restaurant_id, user_id):
@@ -99,6 +103,7 @@ class User(db.Model):
     image = db.Column(db.String, nullable=True)
     score = db.Column(db.Integer, default=0)
     dishes = db.relationship('Dish', backref='user')
+    search_vector = db.Column(TSVectorType('name'))
    
     def __init__(self, name, image):
         self.name = name
