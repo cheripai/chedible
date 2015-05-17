@@ -45,3 +45,5 @@ def before_feature(context, feature):
 
 def after_feature(context, feature):
     os.environ['TESTING'] = '0'
+    context.db.session.close()
+    context.db.drop_all()
