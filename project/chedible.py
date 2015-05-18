@@ -21,12 +21,15 @@ from sqlalchemy_searchable import search
 
 @app.route('/')
 def main():
-    return render_template('index.html', )
+    return render_template('index.html')
 
 
 @app.route('/search', methods=['POST'])
 def search():
-    return redirect(url_for('search_results', table='restaurants', query=request.form['query']))
+    if request.form['query']:
+        return redirect(url_for('search_results', table='restaurants', query=request.form['query']))
+    else:
+        return render_template('index.html')
 
 
 @app.route('/search_results/<table>/<query>')
@@ -34,16 +37,21 @@ def search_results(table, query):
     message = "No entries found"
     MAX_QUERIES = 50
 
+    # removes special characters from search to prevent errors
+    stripped_query = ''.join(c for c in query if c.isalnum() or c == ' ')
+    if stripped_query == '':
+        return render_template('search.html', message=message, query=query)
+        
     if table == "dishes":
-        data = Dish.query.search(query).limit(MAX_QUERIES)
+        data = Dish.query.search(stripped_query).limit(MAX_QUERIES)
     elif table == "restaurants":
-        data = Restaurant.query.search(query).limit(MAX_QUERIES)
+        data = Restaurant.query.search(stripped_query).limit(MAX_QUERIES)
     elif table == "users":
-        data = User.query.search(query).limit(MAX_QUERIES)
+        data = User.query.search(stripped_query).limit(MAX_QUERIES)
     else:
         return render_template('search.html', message=message)
 
     if data.first() is not None:
         message = ""
 
-    return render_template('search.html', message=message, data=data)
+    return render_template('search.html', message=message, data=data, query=query)

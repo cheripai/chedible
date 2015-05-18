@@ -13,13 +13,23 @@
 #    limitations under the License.
 
 from project import db
-from project.schema import Dish
+from project.schema import Restaurant, Dish, User
 
 
 def db_create():
     db.drop_all()
     db.configure_mappers()
     db.create_all()
+
+    """
+    for i in range(50):
+        if i % 2 == 0:
+            entry = Restaurant('test {}'.format(i), 'vegetarian', 'img')
+        else:
+            entry = Restaurant('test {}'.format(i), 'vegan', 'img')
+        db.session.add(entry)
+    """
+
     db.session.commit()
 
 

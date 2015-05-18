@@ -22,7 +22,7 @@ project = os.path.basename(pwd)
 full_path = pwd.strip(project)
 
 # We set the env variable testing to true 
-# so that project/_config.py will create a new test database
+# so that project/_config.py will connect to the test database
 os.environ['TESTING'] = '1'
 
 

@@ -28,4 +28,4 @@ try:
 except KeyError:
     DATABASE_PATH = DATABASE
 
-SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/' + DATABASE_PATH
+SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://localhost/' + DATABASE_PATH
