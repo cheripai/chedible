@@ -21,6 +21,7 @@ from project.schema import Restaurant, Dish, User
 from sqlalchemy_searchable import search
 
 
+# Creates decorator to restrict routes to logged in users
 def login_required(test):
     @wraps(test)
     def wrap(*args, **kwargs):
@@ -34,13 +35,10 @@ def login_required(test):
 
 @app.route('/')
 def main():
-    try:
-        session['logged_in']
+    user = None
+    if 'logged_in' in session:
         user = User.query.filter_by(auth_id=session['user_id']).first()
-        print(user)
-        return render_template('index.html', user=user)
-    except KeyError:
-        return render_template('index.html')
+    return render_template('index.html', user=user)
 
 
 @app.route('/logout')
@@ -61,6 +59,8 @@ def test_login(id):
     return redirect(url_for('main'))
 
 
+# Route is called when search is initiated on HTML page
+# If a query exists, routes user to search results page
 @app.route('/search', methods=['POST'])
 def search():
     if request.form['query']:
@@ -71,8 +71,12 @@ def search():
 
 @app.route('/search_results/<table>/<query>')
 def search_results(table, query):
+    user = None
     message = "No entries found"
     MAX_QUERIES = 50
+
+    if 'logged_in' in session:
+        user = User.query.filter_by(auth_id=session['user_id']).first()
 
     # removes special characters from search to prevent errors
     stripped_query = ''.join(c for c in query if c.isalnum() or c == ' ')
@@ -91,4 +95,4 @@ def search_results(table, query):
     if data.first() is not None:
         message = ""
 
-    return render_template('search.html', message=message, data=data, query=query)
+    return render_template('search.html', message=message, data=data, query=query, user=user)
