@@ -19,7 +19,8 @@
 {% block content %}
 
     <div class="container">
-        <div class="col-md-4 col-md-offset-4">
+        <div class="col-md-12">
+        <center>
             <form class="navbar-form" role="search" action="{{ url_for('search') }}", method="post">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search" name="query">
@@ -30,6 +31,7 @@
                     </div>
                 </div>
             </form>
+        </center>
         </div>
     </div>
 

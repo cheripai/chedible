@@ -14,12 +14,22 @@
 
 
 from flask import Flask, render_template, redirect, url_for, request, flash, session
+from functools import wraps
 from project import app, db
 from project.google import google
 from project.schema import Restaurant, Dish, User
 from sqlalchemy_searchable import search
-import json
 
+
+def login_required(test):
+    @wraps(test)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return test(*args, **kwargs)
+        else:
+            flash('You need to be logged in to do that!')
+            return redirect(url_for('main'))
+    return wrap
 
 
 @app.route('/')
@@ -27,9 +37,17 @@ def main():
     try:
         session['logged_in']
         user = User.query.filter_by(auth_id=session['user_id']).first()
-        return render_template('index.html', user_name=user.name, user_picture=user.image)
+        return render_template('index.html', user=user)
     except KeyError:
         return render_template('index.html')
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    flash('Logged out')
+    session.pop('logged_in', None)
+    return redirect(url_for('main'))
 
 
 @app.route('/search', methods=['POST'])
