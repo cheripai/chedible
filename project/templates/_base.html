@@ -21,7 +21,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
-        <meta name="google-signin-client_id" content="114729784165-pf2ojuudj8gorq0gun8i2cv2prclm8lu.apps.googleusercontent.com">
         <title>chedible</title>
     </head>
     <body>
@@ -40,7 +39,12 @@
 
                 <div class="collapse navbar-collapse navHeaderCollapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#login" data-toggle="modal">Login</a></li>
+                        {% if user_name %}
+
+                           <li><a>{{ user_name }}<img class="profile-image img-circle" src="{{ user_picture }}" height="30" width="30"/></a></li>
+                        {% else %}
+                            <li><a href="#login" data-toggle="modal">Login</a></li>
+                        {% endif %}
                         <li><a href="#">About</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -109,22 +113,11 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                <div class="col-lg-4">
-                                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                                <div class="col-lg-6">
+                                    <a href="{{ url_for('google_login') }}">Google</a>
                                 </div>
                                 <div class="col-lg-4">
-                                    FACEBOOK
-                                </div>
-                                <div class="col-lg-4">
-                                    <a class="btn btn-default" href="#" onclick="signOut();">Sign out</a>
-                                    <script>
-                                      function signOut() {
-                                        var auth2 = gapi.auth2.getAuthInstance();
-                                        auth2.signOut().then(function () {
-                                          console.log('User signed out.');
-                                        });
-                                      }
-                                    </script>
+                                    <a href="/">Facebook</a>
                                 </div>
                             </div>
                         </div>
@@ -141,8 +134,13 @@
         {% block content %}
         {% endblock %}
 
+        <div class="col-lg-12">
+            {% for message in get_flashed_messages() %}
+                <div class="alert">{{ message }}</div>
+            {% endfor %}
+        </div>
+
         <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-        <script src="https://apis.google.com/js/platform.js" async defer></script>
         <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     </body>
 </html>

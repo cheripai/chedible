@@ -13,15 +13,23 @@
 #    limitations under the License.
 
 
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, flash, session
 from project import app, db
+from project.google import google
 from project.schema import Restaurant, Dish, User
 from sqlalchemy_searchable import search
+import json
+
 
 
 @app.route('/')
 def main():
-    return render_template('index.html')
+    try:
+        session['logged_in']
+        user = User.query.filter_by(auth_id=session['user_id']).first()
+        return render_template('index.html', user_name=user.name, user_picture=user.image)
+    except KeyError:
+        return render_template('index.html')
 
 
 @app.route('/search', methods=['POST'])

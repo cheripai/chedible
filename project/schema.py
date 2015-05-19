@@ -107,24 +107,34 @@ class UserQuery(BaseQuery, SearchQueryMixin):
     pass
 
 
-# FIXME: How should this be adapted to integrate with Google and Facebook user services
 class User(db.Model):
     query_class = UserQuery   
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False, unique=True)
+    name = db.Column(db.String(80), nullable=False)
+    auth_id = db.Column(db.String(120))
     date = db.Column(db.Date, default=datetime.datetime.utcnow())
     image = db.Column(db.String, nullable=True)
     score = db.Column(db.Integer, default=0)
     dishes = db.relationship('Dish', backref='user')
     search_vector = db.Column(TSVectorType('name'))
    
-    def __init__(self, name, image):
+    def __init__(self, name, auth_id, image):
         self.name = name
+        self.auth_id = auth_id
         self.date = datetime.datetime.utcnow()
         self.image = image
         self.score = 0
 
     def __repr__(self):
         return '<User {}>'.format(self.name)
+
+    @staticmethod
+    def get_or_create(name, auth_id, image):
+        user = User.query.filter_by(auth_id=auth_id).first()
+        if user is None:
+            user = User(name, auth_id, image)
+            db.session.add(user)
+            db.session.commit()
+        return user
