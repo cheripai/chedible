@@ -46,10 +46,14 @@ def google_authorized():
 
     json_path = 'https://www.googleapis.com/oauth2/v1/userinfo'
     me = user_session.get(json_path).json()
-    User.get_or_create(me['name'], str(me['id']), me['picture'])
+
+    if me['name']:
+        user = User.get_or_create(me['name'], str(me['id']), me['picture'])
+    else:
+        user = User.get_or_create(me['email'], str(me['id']), me['picture'])
     
     session['logged_in'] = True
-    session['user_id'] = me['id']
+    session['user_id'] = user.auth_id
     
-    flash('Logged in as {}'.format(me['name']))
+    flash('Logged in as {}'.format(user.name))
     return redirect(url_for('main'))
