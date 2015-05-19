@@ -37,6 +37,7 @@ def main():
     try:
         session['logged_in']
         user = User.query.filter_by(auth_id=session['user_id']).first()
+        print(user)
         return render_template('index.html', user=user)
     except KeyError:
         return render_template('index.html')
@@ -47,6 +48,16 @@ def main():
 def logout():
     flash('Logged out')
     session.pop('logged_in', None)
+    return redirect(url_for('main'))
+
+
+# Used to log in a test user
+# Can only be accessed if the TESTING flag is true
+@app.route('/test_login/<id>')
+def test_login(id):
+    if app.config['TESTING']:
+        session['logged_in'] = True
+        session['user_id'] = id
     return redirect(url_for('main'))
 
 
