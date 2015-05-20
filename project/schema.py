@@ -19,6 +19,7 @@ from flask.ext.sqlalchemy import BaseQuery
 from sqlalchemy_searchable import SearchQueryMixin
 from sqlalchemy_utils.types import TSVectorType
 from sqlalchemy_searchable import make_searchable
+
 make_searchable()
 
 
@@ -113,12 +114,13 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(256))
     auth_id = db.Column(db.String(120))
     date = db.Column(db.Date, default=datetime.datetime.utcnow())
     image = db.Column(db.String, nullable=True)
     score = db.Column(db.Integer, default=0)
     dishes = db.relationship('Dish', backref='user')
-    search_vector = db.Column(TSVectorType('name'))
+    search_vector = db.Column(TSVectorType('name', 'email'))
    
     def __init__(self, name, auth_id, image):
         self.name = name
