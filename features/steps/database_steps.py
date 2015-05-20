@@ -25,7 +25,7 @@ def db_add(context, text, table):
         entry = Dish(text, 0.00, '', None, None, None, None, None, 
                      None, None, None, None, None, None, None, '', None, None)  
     else:
-        entry = User(text, '12345', '')
+        entry = User(text, '', '')
     context.db.session.add(entry)
     context.db.session.commit()
 
