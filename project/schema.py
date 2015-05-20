@@ -122,21 +122,22 @@ class User(db.Model):
     dishes = db.relationship('Dish', backref='user')
     search_vector = db.Column(TSVectorType('name', 'email'))
    
-    def __init__(self, name, auth_id, image):
+    def __init__(self, name, auth_id, image, email):
         self.name = name
         self.auth_id = auth_id
         self.date = datetime.datetime.utcnow()
         self.image = image
+        self.email = email
         self.score = 0
 
     def __repr__(self):
         return '<User {}>'.format(self.name)
 
     @staticmethod
-    def get_or_create(name, auth_id, image):
+    def get_or_create(name, auth_id, image, email):
         user = User.query.filter_by(auth_id=auth_id).first()
         if user is None:
-            user = User(name, auth_id, image)
+            user = User(name, auth_id, image, email)
             db.session.add(user)
             db.session.commit()
         return user
