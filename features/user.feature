@@ -19,7 +19,7 @@ Feature: Ensure user related actions function correctly
 Scenario: log in when not logged in
     Given chedible is set up
     When we add "test" to "users"
-    When we log in with id "12345"
+    When we log in with id "1"
     Then we should see the text "test"
     And we should not see the text "Login"
 
@@ -40,5 +40,5 @@ Scenario: log out when not logged in
 
 Scenario: log in with non-existing user
     Given chedible is set up
-    When we log in with id "idontexist"
+    When we log in with id "54321"
     Then we should see the text "Login"

@@ -54,13 +54,13 @@
                         </li>
                         <li><a href="#contact" data-toggle="modal">Contact</a></li>
                         <li>
-                        {% if user %}
+                        {% if g.user %}
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
-                            {{ user.name }} 
+                            {{ g.user.name }} 
                             <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Profile &nbsp <img class="img-circle" src="{{ user.image }}" height="30" width="30"/></a></li>
+                                <li><a href="#">Profile &nbsp <img class="img-circle" src="{{ g.user.image }}" height="30" width="30"/></a></li>
                                 <li><a href="/logout">Log out</a></li>
                             </ul>
                         {% else %}
