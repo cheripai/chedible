@@ -16,7 +16,7 @@
 from flask import Flask, render_template, redirect, url_for, request, flash, session, g
 from functools import wraps
 from project import app, db
-from project.forms import AddRestaurantForm, AddDishForm
+from project.forms import AddRestaurantForm, AddDishForm, SearchForm
 from project.google import *
 from project.schema import Restaurant, Dish, User
 from sqlalchemy_searchable import search
@@ -46,7 +46,8 @@ def login_required(test):
 
 @app.route('/')
 def main():
-    return render_template('index.html')
+    form = SearchForm()
+    return render_template('index.html', form=form)
 
 
 @app.route('/logout')
@@ -71,14 +72,16 @@ def test_login(id):
 # If a query exists, routes user to search results page
 @app.route('/search', methods=['POST'])
 def search():
-    if request.form['query']:
-        return redirect(url_for('search_results', table='restaurants', query=request.form['query']))
+    form = SearchForm()
+    if form.validate_on_submit():
+        return redirect(url_for('search_results', table='restaurants', query=form.query.data))
     else:
-        return render_template('index.html')
+        return redirect(url_for('main'))
 
 
 @app.route('/search_results/<table>/<query>')
 def search_results(table, query):
+    form = SearchForm()
     message = "No entries found"
     MAX_QUERIES = 50
 
