@@ -16,6 +16,7 @@
 from flask import Flask, render_template, redirect, url_for, request, flash, session, g
 from functools import wraps
 from project import app, db
+from project.forms import AddRestaurantForm, AddDishForm
 from project.google import *
 from project.schema import Restaurant, Dish, User
 from sqlalchemy_searchable import search
@@ -99,3 +100,17 @@ def search_results(table, query):
         message = ""
 
     return render_template('search.html', message=message, data=data, query=query)
+
+
+@app.route('/add', methods=('GET', 'POST'))
+@login_required
+def add_restaurant():
+    form = AddRestaurantForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            new_restaurant = Restaurant(form.name.data, form.category.data, form.image.data)
+            db.session.add(new_restaurant)
+            db.session.commit()
+            flash('Thank you for your addition!')
+            return redirect(url_for('main'))    # FIXME: Should route to restaurant profile
+    return render_template('restaurant_form.html', form=form)

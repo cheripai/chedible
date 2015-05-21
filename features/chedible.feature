@@ -48,3 +48,17 @@ Scenario: fuzzy search
     When we search "dishes" for "TEST"
     Then we should see the text "testing"
     AND we should see the text "test"
+
+
+Scenario: we access the forms page
+    Given chedible is set up
+    When we log in with id "1"
+    When we visit "/add"
+    Then we should see the text "Restaurant Name"
+
+
+Scenario: access the forms page while not logged in
+    Given chedible is set up
+    When we log out
+    When we visit "/add"
+    Then we should see the text "You need to be logged in to do that!"
