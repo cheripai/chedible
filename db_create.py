@@ -21,14 +21,20 @@ def db_create():
     db.configure_mappers()
     db.create_all()
 
-    """
+    '''      
     for i in range(50):
-        if i % 2 == 0:
+        if i % 4 == 0:
             entry = Restaurant('test {}'.format(i), 'vegetarian', 'img')
-        else:
+        elif i % 4 == 1:
             entry = Restaurant('test {}'.format(i), 'vegan', 'img')
+        elif i % 4 == 2:
+            entry = User('test {}'.format(i), '0{}'.format(i), 'img', 'email{}@email.org'.format(i))
+        else:
+           entry = Dish('testdish{}'.format(i), 0.00, '', None, None, None, None, None, 
+                     None, None, None, None, None, None, None, '', None, None) 
         db.session.add(entry)
-    """
+    '''
+    
 
     db.session.commit()
 
