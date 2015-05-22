@@ -20,6 +20,15 @@
     <div class="container">
         <legend>Add a restaurant</legend>
         <div class="col-lg-8">
+            {% if form.errors %}
+                <ul class="errors">
+                    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                        {% for error in field_errors %}
+                            <li class="text-danger">{{ form[field_name].label }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
             <form class="form-horizontal" method="post" action="/add">
                 {{ form.csrf_token }}
                 <div class="form-row">

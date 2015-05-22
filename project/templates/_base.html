@@ -125,16 +125,15 @@
         {% block content %}
         {% endblock %}
 
-        <div class="col-md-12">
-            <center>
-            {% for message in get_flashed_messages() %}
-                <div class="alert">{{ message }}</div>
-            {% endfor %}
-            </center>
+        <div class="container">
+            <div class="col-lg-12">
+                {% for message in get_flashed_messages() %}
+                    <div class="text-center text-muted">{{ message }}</div>
+                {% endfor %}
+            </div>
         </div>
 
         <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
         <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     </body>
 </html>
-
