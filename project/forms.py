@@ -19,13 +19,13 @@ from wtforms.validators import DataRequired, Email, Length, URL, Optional
 
 
 class AddRestaurantForm(Form):
-    name = StringField('Restaurant Name', validators=[DataRequired(message="Invalid restaurant name"), Length(min=3, max=32)])
-    category = StringField('Category', validators=[DataRequired(message="Invalid category name"), Length(min=3, max=32)])
+    name = StringField('Restaurant Name', validators=[DataRequired(message="A restaurant name is required"), Length(min=3, max=32, message="Must be between 3 and 32 characters")])
+    category = StringField('Category', validators=[DataRequired(message="A category is required"), Length(min=3, max=32, message="Must be between 3 and 32 characters")])
     image = StringField('Restaurant Image', validators=[Optional(), URL()])
 
 
 class AddDishForm(Form):
-    name = StringField('Dish Name', validators=[DataRequired(message="Invalid dish name"), Length(min=3, max=32)])
+    name = StringField('Dish Name', validators=[DataRequired(message="A name is required"), Length(min=3, max=32, message="Must be between 3 and 32 characters")])
     price = FloatField('Price')
     image = StringField('Dish Image')
     beef = BooleanField('Beef')
@@ -40,8 +40,8 @@ class AddDishForm(Form):
     shellfish = BooleanField('Shellfish')
     soy = BooleanField('Soy')
     wheat = BooleanField('Wheat')
-    notes = StringField('Additional Notes', validators=[Optional(), Length(min=3, max=512)])
+    notes = StringField('Additional Notes', validators=[Optional(), Length(min=3, max=512, message="Must be between 3 and 512 characters")])
 
 
 class SearchForm(Form):
-    query = StringField('Query', validators=[DataRequired(), Length(min=1, max=64)])
+    query = StringField('Query', validators=[DataRequired(), Length(min=1, max=64, message="Must be between 1 and 64 characters")])
