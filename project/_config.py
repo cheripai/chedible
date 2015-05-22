@@ -20,6 +20,7 @@ from project import app
 DATABASE = 'data.db'
 TEST_DATABASE = 'test.db'
 SECRET_KEY = '\xfb\x12\xdf\xa1@i\xd6>V\xc0\xbb\x8fp\x16#Z\x0b\x81\xeb\x16'
+WTF_CSRF_ENABLED = True    # cross-site request forgery prevention
 
 try:
     if int(os.environ['TESTING']) == 1:
