@@ -15,13 +15,13 @@
 
 from flask_wtf import Form
 from wtforms import BooleanField, FloatField, StringField
-from wtforms.validators import DataRequired, Email, Length, URL
+from wtforms.validators import DataRequired, Email, Length, URL, Optional
 
 
 class AddRestaurantForm(Form):
     name = StringField('Restaurant Name', validators=[DataRequired(), Length(min=3, max=32)])
     category = StringField('Category', validators=[Length(min=3, max=32)])
-    image = StringField('Restaurant Image', validators=[URL()])
+    image = StringField('Restaurant Image', validators=[Optional(), URL()])
 
 
 class AddDishForm(Form):
