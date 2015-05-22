@@ -63,9 +63,9 @@ def google_authorized():
     me = user_session.get(json_path).json()
 
     if me['name']:
-        user = User.get_or_create(me['name'], str(me['id']), me['picture'])
+        user = User.get_or_create(me['name'], str(me['id']), me['picture'], me['email'])
     else:
-        user = User.get_or_create(me['email'], str(me['id']), me['picture'])
+        user = User.get_or_create(me['email'], str(me['id']), me['picture'], me['email'])
     
     session['logged_in'] = True
     session['user_id'] = user.id

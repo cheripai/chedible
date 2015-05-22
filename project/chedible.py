@@ -72,6 +72,9 @@ def test_login(id):
 # If a query exists, routes user to search results page
 @app.route('/search', methods=['POST'])
 def search():
+    #FIXME: This currently only searches a single table
+    #       Do we want to add a feature to select where to search from?
+    #       Or do we want to search all the tables at once?
     form = SearchForm()
     if form.validate_on_submit():
         return redirect(url_for('search_results', table='restaurants', query=form.query.data))
