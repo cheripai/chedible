@@ -19,13 +19,13 @@ from wtforms.validators import DataRequired, Email, Length, URL, Optional
 
 
 class AddRestaurantForm(Form):
-    name = StringField('Restaurant Name', validators=[DataRequired(), Length(min=3, max=32)])
-    category = StringField('Category', validators=[Length(min=3, max=32)])
+    name = StringField('Restaurant Name', validators=[DataRequired(message="A restaurant name is required"), Length(min=3, max=32)])
+    category = StringField('Category', validators=[DataRequired(message="A category is required"), Length(min=3, max=32)])
     image = StringField('Restaurant Image', validators=[Optional(), URL()])
 
 
 class AddDishForm(Form):
-    name = StringField('Dish Name', validators=[DataRequired(), Length(min=3, max=32)])
+    name = StringField('Dish Name', validators=[DataRequired(message="A name is required"), Length(min=3, max=32)])
     price = FloatField('Price')
     image = StringField('Dish Image')
     beef = BooleanField('Beef')
@@ -40,7 +40,7 @@ class AddDishForm(Form):
     shellfish = BooleanField('Shellfish')
     soy = BooleanField('Soy')
     wheat = BooleanField('Wheat')
-    notes = StringField('Additional Notes', validators=[Length(min=3, max=512)])
+    notes = StringField('Additional Notes', validators=[Optional(), Length(min=3, max=512)])
 
 
 class SearchForm(Form):
