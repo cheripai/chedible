@@ -18,6 +18,7 @@ Feature: Ensure user related actions function correctly
 
 Scenario: log in when not logged in
     Given chedible is set up
+    When we log out
     When we add "test" to "users"
     When we log in with id "1"
     Then we should see the text "test"
