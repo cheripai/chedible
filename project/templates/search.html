@@ -19,20 +19,36 @@
 {% block content %}
 
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h4>Entries matching "{{ query }}": </h4>
-                <p>{{ message }}</p>
-                <table class="table table-hover table-striped">
-                    {% for d in data %}
-                        <tr>
-                            <td>{{ d.name }}</td>
-                            <td>{{ d.category }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
+        <legend>Entries matching "{{ query }}": </legend>
+        <div class="col-lg-8">
+            <p>{{ message }}</p>
+            <table class="table table-hover table-striped">
+                {% for d in data %}
+                    <tr>
+                        <td>{{ d.name }}</td>
+                        <td>{{ d.category }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="col-lg-1">
+        </div>
+
+        <div class="col-lg-3">
+            <div class="list-group">
+                <a href="#" class="list-group-item">
+                    <h4 class="list-group-item-heading">Ads n shit</h4>
+                    <p class="list-group-item-text">
+Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel. 
+Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel. 
+Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel. 
+Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel. 
+                    </p>
+                </a>
             </div>
         </div>
+
     </div>
 
 {% endblock %}
