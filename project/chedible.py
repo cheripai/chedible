@@ -13,12 +13,23 @@
 #    limitations under the License.
 
 
-from flask import Flask, render_template, redirect, url_for, request, flash, session
+from flask import Flask, render_template, redirect, url_for, request, flash, session, g
 from functools import wraps
 from project import app, db
-from project.google import google
+from project.forms import AddRestaurantForm, AddDishForm, SearchForm
+from project.google import *
 from project.schema import Restaurant, Dish, User
 from sqlalchemy_searchable import search
+
+
+# This function runs before each request
+# If user is logged in, loads user info into global variable g.user
+@app.before_request
+def load_user():
+    if 'logged_in' in session and 'user_id' in session:
+        g.user = User.query.filter_by(id=session['user_id']).first()
+    else:
+        g.user = None
 
 
 # Creates decorator to restrict routes to logged in users
@@ -35,10 +46,8 @@ def login_required(test):
 
 @app.route('/')
 def main():
-    user = None
-    if 'logged_in' in session:
-        user = User.query.filter_by(auth_id=session['user_id']).first()
-    return render_template('index.html', user=user)
+    form = SearchForm()
+    return render_template('index.html', form=form)
 
 
 @app.route('/logout')
@@ -63,20 +72,18 @@ def test_login(id):
 # If a query exists, routes user to search results page
 @app.route('/search', methods=['POST'])
 def search():
-    if request.form['query']:
-        return redirect(url_for('search_results', table='restaurants', query=request.form['query']))
+    form = SearchForm()
+    if form.validate_on_submit():
+        return redirect(url_for('search_results', table='restaurants', query=form.query.data))
     else:
-        return render_template('index.html')
+        return redirect(url_for('main'))
 
 
 @app.route('/search_results/<table>/<query>')
 def search_results(table, query):
-    user = None
+    form = SearchForm()
     message = "No entries found"
     MAX_QUERIES = 50
-
-    if 'logged_in' in session:
-        user = User.query.filter_by(auth_id=session['user_id']).first()
 
     # removes special characters from search to prevent errors
     stripped_query = ''.join(c for c in query if c.isalnum() or c == ' ')
@@ -95,4 +102,18 @@ def search_results(table, query):
     if data.first() is not None:
         message = ""
 
-    return render_template('search.html', message=message, data=data, query=query, user=user)
+    return render_template('search.html', message=message, data=data, query=query)
+
+
+@app.route('/add', methods=('GET', 'POST'))
+@login_required
+def add_restaurant():
+    form = AddRestaurantForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            new_restaurant = Restaurant(form.name.data, form.category.data, form.image.data)
+            db.session.add(new_restaurant)
+            db.session.commit()
+            flash('Thank you for your addition!')
+            return redirect(url_for('main'))    # FIXME: Should route to restaurant profile
+    return render_template('restaurant_form.html', form=form)

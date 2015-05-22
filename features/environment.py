@@ -38,6 +38,7 @@ except ImportError:
 def before_feature(context, feature):
     app.config['DEBUG'] = False
     app.config['TESTING'] = True
+    app.config['WTF_CSRF_ENABLED'] = False
     context.client = app.test_client()
     context.db = db
     db_create()

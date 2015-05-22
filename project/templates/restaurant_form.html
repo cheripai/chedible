@@ -17,19 +17,36 @@
 {% extends "_base.html" %}
 
 {% block content %}
-
     <div class="container">
-        <legend>Entries matching "{{ query }}": </legend>
+        <legend>Add a restaurant</legend>
         <div class="col-lg-8">
-            <p>{{ message }}</p>
-            <table class="table table-hover table-striped">
-                {% for d in data %}
-                    <tr>
-                        <td>{{ d.name }}</td>
-                        <td>{{ d.category }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
+            <form class="form-horizontal" method="post" action="/add">
+                {{ form.csrf_token }}
+                <div class="form-row">
+                    <div class="form-group required">
+                        <label class="control-label">{{ form.name.label }}:</label>
+                        {{ form.name(placeholder="Name", class="form-control", type="text") }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="control-label">{{ form.category.label }}:</label>
+                        {{ form.category(placeholder="American, Vegetarian, etc.", class="form-control", type="text") }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="control-label">{{ form.image.label }}:</label>
+                        {{ form.image(placeholder="URL for image", class="form-control", type="text") }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <hr class="featurette-divider"></hr>
+                        <button class="form-control btn btn-primary submit-button" type="submit">Submit</button>
+                    </div>
+                </div>
+            </form>
         </div>
 
         <div class="col-lg-1">
@@ -48,7 +65,6 @@ Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. 
                 </a>
             </div>
         </div>
-
     </div>
 
 {% endblock %}
