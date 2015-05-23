@@ -119,5 +119,11 @@ def add_restaurant():
             db.session.add(new_restaurant)
             db.session.commit()
             flash('Thank you for your addition!')
-            return redirect(url_for('main'))    # FIXME: Should route to restaurant profile
+            return redirect('/restaurant/{}'.format(new_restaurant.id))
     return render_template('restaurant_form.html', form=form)
+
+
+@app.route('/restaurant/<id>')
+def restaurant_profile(id):
+    restaurant = Restaurant.query.filter_by(id=id).first()
+    return render_template('restaurant_profile.html', restaurant=restaurant)
