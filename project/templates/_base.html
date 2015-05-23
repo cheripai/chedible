@@ -25,7 +25,6 @@
     </head>
     <body>
 
-
         <div class="navbar navbar-default navbar-static-top"> 
             <div class="container">
                 <div class="navbar-header">
@@ -70,7 +69,7 @@
                                 Login <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Facebook</a></li>
+                                <li><a href="{{ url_for('facebook_login') }}">Facebook</a></li>
                                 <li><a href="{{ url_for('google_login') }}">Google</a></li>
                             </ul>
                         {% endif %}
@@ -135,6 +134,7 @@
 
         <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
         <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
     </body>
 </html>
 
