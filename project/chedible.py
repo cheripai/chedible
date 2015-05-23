@@ -18,6 +18,7 @@ from functools import wraps
 from project import app, db
 from project.forms import AddRestaurantForm, AddDishForm, SearchForm
 from project.google import *
+from project.facebook import *
 from project.schema import Restaurant, Dish, User
 from sqlalchemy_searchable import search
 
@@ -97,6 +98,7 @@ def search_results(table, query):
         data = Dish.query.search(stripped_query).limit(MAX_QUERIES)
     elif table == "restaurants":
         data = Restaurant.query.search(stripped_query).limit(MAX_QUERIES)
+        print(data)
     elif table == "users":
         data = User.query.search(stripped_query).limit(MAX_QUERIES)
     else:
