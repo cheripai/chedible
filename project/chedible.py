@@ -98,7 +98,6 @@ def search_results(table, query):
         data = Dish.query.search(stripped_query).limit(MAX_QUERIES)
     elif table == "restaurants":
         data = Restaurant.query.search(stripped_query).limit(MAX_QUERIES)
-        print(data)
     elif table == "users":
         data = User.query.search(stripped_query).limit(MAX_QUERIES)
     else:
