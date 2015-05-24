@@ -119,7 +119,7 @@ def add_restaurant():
             db.session.add(new_restaurant)
             db.session.commit()
             flash('Thank you for your addition!')
-            return redirect('/restaurant/{}'.format(new_restaurant.id))
+            return redirect(url_for('restaurant_profile', id=new_restaurant.id))
     return render_template('restaurant_form.html', form=form)
 
 
@@ -127,3 +127,32 @@ def add_restaurant():
 def restaurant_profile(id):
     restaurant = Restaurant.query.filter_by(id=id).first()
     return render_template('restaurant_profile.html', restaurant=restaurant)
+
+
+@app.route('/restaurant/<id>/add', methods=('GET', 'POST'))
+@login_required
+def add_dish(id):
+    form = AddDishForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            new_dish = Dish(form.name.data, form.price.data, form.image.data, stb(form.beef.data), stb(form.dairy.data),
+                            stb(form.egg.data), stb(form.fish.data), stb(form.gluten.data), stb(form.meat.data), stb(form.nut.data),
+                            stb(form.pork.data), stb(form.poultry.data), stb(form.shellfish.data), stb(form.soy.data), stb(form.wheat.data),
+                            form.notes.data, id, session['user_id'])
+            db.session.add(new_dish)
+            db.session.commit()
+            flash('Thank you for your addition!')
+            return redirect(url_for('restaurant_profile', id=id))
+    return render_template('dish_form.html', form=form, id=id)
+
+
+# Convert string value from HTML form to boolean value
+def stb(s):
+    if s == 'True':
+        return True
+    elif s == 'False':
+        return False
+    elif s == 'None':
+        return None
+    else:
+        return ValueError
