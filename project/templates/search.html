@@ -22,17 +22,26 @@
         <legend>Entries matching "{{ query }}": </legend>
         <div class="col-lg-8">
             <p>{{ message }}</p>
-            <table class="table table-hover table-striped">
+            <div class="media">
                 {% for d in data %}
-                        <tr>
-                            <td>
-                                <a href="{{ url_for('restaurant_profile', id=d.id) }}">{{ d.name }}</a>
-                            </td>
-                            <td>{{ d.category }}</td>
-                        </tr>
-                    </a>
+                    <div class="media-left media-middle">
+                        <a href="{{ url_for('restaurant_profile', id=d.id) }}">
+                            {% if d.image %}
+                                <img class="img-thumbnail media-object" src="{{ d.image }}" height="80" width="80"/>
+                            {% else %}
+                                <img class="media-object" src="http://www.indre-reisid.ee/wp-content/themes/envision/lib/images/default-placeholder.png" height="64" width="64"/>
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <a href="{{ url_for('restaurant_profile', id=d.id) }}">
+                            <h4 class="media-heading">{{ d.name }}</h4>
+                        </a>
+                        <p class="text-muted">{{ d.category }}</p>
+                    </div>
+                    <hr class="featurette-divider"></hr>
                 {% endfor %}
-            </table>
+            </div>
         </div>
 
         <div class="col-lg-1">
