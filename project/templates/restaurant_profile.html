@@ -19,13 +19,16 @@
 {% block content %}
 
     <div class="container">
-        <legend>{{ restaurant.name }}</legend>
         <div class="col-lg-8">
-            {% if restaurant.image %}
-                <img class="img-thumbnail" height="200" width="200" src="{{ restaurant.image }}"/>
-            {% else %}
-                <img class="img-thumbnail" height="200" width="200" src=""/>
-            {% endif %}
+            <div class="page-header">
+                <h2>
+                    <img src="{{ restaurant.image }}" class="img-thumbnail" height="200" width="200"/>
+                    {{ restaurant.name }}
+                    {% if g.user %}
+                        <small><small><a href="">Edit</a></small></small>
+                    {% endif %}
+                </h2>
+            </div>  
         </div>
 
         <div class="col-lg-1">
