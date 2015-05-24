@@ -21,6 +21,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/bootstrap-social.css') }}" rel="stylesheet">
         <title>chedible</title>
     </head>
     <body>
@@ -69,8 +71,23 @@
                                 Login <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ url_for('facebook_login') }}">Facebook</a></li>
-                                <li><a href="{{ url_for('google_login') }}">Google</a></li>
+                                <li>
+                                    <form action="{{ url_for('facebook_login') }}">
+                                        <button class="btn btn-block btn-social btn-facebook" type="submit">
+                                        &nbsp;
+                                        <i class="fa fa-facebook-official"></i>
+                                        </button>
+                                    </form>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <form action="{{ url_for('google_login') }}">
+                                        <button class="btn btn-block btn-social btn-google" type="submit">
+                                        &nbsp; 
+                                        <i class="fa fa-google"></i>
+                                        </button>
+                                    </form>
+                                </li>
                             </ul>
                         {% endif %}
                         </li>
