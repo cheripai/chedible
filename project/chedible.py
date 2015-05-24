@@ -98,7 +98,6 @@ def search_results(table, query):
         data = Dish.query.search(stripped_query).limit(MAX_QUERIES)
     elif table == "restaurants":
         data = Restaurant.query.search(stripped_query).limit(MAX_QUERIES)
-        print(data)
     elif table == "users":
         data = User.query.search(stripped_query).limit(MAX_QUERIES)
     else:
@@ -120,5 +119,11 @@ def add_restaurant():
             db.session.add(new_restaurant)
             db.session.commit()
             flash('Thank you for your addition!')
-            return redirect(url_for('main'))    # FIXME: Should route to restaurant profile
+            return redirect('/restaurant/{}'.format(new_restaurant.id))
     return render_template('restaurant_form.html', form=form)
+
+
+@app.route('/restaurant/<id>')
+def restaurant_profile(id):
+    restaurant = Restaurant.query.filter_by(id=id).first()
+    return render_template('restaurant_profile.html', restaurant=restaurant)

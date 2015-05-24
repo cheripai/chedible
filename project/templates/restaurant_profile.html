@@ -19,20 +19,13 @@
 {% block content %}
 
     <div class="container">
-        <legend>Entries matching "{{ query }}": </legend>
+        <legend>{{ restaurant.name }}</legend>
         <div class="col-lg-8">
-            <p>{{ message }}</p>
-            <table class="table table-hover table-striped">
-                {% for d in data %}
-                        <tr>
-                            <td>
-                                <a href="{{ url_for('restaurant_profile', id=d.id) }}">{{ d.name }}</a>
-                            </td>
-                            <td>{{ d.category }}</td>
-                        </tr>
-                    </a>
-                {% endfor %}
-            </table>
+            {% if restaurant.image %}
+                <img class="img-thumbnail" height="200" width="200" src="{{ restaurant.image }}"/>
+            {% else %}
+                <img class="img-thumbnail" height="200" width="200" src=""/>
+            {% endif %}
         </div>
 
         <div class="col-lg-1">
