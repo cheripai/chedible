@@ -14,7 +14,7 @@
 
 
 from flask_wtf import Form
-from wtforms import RadioField, FloatField, RadioField, StringField, TextAreaField
+from wtforms import StringField, FloatField, StringField, StringField, TextAreaField
 from wtforms.validators import DataRequired, Email, Length, NumberRange, Optional, URL
 
 
@@ -28,18 +28,18 @@ class AddDishForm(Form):
     name = StringField('Dish Name', validators=[DataRequired(message="A name is required"), Length(min=2, max=32, message="Must be between 2 and 32 characters")])
     price = FloatField('Price', validators=[Optional(), NumberRange(min=0)])
     image = StringField('Dish Image')
-    beef = RadioField('Beef', choices=[('None', 'Not sure'), ('True', 'True'), ('False', 'False')])
-    dairy = RadioField('Dairy', choices=[('None', 'Not sure'), ('True', 'True'), ('False', 'False')])
-    egg = RadioField('Egg', choices=[('None', 'Not sure'), ('True', 'True'), ('False', 'False')])
-    fish = RadioField('Fish', choices=[('None', 'Not sure'), ('True', 'True'), ('False', 'False')])
-    gluten = RadioField('Gluten', choices=[('None', 'Not sure'), ('True', 'True'), ('False', 'False')])
-    meat = RadioField('Meat', choices=[('None', 'Not sure'), ('True', 'True'), ('False', 'False')])
-    nut = RadioField('Nut', choices=[('None', 'Not sure'), ('True', 'True'), ('False', 'False')])
-    pork = RadioField('Pork', choices=[('None', 'Not sure'), ('True', 'True'), ('False', 'False')])
-    poultry = RadioField('Poultry', choices=[('None', 'Not sure'), ('True', 'True'), ('False', 'False')])
-    shellfish = RadioField('Shellfish', choices=[('None', 'Not sure'), ('True', 'True'), ('False', 'False')])
-    soy = RadioField('Soy', choices=[('None', 'Not sure'), ('True', 'True'), ('False', 'False')])
-    wheat = RadioField('Wheat', choices=[('None', 'Not sure'), ('True', 'True'), ('False', 'False')])
+    beef = StringField('Beef')
+    dairy = StringField('Dairy')
+    egg = StringField('Egg')
+    fish = StringField('Fish')
+    gluten = StringField('Gluten')
+    meat = StringField('Meat')
+    nut = StringField('Nut')
+    pork = StringField('Pork')
+    poultry = StringField('Poultry')
+    shellfish = StringField('Shellfish')
+    soy = StringField('Soy')
+    wheat = StringField('Wheat')
     notes = TextAreaField('Additional Notes', validators=[Optional(), Length(min=2, max=512, message="Must be between 2 and 512 characters")])
 
 
