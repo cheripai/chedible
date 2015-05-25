@@ -78,15 +78,5 @@ Scenario: we can view a restaurant profile
     Then we should see the text "name_of_restaurant"
 
 
-Scenario: we can see 'Contribute' on home page if logged in
-    Given chedible is set up
-    When we log in with id "1"
-    Then we should see the text "Contribute"
 
-
-Scenario: we cannot see 'Contribute' on home page if not logged in
-    Given chedible is set up
-    When we visit the page
-    And we log out
-    Then we should not see the text "Contribute"
 
