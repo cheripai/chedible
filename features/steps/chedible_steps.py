@@ -15,6 +15,9 @@
 
 from behave import *
 
+#using steps from database_steps.py
+#       @when(u'we add "{text}" to "{table}"')
+
 
 @given(u'chedible is set up')
 def flask_is_setup(context):

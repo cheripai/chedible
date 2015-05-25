@@ -16,6 +16,13 @@
 from behave import *
 from flask import session
 
+#using steps from chedible_steps.py:
+#       @then(u'we should see the text "{text}"')
+#       @then(u'we should not see the text "{text}"')
+
+#using steps from database_steps.py
+#       @when(u'we add "{text}" to "{table}"')
+
 
 @when(u'we log in with id "{id}"')
 def login(context, id):

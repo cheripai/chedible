@@ -15,18 +15,18 @@
 
 Feature: Display ads on pages
 
-Scenario: User lands on main page
+Scenario: user lands on main page
 Given chedible is set up 
 When we visit the page
-Then we should not see a field for "Ads n shit"
+Then we should not see the text "Ads n shit"
 
-Scenario: User performs a search
+Scenario: user performs a search
 Given chedible is set up
 When we search "restaurants" for "test"
-Then we should see a field for "Ads n shit"
+Then we should see the text "Ads n shit"
 
-Scenario: User adds a restaurant
+Scenario: user adds a restaurant
 Given chedible is set up
 When we log in with id "1"
-When we add restaurant "restaurant_name" using the add restaurant page
-Then we should see a field for "Ads n shit"
+And we add restaurant "restaurant_name" using the add restaurant page
+Then we should see the text "Ads n shit"

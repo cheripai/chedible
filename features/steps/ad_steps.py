@@ -13,19 +13,12 @@
 #    limitations under the License.
 
 
-from behave import *
-
-#using steps from chedible.py:
+#using steps from chedible_steps.py:
 #       @given(u'chedible is set up')
 #       @when(u'we search "{table}" for "{text}"')
-    
-@then(u'we should not see a field for "{name_of_ad}"')
-def should_not_see(context, name_of_ad):
-    assert name_of_ad not in str(context.page.data)
+#       @then(u'we should not see the text "{text}"')
+#       @then(u'we should see the text "{text}"')
 
-@then(u'we should see a field for "{name_of_ad}"')
-def should_see(context, name_of_ad):
-    assert name_of_ad in str(context.page.data)
 
 
 

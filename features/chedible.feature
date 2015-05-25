@@ -31,7 +31,7 @@ Scenario: search for non-existing restaurant
 Scenario: search for existing restaurant
     Given chedible is set up
     When we add "test" to "restaurants" 
-    When we search "restaurants" for "test"
+    And we search "restaurants" for "test"
     Then we should see the text "test"
 
 
@@ -44,8 +44,8 @@ Scenario: search non-existing table
 Scenario: fuzzy search
     Given chedible is set up
     When we add "testing" to "dishes" 
-    When we add "test" to "dishes" 
-    When we search "dishes" for "TEST"
+    And we add "test" to "dishes" 
+    And we search "dishes" for "TEST"
     Then we should see the text "testing"
     AND we should see the text "test"
 
@@ -53,26 +53,40 @@ Scenario: fuzzy search
 Scenario: we access the add restaurant page
     Given chedible is set up
     When we log in with id "1"
-    When we visit "/add"
+    And we visit "/add"
     Then we should see the text "Restaurant Name"
 
 
 Scenario: access the add restaurant page while not logged in
     Given chedible is set up
     When we log out
-    When we visit "/add"
+    And we visit "/add"
     Then we should see the text "You need to be logged in to do that!"
 
 
 Scenario: we add a restaurant using the add restaurant page
     Given chedible is set up
     When we log in with id "1"
-    When we add restaurant "restaurant_name" using the add restaurant page
+    And we add restaurant "restaurant_name" using the add restaurant page
     Then we should see "restaurant_name" in "restaurants"
 
 
 Scenario: we can view a restaurant profile
     Given chedible is set up
     When we log in with id "1"
-    When we add restaurant "name_of_restaurant" using the add restaurant page
+    And we add restaurant "name_of_restaurant" using the add restaurant page
     Then we should see the text "name_of_restaurant"
+
+
+Scenario: we can see 'Contribute' on home page if logged in
+    Given chedible is set up
+    When we log in with id "1"
+    Then we should see the text "Contribute"
+
+
+Scenario: we cannot see 'Contribute' on home page if not logged in
+    Given chedible is set up
+    When we visit the page
+    And we log out
+    Then we should not see the text "Contribute"
+
