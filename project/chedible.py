@@ -76,6 +76,7 @@ def search():
     #FIXME: This currently only searches a single table
     #       Do we want to add a feature to select where to search from?
     #       Or do we want to search all the tables at once?
+    #       We also need to add filtering based on preferences
     form = SearchForm()
     if form.validate_on_submit():
         return redirect(url_for('search_results', table='restaurants', query=form.query.data))
@@ -125,8 +126,14 @@ def add_restaurant():
 
 @app.route('/restaurant/<id>')
 def restaurant_profile(id):
+    message = "No entries found"
     restaurant = Restaurant.query.filter_by(id=id).first()
-    return render_template('restaurant_profile.html', restaurant=restaurant)
+    dishes = Dish.query.filter_by(restaurant_id=id)
+
+    if dishes.first() is not None:
+        message = ""
+
+    return render_template('restaurant_profile.html', message=message, restaurant=restaurant, dishes=dishes)
 
 
 @app.route('/restaurant/<id>/add', methods=('GET', 'POST'))
@@ -135,10 +142,12 @@ def add_dish(id):
     form = AddDishForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            new_dish = Dish(form.name.data, form.price.data, form.image.data, stb(form.beef.data), stb(form.dairy.data),
-                            stb(form.egg.data), stb(form.fish.data), stb(form.gluten.data), stb(form.meat.data), stb(form.nut.data),
-                            stb(form.pork.data), stb(form.poultry.data), stb(form.shellfish.data), stb(form.soy.data), stb(form.wheat.data),
-                            form.notes.data, id, session['user_id'])
+            new_dish = Dish(form.name.data, form.price.data, form.image.data, stb(form.beef.data),
+                            stb(form.dairy.data), stb(form.egg.data), stb(form.fish.data),
+                            stb(form.gluten.data), stb(form.meat.data), stb(form.nut.data),
+                            stb(form.pork.data), stb(form.poultry.data), stb(form.shellfish.data),
+                            stb(form.soy.data), stb(form.wheat.data), form.notes.data, 
+                            id, session['user_id'])
             db.session.add(new_dish)
             db.session.commit()
             flash('Thank you for your addition!')

@@ -24,22 +24,24 @@
             <p>{{ message }}</p>
             <div class="media">
                 {% for d in data %}
-                    <div class="media-left media-middle">
-                        <a href="{{ url_for('restaurant_profile', id=d.id) }}">
-                            {% if d.image %}
-                                <img class="img-thumbnail media-object" src="{{ d.image }}" height="80" width="80"/>
-                            {% else %}
-                                <img class="img-thumbnail media-object" src="http://www.indre-reisid.ee/wp-content/themes/envision/lib/images/default-placeholder.png" height="64" width="64"/>
-                            {% endif %}
-                        </a>
+                    <div class="entry">
+                        <div class="pull-left media-middle">
+                            <a href="{{ url_for('restaurant_profile', id=d.id) }}">
+                                {% if d.image %}
+                                    <img class="img-thumbnail media-object entry-thumbnail" src="{{ d.image }}" height="80" width="80"/>
+                                {% else %}
+                                    <img class="img-thumbnail media-object entry-thumbnail" src="http://www.indre-reisid.ee/wp-content/themes/envision/lib/images/default-placeholder.png" height="80" width="80"/>
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <a href="{{ url_for('restaurant_profile', id=d.id) }}">
+                                <h4 class="media-heading">{{ d.name }}</h4>
+                            </a>
+                            <p class="text-muted">{{ d.category }}</p>
+                            <hr class="featurette-divider"></hr>
+                        </div>
                     </div>
-                    <div class="media-body">
-                        <a href="{{ url_for('restaurant_profile', id=d.id) }}">
-                            <h4 class="media-heading">{{ d.name }}</h4>
-                        </a>
-                        <p class="text-muted">{{ d.category }}</p>
-                    </div>
-                    <hr class="featurette-divider"></hr>
                 {% endfor %}
             </div>
         </div>

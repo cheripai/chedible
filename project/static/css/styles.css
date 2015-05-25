@@ -6,3 +6,11 @@
     color: #3276b1;
     background-color: #fff;
 }
+
+.entry {
+    margin-bottom: 32px;
+}
+
+.entry-thumbnail {
+    margin-right: 10px;
+}
