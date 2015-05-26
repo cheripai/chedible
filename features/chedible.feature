@@ -52,7 +52,7 @@ Scenario: fuzzy search
 
 Scenario: we access the add restaurant page
     Given chedible is set up
-    When we log in with id "1"
+    When we log in
     And we visit "/add"
     Then we should see the text "Restaurant Name"
 
@@ -66,14 +66,14 @@ Scenario: access the add restaurant page while not logged in
 
 Scenario: we add a restaurant using the add restaurant page
     Given chedible is set up
-    When we log in with id "1"
+    When we log in
     And we add restaurant "restaurant_name" using the add restaurant page
     Then we should see "restaurant_name" in "restaurants"
 
 
 Scenario: we can view a restaurant profile
     Given chedible is set up
-    When we log in with id "1"
+    When we log in
     And we add restaurant "name_of_restaurant" using the add restaurant page
     Then we should see the text "name_of_restaurant"
 

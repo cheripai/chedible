@@ -114,7 +114,7 @@ def add_restaurant():
     form = AddRestaurantForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            new_restaurant = Restaurant(form.name.data, form.category.data, form.image.data)
+            new_restaurant = Restaurant(form.name.data, form.category.data, form.image.data, session['user_id'])
             db.session.add(new_restaurant)
             db.session.commit()
             flash('Thank you for your addition!')

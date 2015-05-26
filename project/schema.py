@@ -36,13 +36,15 @@ class Restaurant(db.Model):
     category = db.Column(db.String, nullable=True)
     image = db.Column(db.String, nullable=True)
     dishes = db.relationship('Dish', backref='restaurant')
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     search_vector = db.Column(TSVectorType('name', 'category'))
     # FIXME: should there be location? and how will we reference multiple locations
 
-    def __init__(self, name, category, image):
+    def __init__(self, name, category, image, user_id):
         self.name = name
         self.category = category
         self.image = image
+        self.user_id = user_id
 
     def __repr__(self):
         return '<Restaurant {}'.format(self.name)
@@ -119,6 +121,7 @@ class User(db.Model):
     date = db.Column(db.Date, default=datetime.datetime.utcnow())
     image = db.Column(db.String, nullable=True)
     score = db.Column(db.Integer, default=0)
+    restaurants = db.relationship('Restaurant', backref='user')
     dishes = db.relationship('Dish', backref='user')
     search_vector = db.Column(TSVectorType('name', 'email'))
    

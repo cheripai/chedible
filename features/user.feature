@@ -20,7 +20,7 @@ Scenario: log in when not logged in
     Given chedible is set up
     When we log out
     And we add "test" to "users"
-    And we log in with id "1"
+    And we log in
     Then we should see the text "test"
     And we should not see the text "Login"
 
@@ -37,9 +37,3 @@ Scenario: log out when not logged in
     When we log out
     Then we should see the text "You need to be logged in to do that!"
     And we should see the text "Login"
-
-
-Scenario: log in with non-existing user
-    Given chedible is set up
-    When we log in with id "54321"
-    Then we should see the text "Login"

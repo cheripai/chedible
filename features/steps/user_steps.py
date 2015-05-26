@@ -15,6 +15,7 @@
 
 from behave import *
 from flask import session
+from project.schema import User
 
 #using steps from chedible_steps.py:
 #       @then(u'we should see the text "{text}"')
@@ -24,9 +25,12 @@ from flask import session
 #       @when(u'we add "{text}" to "{table}"')
 
 
-@when(u'we log in with id "{id}"')
-def login(context, id):
-    context.page = context.client.get('/test_login/{}'.format(id), follow_redirects=True)
+@when(u'we log in')
+def login(context):
+    user = User('test_user', '', '', '')
+    context.db.session.add(user)
+    context.db.session.commit()
+    context.page = context.client.get('/test_login/{}'.format(user.id), follow_redirects=True)
 
 
 @when(u'we log out')
