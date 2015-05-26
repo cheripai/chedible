@@ -5,7 +5,7 @@
 1. [virtualenv](https://virtualenv.pypa.io/en/latest/installation.html) 
 3. [virtualenvwrapper](https://virtualenvwrapper.readthedocs.org/en/latest/) (*recommended*)
 4. [PostgreSQL](https://github.com/CheriPai/chedible/blob/master/docs/install_postgres.md)
-5. ```mkvirtualenv --python=path/to/python3 myenv```
+5. ```mkvirtualenv --python=path/to/python3 chedible```
 
 #### Commands to run frequently (*after each update*)
 1. ```cd /path/to/chedible```
