@@ -27,6 +27,7 @@ from sqlalchemy_searchable import search
 # If user is logged in, loads user info into global variable g.user
 @app.before_request
 def load_user():
+    g.search_form = SearchForm()
     if 'logged_in' in session and 'user_id' in session:
         g.user = User.query.filter_by(id=session['user_id']).first()
     else:
@@ -47,8 +48,7 @@ def login_required(test):
 
 @app.route('/')
 def main():
-    form = SearchForm()
-    return render_template('index.html', form=form)
+    return render_template('index.html')
 
 
 @app.route('/logout')
@@ -77,16 +77,14 @@ def search():
     #       Do we want to add a feature to select where to search from?
     #       Or do we want to search all the tables at once?
     #       We also need to add filtering based on preferences
-    form = SearchForm()
-    if form.validate_on_submit():
-        return redirect(url_for('search_results', table='restaurants', query=form.query.data))
+    if g.search_form.validate_on_submit():
+        return redirect(url_for('search_results', table='restaurants', query=g.search_form.query.data))
     else:
         return redirect(url_for('main'))
 
 
 @app.route('/search_results/<table>/<query>')
 def search_results(table, query):
-    form = SearchForm()
     message = "No entries found"
     MAX_QUERIES = 50
 

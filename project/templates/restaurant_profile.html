@@ -22,7 +22,11 @@
         <div class="col-lg-8">
             <div class="page-header">
                 <h2>
-                    <img src="{{ restaurant.image }}" class="img-thumbnail" height="200" width="200"/>
+                    {% if restaurant.image %}
+                        <img src="{{ restaurant.image }}" class="img-thumbnail" height="200" width="200"/>
+                    {% else %}
+                        <img class="img-thumbnail" src="http://www.indre-reisid.ee/wp-content/themes/envision/lib/images/default-placeholder.png" height="200" width="200"/>
+                    {% endif %}
                     {{ restaurant.name }}
                     {% if g.user %}
                         <small><small><a href="">Edit</a></small></small>
