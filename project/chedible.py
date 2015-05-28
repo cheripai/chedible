@@ -71,14 +71,11 @@ def test_login(id):
 
 # Route is called when search is initiated on HTML page
 # If a query exists, routes user to search results page
-@app.route('/search', methods=['POST'])
-def search():
-    #FIXME: This currently only searches a single table
-    #       Do we want to add a feature to select where to search from?
-    #       Or do we want to search all the tables at once?
-    #       We also need to add filtering based on preferences
+@app.route('/search/<table>', methods=['POST'])
+def search(table):
+    # We need to add filtering based on preferences
     if g.search_form.validate_on_submit():
-        return redirect(url_for('search_results', table='restaurants', query=g.search_form.query.data))
+        return redirect(url_for('search_results', table=table, query=g.search_form.query.data))
     else:
         return redirect(url_for('main'))
 
@@ -94,11 +91,15 @@ def search_results(table, query):
         return render_template('search.html', message=message, query=query)
         
     if table == "dishes":
-        data = Dish.query.search(stripped_query).limit(MAX_QUERIES)
+        data = Dish.query.search(stripped_query, sort=True).limit(MAX_QUERIES)
     elif table == "restaurants":
-        data = Restaurant.query.search(stripped_query).limit(MAX_QUERIES)
+        data = Restaurant.query.search(stripped_query, sort=True).limit(MAX_QUERIES)
     elif table == "users":
-        data = User.query.search(stripped_query).limit(MAX_QUERIES)
+        data = User.query.search(stripped_query, sort=True).limit(MAX_QUERIES)
+    elif table =="all":
+        # FIXME: Add search all tables
+        data = Dish.query.search('FIXME', sort=True).limit(MAX_QUERIES)
+        message = "I'm not implemented yet!"
     else:
         return render_template('search.html', message=message)
 
