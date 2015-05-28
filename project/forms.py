@@ -22,6 +22,7 @@ class AddRestaurantForm(Form):
     name = StringField('Restaurant Name', validators=[DataRequired(message="A restaurant name is required"), Length(min=2, max=32, message="Must be between 2 and 32 characters")])
     category = StringField('Category', validators=[DataRequired(message="A category is required"), Length(min=2, max=32, message="Must be between 2 and 32 characters")])
     image = StringField('Restaurant Image', validators=[Optional(), URL(message="Invalid URL")])
+    tags = StringField('Tags', validators=[Optional(), Length(min=2, max=64, message="Tags must be between 2 and 64 characters")])
 
 
 class AddDishForm(Form):
