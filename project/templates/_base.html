@@ -41,18 +41,30 @@
 
 
                 <div class="collapse navbar-collapse navHeaderCollapse">
-                        <form class="navbar-form navbar-left" method="post" action="{{ url_for('search') }}">
+                        <form class="navbar-form navbar-left" method="post" action="/search/restaurants" id="search_table">
                         {{ g.search_form.csrf_token }}
                             <div class="form-group">
+                                <div class="input-group">
                                 {% if query %}
                                     {{ g.search_form.query(value=query, class="form-control", type="text", placeholder="Search") }}
                                 {% else %}
                                     {{ g.search_form.query(class="form-control", type="text", placeholder="Search") }}
                                 {% endif %}
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                                aria-expanded="false"><span id="table_ddm_button">Restaurants </span><span class="caret"></span></button>
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                            <li><a href="javascript:;" data-toggle="search_table" data-button="table_ddm_button" data-title="/search/restaurants" class="table_ddmi">Restaurants</a></li>
+                                            <li><a href="javascript:;" data-toggle="search_table" data-button="table_ddm_button" data-title="/search/dishes" class="table_ddmi">Dishes</a></li>
+                                            <li><a href="javascript:;" data-toggle="search_table" data-button="table_ddm_button" data-title="/search/users" class="table_ddmi">Users</a></li>
+                                            <li><a href="javascript:;" data-toggle="search_table" data-button="table_ddm_button" data-title="/search/all" class="table_ddmi">All</a></li>
+                                        </ul>
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="glyphicon glyphicon-ice-lolly-tasted"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-default">
-                                <i class="glyphicon glyphicon-ice-lolly-tasted"></i>
-                            </button>
                         </form>
                     <ul class="nav navbar-nav navbar-right">
                         {% if g.user %}
@@ -150,7 +162,7 @@
             </div>
         </div>
 
-
+        
 
 
         {% block content %}
@@ -166,6 +178,6 @@
 
         <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
         <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-
+        <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     </body>
 </html>
