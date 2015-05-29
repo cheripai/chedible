@@ -14,6 +14,7 @@
 
 
 from behave import *
+from project.schema import Restaurant, Dish, User
 
 #using steps from database_steps.py
 #       @when(u'we add "{text}" to "{table}"')
@@ -39,9 +40,15 @@ def visit_route(context, route):
     context.page = context.client.get(route, follow_redirects=True)
 
 
-@when(u'we add restaurant "{text}" using the add restaurant page')
-def add_restaurant_using_add_restaurant_page(context, text):
-    context.page = context.client.post('/add', data=dict(name=text, category='category', image=''), follow_redirects=True)
+@when(u'we add restaurant "{text}" using the add restaurant page with tag "{tags}"')
+def add_restaurant_using_add_restaurant_page(context, text, tags):
+    context.page = context.client.post('/add', data=dict(name=text, category='category', image='', tags=tags), follow_redirects=True)
+
+
+@when(u'we add dish "{dish}" to restaurant "{restaurant}"')
+def add_dish_using_add_dish_page(context, dish, restaurant):
+    restaurant_id = context.db.session.query(Restaurant).filter_by(name=restaurant).first().id
+    context.page = context.client.post('/restaurant/{}/add'.format(restaurant_id), data=dict(name=dish, price='', image='', beef=True, dairy=True, egg=True, fish=True, gluten=True, meat=True, nut=True, pork=True, poultry=True, shellfish=True, soy=True, wheat=True, notes=''), follow_redirects=True)
 
 
 @then(u'we should see the text "{text}"')

@@ -69,16 +69,29 @@ Scenario: access the add restaurant page while not logged in
 Scenario: we add a restaurant using the add restaurant page
     Given chedible is set up
     When we log in
-    And we add restaurant "restaurant_name" using the add restaurant page
+    And we add restaurant "restaurant_name" using the add restaurant page with tag "restaurant"
     Then we should see "restaurant_name" in "restaurants"
 
 
 Scenario: we can view a restaurant profile
     Given chedible is set up
     When we log in
-    And we add restaurant "name_of_restaurant" using the add restaurant page
+    And we add restaurant "name_of_restaurant" using the add restaurant page with tag "name"
     Then we should see the text "name_of_restaurant"
 
 
+Scenario: we can find a restaurant using its tags
+    Given chedible is set up
+    When we log in
+    And we add restaurant "the_name" using the add restaurant page with tag "obscure"
+    And we search "restaurants" for "obscure"
+    Then we should see the text "the_name"
 
 
+Scenario: we can add a dish to a restaurant
+    Given chedible is set up
+    When we log in
+    And we add restaurant "test_restaurant" using the add restaurant page with tag "test"
+    And we add dish "test_dish" to restaurant "test_restaurant"
+    Then we should see the text "test_dish"
+    And we should see the text "test_restaurant"
