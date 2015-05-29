@@ -48,7 +48,7 @@ def add_restaurant_using_add_restaurant_page(context, text, tags):
 @when(u'we add dish "{dish}" to restaurant "{restaurant}"')
 def add_dish_using_add_dish_page(context, dish, restaurant):
     restaurant_id = context.db.session.query(Restaurant).filter_by(name=restaurant).first().id
-    context.page = context.client.post('/restaurant/{}/add'.format(restaurant_id), data=dict(name=dish, price='', image='', beef=True, dairy=True, egg=True, fish=True, gluten=True, meat=True, nut=True, pork=True, poultry=True, shellfish=True, soy=True, wheat=True, notes=''), follow_redirects=True)
+    context.page = context.client.post('/restaurant/{}/add'.format(restaurant_id), data=dict(name=dish, price='0.00', image='', beef=True, dairy=True, egg=True, fish=True, gluten=True, meat=True, nut=True, pork=True, poultry=True, shellfish=True, soy=True, wheat=True, notes=''), follow_redirects=True)
 
 
 @then(u'we should see the text "{text}"')
