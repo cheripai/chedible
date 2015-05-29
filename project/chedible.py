@@ -23,7 +23,6 @@ from project.schema import Restaurant, Dish, User
 from sqlalchemy_searchable import search
 
 MAX_USERNAME_LENGTH = 12
-ALPHABET = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 # This function runs before each request
 # If user is logged in, loads user info into global variable g.user
