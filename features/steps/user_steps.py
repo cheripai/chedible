@@ -27,7 +27,7 @@ from project.schema import User
 
 @when(u'we log in')
 def login(context):
-    user = User('test_user', '', '', '')
+    user = User('test user', '', '', '')
     context.db.session.add(user)
     context.db.session.commit()
     context.page = context.client.get('/test_login/{}'.format(user.id), follow_redirects=True)
