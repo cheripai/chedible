@@ -23,7 +23,6 @@ from project.schema import Restaurant, Dish, User
 from sqlalchemy_searchable import search
 
 MAX_USERNAME_LENGTH = 12
-ALPHABET = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 # This function runs before each request
 # If user is logged in, loads user info into global variable g.user
@@ -33,7 +32,7 @@ def load_user():
     if 'logged_in' in session and 'user_id' in session:
         g.user = User.query.filter_by(id=session['user_id']).first()
         
-        trash, first, last = str(g.user).strip('<>').split()
+        first, last = g.user.name.split()
 
         if len(g.user.name) > MAX_USERNAME_LENGTH:
             g.user.name = first
