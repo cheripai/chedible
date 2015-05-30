@@ -24,9 +24,9 @@ def db_create():
     '''      
     for i in range(50):
         if i % 4 == 0:
-            entry = Restaurant('test {}'.format(i), 'vegetarian', 'img')
+            entry = Restaurant('test {}'.format(i), 'vegetarian', 'img', '', None)
         elif i % 4 == 1:
-            entry = Restaurant('test {}'.format(i), 'vegan', 'img')
+            entry = Restaurant('test {}'.format(i), 'vegan', 'img', '', None)
         elif i % 4 == 2:
             entry = User('test {}'.format(i), '0{}'.format(i), 'img', 'email{}@email.org'.format(i))
         else:

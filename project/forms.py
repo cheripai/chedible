@@ -15,19 +15,20 @@
 
 from flask_wtf import Form
 from wtforms import StringField, FloatField, StringField, StringField, TextAreaField
-from wtforms.validators import DataRequired, Email, Length, NumberRange, Optional, URL
+from wtforms.validators import DataRequired, Email, Length, NumberRange, Optional, Regexp, URL
 
 
 class AddRestaurantForm(Form):
     name = StringField('Restaurant Name', validators=[DataRequired(message="A restaurant name is required"), Length(min=2, max=32, message="Must be between 2 and 32 characters")])
-    category = StringField('Category', validators=[DataRequired(message="A category is required"), Length(min=2, max=32, message="Must be between 2 and 32 characters")])
-    image = StringField('Restaurant Image', validators=[Optional(), URL(message="Invalid URL")])
+    category = StringField('Category', validators=[DataRequired(message="A category is required"), Length(min=2, max=32, message="Must be between 2 and 32 characters"), Regexp('(^([A-Za-z0-9_.\']*\,)*[A-Za-z0-9]*$)', message="Must be a comma separated list with no spaces")])
+    image = StringField('Restaurant Image', validators=[Optional(), Regexp('([^\s]+(\.(?i)(jpg|png|gif|bmp))$)', message="Invalid image path"), URL(message="Invalid URL")])
+    tags = StringField('Tags', validators=[Optional(), Length(min=2, max=64, message="Tags must be between 2 and 64 characters"), Regexp('(^([A-Za-z0-9_.\']*\,)*[A-Za-z0-9]*$)', message="Must be a comma separated list with no spaces")])
 
 
 class AddDishForm(Form):
     name = StringField('Dish Name', validators=[DataRequired(message="A name is required"), Length(min=2, max=32, message="Must be between 2 and 32 characters")])
-    price = FloatField('Price', validators=[Optional(), NumberRange(min=0)])
-    image = StringField('Dish Image')
+    price = StringField('Price', validators=[Optional(), Regexp('(^[0-9]*\.[0-9][0-9])$', message="Invalid price format. Must have be a number followed by 2 decimal places. Example: 12.34")])
+    image = StringField('Dish Image', validators=[Optional(), Regexp('([^\s]+(\.(?i)(jpg|png|gif|bmp))$)', message="Invalid image path"), URL(message="Invalid URL")])
     beef = StringField('Beef')
     dairy = StringField('Dairy')
     egg = StringField('Egg')

@@ -32,7 +32,7 @@ def load_user():
     if 'logged_in' in session and 'user_id' in session:
         g.user = User.query.filter_by(id=session['user_id']).first()
         
-        trash, first, last = str(g.user).strip('<>').split()
+        first, last = g.user.name.split()
 
         if len(g.user.name) > MAX_USERNAME_LENGTH:
             g.user.name = first
@@ -130,7 +130,7 @@ def add_restaurant():
     form = AddRestaurantForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            new_restaurant = Restaurant(form.name.data, form.category.data, form.image.data, session['user_id'])
+            new_restaurant = Restaurant(form.name.data, form.category.data, form.image.data, form.tags.data, session['user_id'])
             db.session.add(new_restaurant)
             db.session.commit()
             flash('Thank you for your addition!')
