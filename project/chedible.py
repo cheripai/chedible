@@ -22,7 +22,11 @@ from project.facebook import *
 from project.schema import Restaurant, Dish, User
 from sqlalchemy_searchable import search
 
+
+# Global constants
 MAX_USERNAME_LENGTH = 12
+MAX_QUERIES = 50
+
 
 # This function runs before each request
 # If user is logged in, loads user info into global variable g.user
@@ -98,7 +102,6 @@ def search(table):
 @app.route('/search_results/<table>/<query>')
 def search_results(table, query):
     message = "No entries found"
-    MAX_QUERIES = 50
 
     # removes special characters from search to prevent errors
     stripped_query = ''.join(c for c in query if c.isalnum() or c == ' ')

@@ -16,11 +16,16 @@
 import datetime
 from project import db
 from flask.ext.sqlalchemy import BaseQuery
+from locale import currency, LC_ALL, setlocale
 from sqlalchemy_searchable import SearchQueryMixin
 from sqlalchemy_utils.types import TSVectorType
 from sqlalchemy_searchable import make_searchable
 
 make_searchable()
+
+# sets locale for pricing
+# may need to modify for internationalization
+setlocale(LC_ALL, '')
 
 
 class RestaurantQuery(BaseQuery, SearchQueryMixin):
@@ -63,7 +68,7 @@ class Dish(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     date = db.Column(db.Date, default=datetime.datetime.utcnow())
-    price = db.Column(db.Float(Precision=2), nullable=True)
+    price = db.Column(db.String, nullable=True)
     image = db.Column(db.String, nullable=True)
     beef = db.Column(db.Boolean, nullable=True)
     dairy = db.Column(db.Boolean, nullable=True)
@@ -86,7 +91,7 @@ class Dish(db.Model):
                  nut, pork, poultry, shellfish, soy, wheat, notes, restaurant_id, user_id):
         self.name = name
         self.date = datetime.datetime.utcnow()
-        self.price = price
+        self.price = currency(float(price), grouping=True)
         self.image = image
         self.beef = beef
         self.dairy = dairy
