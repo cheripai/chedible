@@ -51,166 +51,170 @@
                         <label class="control-label">{{ form.image.label }}:</label>
                         {{ form.image(placeholder="URL for image", class="form-control", type="text") }}
                     </div>
-                    <hr class="featurette-divider"></hr>
+                    <br>
                 </div>
 
-                <div class="form-group">
-                    <div class="form-row form-inline">
-                    <label for="fun" class="col-lg-2 control-label">{{ form.beef.label }}:&nbsp</label>
-                        <div class="input-group">
-                            <div id="radioBtn" class="btn-group">
-                                <a class="btn btn-primary btn-sm active" data-toggle="beef" data-title="None">Not Sure</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="beef" data-title="True">Yes</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="beef" data-title="False">No</a>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <div class="form-row form-inline">
+                        <label for="fun" class="col-sm-4 control-label">{{ form.beef.label }}:&nbsp</label>
+                            <div class="input-group">
+                                <div id="radioBtn" class="btn-group">
+                                    <a class="btn btn-primary btn-sm active" data-toggle="beef" data-title="None">Not Sure</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="beef" data-title="True">Yes</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="beef" data-title="False">No</a>
+                                </div>
+                                {{ form.beef(type="hidden", value="None", id="beef") }}
                             </div>
-                            {{ form.beef(type="hidden", value="None", id="beef") }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-row form-inline">
+                        <label for="fun" class="col-sm-4 control-label">{{ form.dairy.label }}:&nbsp</label>
+                            <div class="input-group">
+                                <div id="radioBtn" class="btn-group">
+                                    <a class="btn btn-primary btn-sm active" data-toggle="dairy" data-title="None">Not Sure</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="dairy" data-title="True">Yes</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="dairy" data-title="False">No</a>
+                                </div>
+                                {{ form.dairy(type="hidden", value="None", id="dairy") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-row form-inline">
+                        <label for="fun" class="col-sm-4 control-label">{{ form.egg.label }}:&nbsp</label>
+                            <div class="input-group">
+                                <div id="radioBtn" class="btn-group">
+                                    <a class="btn btn-primary btn-sm active" data-toggle="egg" data-title="None">Not Sure</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="egg" data-title="True">Yes</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="egg" data-title="False">No</a>
+                                </div>
+                                {{ form.egg(type="hidden", value="None", id="egg") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-row form-inline">
+                        <label for="fun" class="col-sm-4 control-label">{{ form.fish.label }}:&nbsp</label>
+                            <div class="input-group">
+                                <div id="radioBtn" class="btn-group">
+                                    <a class="btn btn-primary btn-sm active" data-toggle="fish" data-title="None">Not Sure</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="fish" data-title="True">Yes</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="fish" data-title="False">No</a>
+                                </div>
+                                {{ form.fish(type="hidden", value="None", id="fish") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-row form-inline">
+                        <label for="fun" class="col-sm-4 control-label">{{ form.gluten.label }}:&nbsp</label>
+                            <div class="input-group">
+                                <div id="radioBtn" class="btn-group">
+                                    <a class="btn btn-primary btn-sm active" data-toggle="gluten" data-title="None">Not Sure</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="gluten" data-title="True">Yes</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="gluten" data-title="False">No</a>
+                                </div>
+                                {{ form.gluten(type="hidden", value="None", id="gluten") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-row form-inline">
+                        <label for="fun" class="col-sm-4 control-label">{{ form.meat.label }}:&nbsp</label>
+                            <div class="input-group">
+                                <div id="radioBtn" class="btn-group">
+                                    <a class="btn btn-primary btn-sm active" data-toggle="meat" data-title="None">Not Sure</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="meat" data-title="True">Yes</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="meat" data-title="False">No</a>
+                                </div>
+                                {{ form.meat(type="hidden", value="None", id="meat") }}
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="form-row form-inline">
-                    <label for="fun" class="col-lg-2 control-label">{{ form.dairy.label }}:&nbsp</label>
-                        <div class="input-group">
-                            <div id="radioBtn" class="btn-group">
-                                <a class="btn btn-primary btn-sm active" data-toggle="dairy" data-title="None">Not Sure</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="dairy" data-title="True">Yes</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="dairy" data-title="False">No</a>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <div class="form-row form-inline">
+                        <label for="fun" class="col-sm-4 control-label">{{ form.nut.label }}:&nbsp</label>
+                            <div class="input-group">
+                                <div id="radioBtn" class="btn-group">
+                                    <a class="btn btn-primary btn-sm active" data-toggle="nut" data-title="None">Not Sure</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="nut" data-title="True">Yes</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="nut" data-title="False">No</a>
+                                </div>
+                                {{ form.nut(type="hidden", value="None", id="nut") }}
                             </div>
-                            {{ form.dairy(type="hidden", value="None", id="dairy") }}
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-row form-inline">
-                    <label for="fun" class="col-lg-2 control-label">{{ form.egg.label }}:&nbsp</label>
-                        <div class="input-group">
-                            <div id="radioBtn" class="btn-group">
-                                <a class="btn btn-primary btn-sm active" data-toggle="egg" data-title="None">Not Sure</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="egg" data-title="True">Yes</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="egg" data-title="False">No</a>
+                    <div class="form-group">
+                        <div class="form-row form-inline">
+                        <label for="fun" class="col-sm-4 control-label">{{ form.pork.label }}:&nbsp</label>
+                            <div class="input-group">
+                                <div id="radioBtn" class="btn-group">
+                                    <a class="btn btn-primary btn-sm active" data-toggle="pork" data-title="None">Not Sure</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="pork" data-title="True">Yes</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="pork" data-title="False">No</a>
+                                </div>
+                                {{ form.pork(type="hidden", value="None", id="pork") }}
                             </div>
-                            {{ form.egg(type="hidden", value="None", id="egg") }}
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-row form-inline">
-                    <label for="fun" class="col-lg-2 control-label">{{ form.fish.label }}:&nbsp</label>
-                        <div class="input-group">
-                            <div id="radioBtn" class="btn-group">
-                                <a class="btn btn-primary btn-sm active" data-toggle="fish" data-title="None">Not Sure</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="fish" data-title="True">Yes</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="fish" data-title="False">No</a>
+                    <div class="form-group">
+                        <div class="form-row form-inline">
+                        <label for="fun" class="col-sm-4 control-label">{{ form.poultry.label }}:&nbsp</label>
+                            <div class="input-group">
+                                <div id="radioBtn" class="btn-group">
+                                    <a class="btn btn-primary btn-sm active" data-toggle="poultry" data-title="None">Not Sure</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="poultry" data-title="True">Yes</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="poultry" data-title="False">No</a>
+                                </div>
+                                {{ form.poultry(type="hidden", value="None", id="poultry") }}
                             </div>
-                            {{ form.fish(type="hidden", value="None", id="fish") }}
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-row form-inline">
-                    <label for="fun" class="col-lg-2 control-label">{{ form.gluten.label }}:&nbsp</label>
-                        <div class="input-group">
-                            <div id="radioBtn" class="btn-group">
-                                <a class="btn btn-primary btn-sm active" data-toggle="gluten" data-title="None">Not Sure</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="gluten" data-title="True">Yes</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="gluten" data-title="False">No</a>
+                    <div class="form-group">
+                        <div class="form-row form-inline">
+                        <label for="fun" class="col-sm-4 control-label">{{ form.shellfish.label }}:&nbsp</label>
+                            <div class="input-group">
+                                <div id="radioBtn" class="btn-group">
+                                    <a class="btn btn-primary btn-sm active" data-toggle="shellfish" data-title="None">Not Sure</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="shellfish" data-title="True">Yes</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="shellfish" data-title="False">No</a>
+                                </div>
+                                {{ form.shellfish(type="hidden", value="None", id="shellfish") }}
                             </div>
-                            {{ form.gluten(type="hidden", value="None", id="gluten") }}
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-row form-inline">
-                    <label for="fun" class="col-lg-2 control-label">{{ form.meat.label }}:&nbsp</label>
-                        <div class="input-group">
-                            <div id="radioBtn" class="btn-group">
-                                <a class="btn btn-primary btn-sm active" data-toggle="meat" data-title="None">Not Sure</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="meat" data-title="True">Yes</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="meat" data-title="False">No</a>
+                    <div class="form-group">
+                        <div class="form-row form-inline">
+                        <label for="fun" class="col-sm-4 control-label">{{ form.soy.label }}:&nbsp</label>
+                            <div class="input-group">
+                                <div id="radioBtn" class="btn-group">
+                                    <a class="btn btn-primary btn-sm active" data-toggle="soy" data-title="None">Not Sure</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="soy" data-title="True">Yes</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="soy" data-title="False">No</a>
+                                </div>
+                                {{ form.soy(type="hidden", value="None", id="soy") }}
                             </div>
-                            {{ form.meat(type="hidden", value="None", id="meat") }}
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-row form-inline">
-                    <label for="fun" class="col-lg-2 control-label">{{ form.nut.label }}:&nbsp</label>
-                        <div class="input-group">
-                            <div id="radioBtn" class="btn-group">
-                                <a class="btn btn-primary btn-sm active" data-toggle="nut" data-title="None">Not Sure</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="nut" data-title="True">Yes</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="nut" data-title="False">No</a>
+                    <div class="form-group">
+                        <div class="form-row form-inline">
+                        <label for="fun" class="col-sm-4 control-label">{{ form.wheat.label }}:&nbsp</label>
+                            <div class="input-group">
+                                <div id="radioBtn" class="btn-group">
+                                    <a class="btn btn-primary btn-sm active" data-toggle="wheat" data-title="None">Not Sure</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="wheat" data-title="True">Yes</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="wheat" data-title="False">No</a>
+                                </div>
+                                {{ form.wheat(type="hidden", value="None", id="wheat") }}
                             </div>
-                            {{ form.nut(type="hidden", value="None", id="nut") }}
                         </div>
                     </div>
+                    <br>
                 </div>
-                <div class="form-group">
-                    <div class="form-row form-inline">
-                    <label for="fun" class="col-lg-2 control-label">{{ form.pork.label }}:&nbsp</label>
-                        <div class="input-group">
-                            <div id="radioBtn" class="btn-group">
-                                <a class="btn btn-primary btn-sm active" data-toggle="pork" data-title="None">Not Sure</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="pork" data-title="True">Yes</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="pork" data-title="False">No</a>
-                            </div>
-                            {{ form.pork(type="hidden", value="None", id="pork") }}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-row form-inline">
-                    <label for="fun" class="col-lg-2 control-label">{{ form.poultry.label }}:&nbsp</label>
-                        <div class="input-group">
-                            <div id="radioBtn" class="btn-group">
-                                <a class="btn btn-primary btn-sm active" data-toggle="poultry" data-title="None">Not Sure</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="poultry" data-title="True">Yes</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="poultry" data-title="False">No</a>
-                            </div>
-                            {{ form.poultry(type="hidden", value="None", id="poultry") }}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-row form-inline">
-                    <label for="fun" class="col-lg-2 control-label">{{ form.shellfish.label }}:&nbsp</label>
-                        <div class="input-group">
-                            <div id="radioBtn" class="btn-group">
-                                <a class="btn btn-primary btn-sm active" data-toggle="shellfish" data-title="None">Not Sure</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="shellfish" data-title="True">Yes</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="shellfish" data-title="False">No</a>
-                            </div>
-                            {{ form.shellfish(type="hidden", value="None", id="shellfish") }}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-row form-inline">
-                    <label for="fun" class="col-lg-2 control-label">{{ form.soy.label }}:&nbsp</label>
-                        <div class="input-group">
-                            <div id="radioBtn" class="btn-group">
-                                <a class="btn btn-primary btn-sm active" data-toggle="soy" data-title="None">Not Sure</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="soy" data-title="True">Yes</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="soy" data-title="False">No</a>
-                            </div>
-                            {{ form.soy(type="hidden", value="None", id="soy") }}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-row form-inline">
-                    <label for="fun" class="col-lg-2 control-label">{{ form.wheat.label }}:&nbsp</label>
-                        <div class="input-group">
-                            <div id="radioBtn" class="btn-group">
-                                <a class="btn btn-primary btn-sm active" data-toggle="wheat" data-title="None">Not Sure</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="wheat" data-title="True">Yes</a>
-                                <a class="btn btn-primary btn-sm notActive" data-toggle="wheat" data-title="False">No</a>
-                            </div>
-                            {{ form.wheat(type="hidden", value="None", id="wheat") }}
-                        </div>
-                    </div>
-                </div>
-                <hr class="featurette-divider"></hr>
 
                 <div class="form-row">
                     <div class="form-group">
