@@ -177,6 +177,29 @@ def add_dish(id):
     return render_template('dish_form.html', form=form, id=id)
 
 
+@app.route('/restaurant/<id>/edit', methods=('GET', 'POST'))
+@login_required
+def edit_restaurant(id):
+    form = AddRestaurantForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            restaurant = Restaurant.query.filter_by(id=id).first()
+            restaurant.name = form.name.data
+            restaurant.category = form.category.data
+            restaurant.image = form.image.data
+            restaurant.tags = form.tags.data
+            restaurant.user_id = session['user_id']
+            db.session.commit()
+            flash('Thank you for your update!')
+            return redirect(url_for('restaurant_profile', id=id))
+    old_restaurant = Restaurant.query.filter_by(id=id).first()
+    form.name.data = old_restaurant.name
+    form.category.data = old_restaurant.category
+    form.image.data = old_restaurant.image
+    form.tags.data = old_restaurant.tags
+    return render_template('restaurant_form.html', form=form, id=id)
+
+
 # Convert string value from HTML form to boolean value
 def stb(s):
     if s == 'True':

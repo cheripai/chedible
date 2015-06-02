@@ -29,7 +29,11 @@
                     {% endfor %}
                 </ul>
             {% endif %}
-            <form class="form-horizontal" method="post" action="{{ url_for('add_restaurant') }}">
+            {% if id %}
+                <form class="form-horizontal" method="post" action="{{ url_for('edit_restaurant', id=id) }}">
+            {% else %}
+                <form class="form-horizontal" method="post" action="{{ url_for('add_restaurant') }}">
+            {% endif %}
                 {{ form.csrf_token }}
                 <div class="form-row">
                     <div class="form-group required">

@@ -29,7 +29,7 @@
                     {% endif %}
                     {{ restaurant.name }}
                     {% if g.user %}
-                        <small><small><a href="">Edit</a></small></small>
+                        <small><small><a href="{{ url_for('edit_restaurant', id=restaurant.id) }}">Edit</a></small></small>
                     {% endif %}
                 </h2>
                 {% if g.user %}
