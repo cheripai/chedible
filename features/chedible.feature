@@ -95,3 +95,21 @@ Scenario: we can add a dish to a restaurant
     And we add dish "test_dish" to restaurant "test_restaurant"
     Then we should see the text "test_dish"
     And we should see the text "test_restaurant"
+
+
+Scenario: we can edit a restaurant
+    Given chedible is set up
+    When we log in
+    And we add restaurant "test1" using the add restaurant page with tag "test"
+    And we edit restaurant "test1" to "test2"
+    Then we should see "test2" in "restaurants"
+    And we should not see "test1" in "restaurants"
+
+
+Scenario: we can not edit a restaurant when not logged in
+    Given chedible is set up
+    When we log in
+    And we add restaurant "test3" using the add restaurant page with tag "test"
+    And we log out
+    And we edit restaurant "test3" to "test4"
+    Then we should see the text "You need to be logged in to do that!"

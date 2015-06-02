@@ -51,6 +51,12 @@ def add_dish_using_add_dish_page(context, dish, restaurant):
     context.page = context.client.post('/restaurant/{}/add'.format(restaurant_id), data=dict(name=dish, price='0.00', image='', beef=True, dairy=True, egg=True, fish=True, gluten=True, meat=True, nut=True, pork=True, poultry=True, shellfish=True, soy=True, wheat=True, notes=''), follow_redirects=True)
 
 
+@when(u'we edit restaurant "{old_name}" to "{new_name}"')
+def edit_restaurant_using_edit_restaurant_page(context, old_name, new_name):
+    restaurant_id = context.db.session.query(Restaurant).filter_by(name=old_name).first().id
+    context.page = context.client.post('/restaurant/{}/edit'.format(restaurant_id), data=dict(name=new_name, category='category', image='', tags=''), follow_redirects=True)
+
+
 @then(u'we should see the text "{text}"')
 def text(context, text):
     assert text in str(context.page.data)
