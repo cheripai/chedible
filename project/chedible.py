@@ -183,21 +183,39 @@ def edit_restaurant(id):
     form = AddRestaurantForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            restaurant = Restaurant.query.filter_by(id=id).first()
-            restaurant.name = form.name.data
-            restaurant.category = form.category.data
-            restaurant.image = form.image.data
-            restaurant.tags = form.tags.data
-            restaurant.user_id = session['user_id']
+            for entry in form:
+                if entry.id != "csrf_token":
+                    Restaurant.query.filter_by(id=id).update({entry.id: form[entry.id].data})
+            Restaurant.query.filter_by(id=id).update({'user_id': session['user_id']})
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=id))
-    old_restaurant = Restaurant.query.filter_by(id=id).first()
-    form.name.data = old_restaurant.name
-    form.category.data = old_restaurant.category
-    form.image.data = old_restaurant.image
-    form.tags.data = old_restaurant.tags
+    restaurant = rowtodict(Restaurant.query.filter_by(id=id).first())
+    for entry in form:
+        if entry.id != "csrf_token":
+            form[entry.id].data = restaurant[entry.id]
     return render_template('restaurant_form.html', form=form, id=id)
+
+
+@app.route('/restaurant/<restaurant_id>/<dish_id>/edit', methods=('GET', 'POST'))
+@login_required
+def edit_dish(restaurant_id, dish_id):
+    form = AddDishForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            for entry in form:
+                if entry.id != "csrf_token":
+                    Dish.query.filter_by(id=dish_id).update({entry.id: form[entry.id].data})
+            Dish.query.filter_by(id=dish_id).update({'user_id': session['user_id']})
+            db.session.commit()
+            flash('Thank you for your update!')
+            return redirect(url_for('restaurant_profile', id=restaurant_id))
+    dish = rowtodict(Dish.query.filter_by(id=dish_id).first())
+    for entry in form:
+        if entry.id != "csrf_token":
+            form[entry.id].data = dish[entry.id]
+    return render_template('dish_form.html', form=form, id=restaurant_id)
+
 
 
 # Convert string value from HTML form to boolean value
@@ -210,3 +228,11 @@ def stb(s):
         return None
     else:
         return ValueError
+
+
+# Converts a sqlalchemy row into a dictionary for iteration
+def rowtodict(row):
+    d = {}
+    for column in row.__table__.columns:
+        d[column.name] = str(getattr(row, column.name))
+    return d

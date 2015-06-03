@@ -113,3 +113,13 @@ Scenario: we can not edit a restaurant when not logged in
     And we log out
     And we edit restaurant "test3" to "test4"
     Then we should see the text "You need to be logged in to do that!"
+
+
+Scenario: we can edit a dish
+    Given chedible is set up
+    When we log in
+    And we add restaurant "test5" using the add restaurant page with tag "test"
+    And we add dish "test_dish1" to restaurant "test5"
+    And we edit dish "test_dish1" of restaurant "test5" to "test_dish2"
+    Then we should see "test_dish2" in "dishes"
+    And we should not see "test_dish1" in "dishes"
