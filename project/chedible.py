@@ -214,7 +214,7 @@ def edit_dish(restaurant_id, dish_id):
     for entry in form:
         if entry.id != "csrf_token":
             form[entry.id].data = dish[entry.id]
-    return render_template('dish_form.html', form=form, id=restaurant_id)
+    return render_template('dish_form.html', form=form, id=restaurant_id, dish_id=dish_id)
 
 
 
