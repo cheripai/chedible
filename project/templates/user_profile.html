@@ -1,0 +1,91 @@
+{#    Copyright 2015 Dat Do
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+        http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+#}
+
+
+{% extends "_base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+
+        <div class="col-lg-8">
+            <div class="page-header text-center">
+
+                <img src="{{ (g.user.image) }}" class="img-circle" alt="{{ (g.user.name) }}">
+
+                <h1>
+                    {{ (g.user.name) }}
+
+                    <!-- <small> g.user.username </small> -->
+                </h1>
+
+            </div>
+
+
+
+
+        <div class="page-header">
+
+            <h2>
+                Restaurants
+            </h2>
+
+        </div>
+
+
+
+
+
+        <div class="horizontal">
+            <div class="table">
+            
+            {% for r in g.user.restaurants %}
+
+                <a href="{{ url_for('restaurant_profile', id=r.id) }}" class="thumbnail" id="r-article">
+                    <img src="{{ r.image }}" class="img-rounded" alt="{{ r.image }}" style="min-height:190px;height:190px;min-width:190px;width:190px">
+                </a>
+                    
+            {% endfor %}
+            
+            </div>
+        </div>
+            
+
+
+
+        </div>
+
+        
+        <div class="col-lg-3">
+            <div class="list-group">
+                <a href="#" class="list-group-item">
+                    <h4 class="list-group-item-heading">Ads n shit</h4>
+                    <p class="list-group-item-text">
+Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel. 
+Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel. 
+Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel. 
+Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel. 
+                    </p>
+                </a>
+            </div>
+        </div>
+
+
+
+    </div>
+
+{% endblock %}
+

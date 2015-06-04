@@ -216,6 +216,13 @@ def edit_dish(restaurant_id, dish_id):
             form[entry.id].data = dish[entry.id]
     return render_template('dish_form.html', form=form, id=restaurant_id, dish_id=dish_id)
 
+@app.route('/user/<id>')
+def user_profile(id):
+    #g.user holds user data
+
+    return render_template('user_profile.html')
+
+
 
 
 # Convert string value from HTML form to boolean value

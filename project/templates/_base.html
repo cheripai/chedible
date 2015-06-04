@@ -90,7 +90,7 @@
                             <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Profile &nbsp <img class="img-circle" src="{{ g.user.image }}" height="30" width="30"/></a></li>
+                                <li><a href="{{ url_for('user_profile', id=g.user.id) }}">Profile &nbsp <img class="img-circle" src="{{ g.user.image }}" height="30" width="30"/></a></li>
                                 <li><a href="{{ url_for('logout') }}">Log out</a></li>
                             </ul>
                         {% else %}

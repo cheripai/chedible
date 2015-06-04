@@ -22,3 +22,31 @@ body {
 #login-menu {
     text-align: center;
 }
+
+/* --------------------------- Horizontal scrolling field */
+
+div.horizontal {
+    width: 100%;
+    height: 400px;
+    overflow: auto;
+}
+
+.table {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+
+#r-article {
+    width: 200px;
+    height: 200px;
+    display: table-cell;
+    background: #e3e3e3;
+    vertical-align: middle;
+    text-align: center;
+}
+
+#r-article:nth-child(2n+2)
+{
+    background: #d1d1d1;
+}
