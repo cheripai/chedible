@@ -55,7 +55,7 @@
             {% for r in g.user.restaurants %}
 
                 <a href="{{ url_for('restaurant_profile', id=r.id) }}" class="thumbnail" id="r-article">
-                    <img src="{{ r.image }}" class="img-rounded" alt="{{ r.image }}" style="min-height:190px;height:190px;min-width:190px;width:190px">
+                    <img src="{{ r.image }}" class="img-rounded" alt="{{ r.name }}" style="min-height:190px;height:190px;min-width:190px;width:190px">
                 </a>
                     
             {% endfor %}
