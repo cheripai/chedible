@@ -15,6 +15,7 @@
 
 from flask import Flask, render_template, redirect, url_for, request, flash, session, g
 from functools import wraps
+from locale import currency
 from project import app, db
 from project.forms import AddRestaurantForm, AddDishForm, SearchForm
 from project.google import *
@@ -204,7 +205,12 @@ def edit_dish(restaurant_id, dish_id):
     if request.method == 'POST':
         if form.validate_on_submit():
             for entry in form:
-                if entry.id != "csrf_token":
+                if entry.id in ['beef', 'dairy', 'egg', 'fish', 'gluten', 'meat',
+                                'nut', 'pork', 'poultry', 'shellfish', 'soy', 'wheat']:
+                    Dish.query.filter_by(id=dish_id).update({entry.id: stb(form[entry.id].data)})
+                elif entry.id == 'price':
+                    Dish.query.filter_by(id=dish_id).update({entry.id: currency(float(form[entry.id].data), grouping=True)})
+                elif entry.id != 'csrf_token':
                     Dish.query.filter_by(id=dish_id).update({entry.id: form[entry.id].data})
             Dish.query.filter_by(id=dish_id).update({'user_id': session['user_id']})
             db.session.commit()
@@ -212,17 +218,18 @@ def edit_dish(restaurant_id, dish_id):
             return redirect(url_for('restaurant_profile', id=restaurant_id))
     dish = rowtodict(Dish.query.filter_by(id=dish_id).first())
     for entry in form:
-        if entry.id != "csrf_token":
+        if entry.id == 'price':
+            form[entry.id].data = dish[entry.id].replace('$', '').replace(',', '')
+        elif entry.id != "csrf_token":
             form[entry.id].data = dish[entry.id]
     return render_template('dish_form.html', form=form, id=restaurant_id, dish_id=dish_id)
+
 
 @app.route('/user/<id>')
 def user_profile(id):
     #g.user holds user data
 
     return render_template('user_profile.html')
-
-
 
 
 # Convert string value from HTML form to boolean value

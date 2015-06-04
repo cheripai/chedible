@@ -15,12 +15,17 @@
 
 import os
 from project import app
+from locale import currency, LC_ALL, setlocale
 
 
 DATABASE = 'data.db'
 TEST_DATABASE = 'test.db'
 SECRET_KEY = '\xfb\x12\xdf\xa1@i\xd6>V\xc0\xbb\x8fp\x16#Z\x0b\x81\xeb\x16'
 WTF_CSRF_ENABLED = True    # cross-site request forgery prevention
+
+# sets locale for pricing
+# may need to modify for internationalization
+setlocale(LC_ALL, '')
 
 try:
     if int(os.environ['TESTING']) == 1:

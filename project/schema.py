@@ -16,17 +16,12 @@
 import datetime
 from project import db
 from flask.ext.sqlalchemy import BaseQuery
-from locale import currency, LC_ALL, setlocale
+from locale import currency
 from sqlalchemy_searchable import SearchQueryMixin
 from sqlalchemy_utils.types import TSVectorType
 from sqlalchemy_searchable import make_searchable
 
 make_searchable()
-
-# sets locale for pricing
-# may need to modify for internationalization
-setlocale(LC_ALL, '')
-
 
 class RestaurantQuery(BaseQuery, SearchQueryMixin):
     pass
