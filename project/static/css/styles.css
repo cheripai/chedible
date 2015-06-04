@@ -46,7 +46,6 @@ div.horizontal {
     text-align: center;
 }
 
-#r-article:nth-child(2n+2)
-{
+#r-article:nth-child(2n+2) {
     background: #d1d1d1;
 }
