@@ -208,7 +208,7 @@ def edit_dish(restaurant_id, dish_id):
                 if entry.id in ['beef', 'dairy', 'egg', 'fish', 'gluten', 'meat',
                                 'nut', 'pork', 'poultry', 'shellfish', 'soy', 'wheat']:
                     Dish.query.filter_by(id=dish_id).update({entry.id: stb(form[entry.id].data)})
-                elif entry.id == 'price':
+                elif entry.id == 'price' and form[entry.id].data:
                     Dish.query.filter_by(id=dish_id).update({entry.id: currency(float(form[entry.id].data), grouping=True)})
                 elif entry.id != 'csrf_token':
                     Dish.query.filter_by(id=dish_id).update({entry.id: form[entry.id].data})

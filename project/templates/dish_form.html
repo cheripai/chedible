@@ -66,11 +66,25 @@
                             <label for="fun" class="col-sm-4 control-label">{{ form[entry.id].label }}:&nbsp</label>
                                 <div class="input-group">
                                     <div id="radioBtn" class="btn-group">
-                                        <a class="btn btn-primary btn-sm active" data-toggle="{{ entry.id }}" data-title="None">Not Sure</a>
-                                        <a class="btn btn-primary btn-sm notActive" data-toggle="{{ entry.id }}" data-title="True">Yes</a>
-                                        <a class="btn btn-primary btn-sm notActive" data-toggle="{{ entry.id }}" data-title="False">No</a>
+                                        {% if form[entry.id].data == 'True' %}
+                                            <a class="btn btn-primary btn-sm notActive" data-toggle="{{ entry.id }}" data-title="None">Not Sure</a>
+                                            <a class="btn btn-primary btn-sm active" data-toggle="{{ entry.id }}" data-title="True">Yes</a>
+                                            <a class="btn btn-primary btn-sm notActive" data-toggle="{{ entry.id }}" data-title="False">No</a>
+                                        {% elif form[entry.id].data == 'False' %}
+                                            <a class="btn btn-primary btn-sm notActive" data-toggle="{{ entry.id }}" data-title="None">Not Sure</a>
+                                            <a class="btn btn-primary btn-sm notActive" data-toggle="{{ entry.id }}" data-title="True">Yes</a>
+                                            <a class="btn btn-primary btn-sm active" data-toggle="{{ entry.id }}" data-title="False">No</a>
+                                        {% else %}
+                                            <a class="btn btn-primary btn-sm active" data-toggle="{{ entry.id }}" data-title="None">Not Sure</a>
+                                            <a class="btn btn-primary btn-sm notActive" data-toggle="{{ entry.id }}" data-title="True">Yes</a>
+                                            <a class="btn btn-primary btn-sm notActive" data-toggle="{{ entry.id }}" data-title="False">No</a>
+                                        {% endif %}
+                                        {% if dish_id %}
+                                            {{ form[entry.id](type="hidden", id=entry.id) }}
+                                        {% else %}
+                                            {{ form[entry.id](type="hidden", value="None", id=entry.id) }}
+                                        {% endif %}
                                     </div>
-                                    {{ form[entry.id](type="hidden", value="None", id=entry.id) }}
                                 </div>
                             </div>
                         </div>

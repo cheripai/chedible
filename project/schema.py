@@ -86,7 +86,10 @@ class Dish(db.Model):
                  nut, pork, poultry, shellfish, soy, wheat, notes, restaurant_id, user_id):
         self.name = name
         self.date = datetime.datetime.utcnow()
-        self.price = currency(float(price), grouping=True)
+        if price:
+            self.price = currency(float(price), grouping=True)
+        else:
+            self.price = price
         self.image = image
         self.beef = beef
         self.dairy = dairy
