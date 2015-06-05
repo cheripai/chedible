@@ -228,10 +228,7 @@ def edit_dish(restaurant_id, dish_id):
 @app.route('/user/<id>')
 def user_profile(id):
     #g.user holds user data
-    user = User.query.filter_by(id=id).first()
-
-    month_day_year = user.date.strftime("%B %d, %Y")
-
+    month_day_year = User.query.filter_by(id=id).first().date.strftime("%B %d, %Y")
 
     return render_template('user_profile.html', month_day_year=month_day_year)
 
