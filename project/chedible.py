@@ -130,7 +130,7 @@ def search_results(table, query):
     if data.first() is not None:
         message = ""
 
-    return render_template('search.html', message=message, data=data, query=query)
+    return render_template('search.html', message=message, data=data, query=query, table=table)
 
 
 @app.route('/add', methods=('GET', 'POST'))

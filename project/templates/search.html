@@ -35,10 +35,22 @@
                             </a>
                         </div>
                         <div class="media-body">
-                            <a href="{{ url_for('restaurant_profile', id=d.id) }}">
-                                <h4 class="media-heading">{{ d.name }}</h4>
-                            </a>
-                            <p class="text-muted">{{ d.category }}</p>
+                            {% if table == "restaurants" %}
+                                <a href="{{ url_for('restaurant_profile', id=d.id) }}">
+                                    <h4 class="media-heading">{{ d.name }}</h4>
+                                </a>
+                                <p class="text-muted">{{ d.category }}</p>
+                            {% elif table == "dishes" %}
+                                <a href="{{ url_for('restaurant_profile', id=d.restaurant_id) }}">
+                                    <h4 class="media-heading">{{ d.name }}</h4>
+                                </a>
+                                <p class="text-muted">{{ d.price }}</p>
+                            {% elif table == "users" %}
+                                <a href="{{ url_for('user_profile', id=d.id) }}">
+                                    <h4 class="media-heading">{{ d.name }}</h4>
+                                </a>
+                                <p class="text-muted">Score: {{ d.score }}</p>
+                            {% endif %}
                             <hr class="featurette-divider"></hr>
                         </div>
                     </div>
