@@ -228,8 +228,12 @@ def edit_dish(restaurant_id, dish_id):
 @app.route('/user/<id>')
 def user_profile(id):
     #g.user holds user data
+    user = User.query.filter_by(id=id).first()
 
-    return render_template('user_profile.html')
+    nice_date = user.date.strftime("%B %d, %Y")
+
+
+    return render_template('user_profile.html', nice_date=nice_date)
 
 
 # Convert string value from HTML form to boolean value
