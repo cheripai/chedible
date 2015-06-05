@@ -230,10 +230,10 @@ def user_profile(id):
     #g.user holds user data
     user = User.query.filter_by(id=id).first()
 
-    nice_date = user.date.strftime("%B %d, %Y")
+    month_day_year = user.date.strftime("%B %d, %Y")
 
 
-    return render_template('user_profile.html', nice_date=nice_date)
+    return render_template('user_profile.html', month_day_year=month_day_year)
 
 
 # Convert string value from HTML form to boolean value
