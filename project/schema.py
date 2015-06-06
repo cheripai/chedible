@@ -121,6 +121,7 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
+    username = db.Column(db.String, nullable=True)
     email = db.Column(db.String)
     auth_id = db.Column(db.String)
     date = db.Column(db.Date, default=datetime.datetime.utcnow())

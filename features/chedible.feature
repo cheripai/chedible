@@ -45,9 +45,9 @@ Scenario: search non-existing table
 
 Scenario: fuzzy search
     Given chedible is set up
-    When we add "testing" to "dishes" 
-    And we add "test" to "dishes" 
-    And we search "dishes" for "TEST"
+    When we add "testing" to "restaurants" 
+    And we add "test" to "restaurants" 
+    And we search "restaurants" for "TEST"
     Then we should see the text "testing"
     AND we should see the text "test"
 
