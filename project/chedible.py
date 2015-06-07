@@ -13,20 +13,22 @@
 #    limitations under the License.
 
 
-from flask import Flask, render_template, redirect, url_for, request, flash, session, g
+from flask import Flask, render_template, abort, redirect, url_for, request, flash, session, g
 from functools import wraps
 from locale import currency
 from project import app, db
 from project.forms import AddRestaurantForm, AddDishForm, SearchForm
 from project.google import *
 from project.facebook import *
+from project.pagination import Pagination
 from project.schema import Restaurant, Dish, User
 from sqlalchemy_searchable import search
 
 
 # Global constants
 MAX_USERNAME_LENGTH = 12
-MAX_QUERIES = 50
+MAX_QUERIES = 100
+PER_PAGE = 5
 
 
 # This function runs before each request
@@ -105,8 +107,9 @@ def search(table):
         return redirect(url_for('main'))
 
 
-@app.route('/search_results/<table>/<query>')
-def search_results(table, query):
+@app.route('/search_results/<table>/<query>', defaults={'page': 1})
+@app.route('/search_results/<table>/<query>/<int:page>')
+def search_results(table, query, page):
     message = "No entries found"
 
     # removes special characters from search to prevent errors
@@ -130,7 +133,12 @@ def search_results(table, query):
     if data.first() is not None:
         message = ""
 
-    return render_template('search.html', message=message, data=data, query=query, table=table)
+    pagination = Pagination(page, PER_PAGE, data.count())
+    data = split_data(data, page, PER_PAGE, data.count())
+    if not data and page != 1:
+        abort(404)
+
+    return render_template('search.html', message=message, data=data, query=query, table=table, pagination=pagination)
 
 
 @app.route('/add', methods=('GET', 'POST'))
@@ -251,3 +259,14 @@ def rowtodict(row):
     for column in row.__table__.columns:
         d[column.name] = str(getattr(row, column.name))
     return d
+
+
+# Splits data from query for pagination
+def split_data(data, cur_page, per_page, total):
+    split = [d for d in data]
+    begin = (cur_page-1) * per_page
+    if begin + per_page < total:
+        end = begin + per_page
+    else:
+        end = total
+    return split[begin:end]

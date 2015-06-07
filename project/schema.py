@@ -49,7 +49,7 @@ class Restaurant(db.Model):
         self.user_id = user_id
 
     def __repr__(self):
-        return '<Restaurant {}'.format(self.name)
+        return '<Restaurant {}>'.format(self.name)
 
 
 class DishQuery(BaseQuery, SearchQueryMixin):
