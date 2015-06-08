@@ -49,3 +49,23 @@ div.horizontal {
 #r-article:nth-child(2n+2) {
     background: #d1d1d1;
 }
+
+
+/* Used for navbar search */
+
+@media(max-width:767px) {
+    .navbar .navbar-form {
+        width: 400px;
+    }
+}
+
+
+.navbar .navbar-form {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-right: 0;
+    margin-left: 0;
+    border: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
