@@ -49,8 +49,12 @@
                                 {{ g.search_form.query(class="form-control", type="text", placeholder="Search") }}
                             {% endif %}
                                 <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default" data-toggle="dropdown"
-                                            aria-expanded="false"><span id="table_ddm_button">Restaurants </span><span class="caret"></span></button>
+                                    <button type="button" class="btn btn-default hidden-xs" data-toggle="dropdown" aria-expanded="false">
+                                        <span id="table_ddm_button">Restaurants </span><span class="caret"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-default hidden-md hidden-lg hidden-sm" data-toggle="dropdown" aria-expanded="false">
+                                        <span id="table_ddm_button"></span><span class="caret"></span>
+                                    </button>
                                     <ul class="dropdown-menu dropdown-menu-right" role="menu">
                                         <li><a href="javascript:;" data-toggle="search_table" data-button="table_ddm_button" data-title="/search/restaurants" class="table_ddmi">Restaurants</a></li>
                                         <li><a href="javascript:;" data-toggle="search_table" data-button="table_ddm_button" data-title="/search/dishes" class="table_ddmi">Dishes</a></li>
