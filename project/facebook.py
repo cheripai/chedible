@@ -35,6 +35,14 @@ facebook = OAuth2Service(
 
 @app.route('/facebook/login')
 def facebook_login():
+    # Stores URL of page user was on last
+    # This allows them to resume where they left off
+    global USER_RETURN_URL
+    if request.host_url in request.referrer:
+        USER_RETURN_URL = request.referrer
+    else:
+        USER_RETURN_URL = request.host_url
+
     redirect_uri = url_for('facebook_authorized', _external=True)
     params = {
         'client-id': app.config['FACEBOOK_CLIENT_ID'],
@@ -48,7 +56,7 @@ def facebook_login():
 def facebook_authorized():
     if not 'code' in request.args:
         flash('You did not authorize the request')
-        return redirect(url_for('main'))
+        return redirect(USER_RETURN_URL)
 
     redirect_uri = url_for('facebook_authorized', _external=True)
     data = dict(code=request.args['code'], redirect_uri=redirect_uri)
@@ -69,4 +77,4 @@ def facebook_authorized():
     session['user_id'] = user.id
     
     flash('Logged in as {}'.format(user.name))
-    return redirect(url_for('main'))
+    return redirect(USER_RETURN_URL)

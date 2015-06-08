@@ -24,11 +24,11 @@ def db_create():
     """
     for i in range(50):
         if i % 4 == 0:
-            entry = Restaurant('test {}'.format(i), 'vegetarian', 'img', '', None)
+            entry = Restaurant('test {}'.format(i), 'vegetarian', None, '', None)
         elif i % 4 == 1:
-            entry = Restaurant('test {}'.format(i), 'vegan', 'img', '', None)
+            entry = Restaurant('test {}'.format(i), 'vegan', None, '', None)
         elif i % 4 == 2:
-            entry = User('test {}'.format(i), '0{}'.format(i), 'img', 'email{}@email.org'.format(i))
+            entry = User('test {}'.format(i), '0{}'.format(i), None, 'email{}@email.org'.format(i))
         else:
            entry = Dish('testdish{}'.format(i), 0.00, '', None, None, None, None, None, 
                      None, None, None, None, None, None, None, '', None, None) 
