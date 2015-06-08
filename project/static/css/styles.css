@@ -60,6 +60,13 @@ div.horizontal {
     }
 }
 
+@media(max-width:377px) {
+    .navbar .navbar-form {
+        width: 300px;
+        padding-right: 100px;
+    }
+}
+
 
 .navbar .navbar-form {
     padding-top: 0;
