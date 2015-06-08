@@ -62,7 +62,7 @@ div.horizontal {
 
 @media(max-width:377px) {
     .navbar .navbar-form {
-        width: 320px;
+        width: 340px;
         padding-right: 100px;
     }
 }
