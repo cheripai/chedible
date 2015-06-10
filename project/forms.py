@@ -46,3 +46,6 @@ class AddDishForm(Form):
 
 class SearchForm(Form):
     query = StringField('Query', validators=[DataRequired(), Length(min=1, max=64, message="Must be between 1 and 64 characters")])
+
+class EditUserForm(Form):
+    username = StringField('Username', validators=[DataRequired(message="A username is required"), Length(min=2, max=32, message="Must be between 2 and 32 characters")])

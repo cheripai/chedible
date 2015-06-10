@@ -17,7 +17,7 @@ from flask import Flask, render_template, abort, redirect, url_for, request, fla
 from functools import wraps
 from locale import currency
 from project import app, db
-from project.forms import AddRestaurantForm, AddDishForm, SearchForm
+from project.forms import AddRestaurantForm, AddDishForm, SearchForm, EditUserForm
 from project.google import *
 from project.facebook import *
 from project.pagination import Pagination
@@ -238,7 +238,34 @@ def user_profile(id):
     #g.user holds user data
     month_day_year = User.query.filter_by(id=id).first().date.strftime("%B %d, %Y")
 
+    if g.user.username == None:
+        g.user.username = ""
+
     return render_template('user_profile.html', month_day_year=month_day_year)
+
+@app.route('/user/<id>/edit', methods=('GET', 'POST'))
+def edit_user(id):
+    #g.user holds user data
+
+    month_day_year = User.query.filter_by(id=id).first().date.strftime("%B %d, %Y")
+
+    if g.user.username == None:
+        g.user.username = ""
+
+    form = EditUserForm()
+
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            for entry in form:
+                if entry.id != 'csrf_token':
+                    User.query.filter_by(id=id).update({entry.id: form[entry.id].data})
+            db.session.commit()
+            flash('Thank you for your update!')
+            return redirect(url_for('user_profile', id=id))
+
+
+
+    return render_template('edit_user.html', form=form, month_day_year=month_day_year)
 
 
 # Convert string value from HTML form to boolean value
