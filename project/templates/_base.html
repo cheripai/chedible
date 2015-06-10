@@ -99,28 +99,7 @@
                                 <li><a href="{{ url_for('logout') }}">Log out</a></li>
                             </ul>
                         {% else %}
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Login <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu" id='login-menu'>
-                                <li>
-                                    <form action="{{ url_for('facebook_login') }}">
-                                        <button class="btn btn-social btn-facebook" type="submit">
-                                        &nbsp;Facebook
-                                        <i class="fa fa-facebook-official"></i>
-                                        </button>
-                                    </form>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <form action="{{ url_for('google_login') }}">
-                                        <button class="btn btn-social btn-google" type="submit">
-                                        &nbsp;Google
-                                        <i class="fa fa-google"></i>
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
+                            <li><a href="#login" data-toggle="modal">Login</a></li>
                         {% endif %}
                         </li>
                     </ul>
@@ -168,6 +147,42 @@
         </div>
 
         
+        <div class="modal fade" id="login" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Welcome back!</h4>
+                        <h6>Log in with these services.</h6>
+                    </div>
+                    <div class="modal-body">
+                        <center>
+                            <div class="btn-group" role="group">
+                                <form action="{{ url_for('facebook_login') }}">
+                                    <button class="btn btn-social btn-facebook" type="submit">
+                                        &nbsp;Facebook
+                                        <i class="fa fa-facebook-official"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="btn-group" role="group">
+                            &nbsp &nbsp &nbsp
+                            </div>
+                            <div class="btn-group" role="group">
+                                <form action="{{ url_for('google_login') }}">
+                                    <button class="btn btn-social btn-google" type="submit">
+                                        &nbsp;Google
+                                        <i class="fa fa-google"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </center>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-default" data-dismiss="modal">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
         {% block content %}
