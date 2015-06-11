@@ -77,6 +77,7 @@ class Dish(db.Model):
     shellfish = db.Column(db.Boolean, nullable=True)
     soy = db.Column(db.Boolean, nullable=True)
     wheat = db.Column(db.Boolean, nullable=True)
+    score = db.Column(db.Integer)
     notes = db.Column(db.String, nullable=True)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -103,6 +104,7 @@ class Dish(db.Model):
         self.shellfish = shellfish
         self.soy = soy
         self.wheat = wheat
+        self.score = 0
         self.notes = notes
         self.restaurant_id = restaurant_id
         self.user_id = user_id
@@ -126,6 +128,7 @@ class User(db.Model):
     auth_id = db.Column(db.String)
     date = db.Column(db.Date, default=datetime.datetime.utcnow())
     image = db.Column(db.String, nullable=True)
+    about = db.Column(db.String, nullable=True)
     score = db.Column(db.Integer, default=0)
     restaurants = db.relationship('Restaurant', backref='user')
     dishes = db.relationship('Dish', backref='user')
