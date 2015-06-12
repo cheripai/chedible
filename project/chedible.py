@@ -235,18 +235,21 @@ def edit_dish(restaurant_id, dish_id):
 
 @app.route('/user/<id>')
 def user_profile(id):
-    #g.user holds user data
+    #g.user holds logged-in user data
+
+    user = User.query.filter_by(id=id).first()
     month_day_year = User.query.filter_by(id=id).first().date.strftime("%B %d, %Y")
 
     if g.user.username == None:
         g.user.username = ""
 
-    return render_template('user_profile.html', month_day_year=month_day_year)
+    return render_template('user_profile.html', month_day_year=month_day_year, user=user)
 
 @app.route('/user/<id>/edit', methods=('GET', 'POST'))
 def edit_user(id):
-    #g.user holds user data
+    #g.user holds logged-in user data
 
+    user = User.query.filter_by(id=id).first()
     month_day_year = User.query.filter_by(id=id).first().date.strftime("%B %d, %Y")
 
     if g.user.username == None:
@@ -265,7 +268,7 @@ def edit_user(id):
 
 
 
-    return render_template('edit_user.html', form=form, month_day_year=month_day_year)
+    return render_template('edit_user.html', form=form, month_day_year=month_day_year, user=user)
 
 
 # Convert string value from HTML form to boolean value
