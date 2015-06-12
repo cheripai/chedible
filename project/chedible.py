@@ -123,10 +123,6 @@ def search_results(table, query, page):
         data = Restaurant.query.search(stripped_query, sort=True).limit(MAX_QUERIES)
     elif table == "users":
         data = User.query.search(stripped_query, sort=True).limit(MAX_QUERIES)
-    elif table =="all":
-        # FIXME: Add search all tables
-        data = Dish.query.search('FIXME', sort=True).limit(MAX_QUERIES)
-        message = "I'm not implemented yet!"
     else:
         return render_template('search.html', message=message)
 
