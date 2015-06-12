@@ -257,6 +257,7 @@ def edit_user(id):
             return redirect(url_for('user_profile', id=id))
     else:
         form.username.data = user.username
+        form.about.data = user.about
 
 
 

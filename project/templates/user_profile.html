@@ -19,38 +19,47 @@
 {% block content %}
 
     <div class="container">
-
-
         <div class="col-lg-9">
             <div class="page-header text-center">
+                <div class="panel panel-default">
+                    <br>
+                    <img src="{{ (user.image) }}" class="img-circle" alt="{{ (user.name) }}" width = "200" height="200">
 
-                <img src="{{ (user.image) }}" class="img-circle" alt="{{ (user.name) }}" width = "200" height="200">
-
-                <h1>
-                    {{ user.name }} 
-                    
-                    {% if user.username != None %}
-                    <small>{{ user.username }} </small>
-                    {% endif %}
-                    
+                    <h1>
+                        {{ user.name }} 
+                        
+                        {% if user.username != None %}
+                        <small>{{ user.username }} </small>
+                        {% endif %}
+                        
 
 
-                    {% if user.id == g.user.id %}
-                    <small><small><a href="{{ url_for('edit_user', id=user.id) }}">Edit</a></small></small>
-                    {% endif %}
+                        {% if user.id == g.user.id %}
+                        <small><small><a href="{{ url_for('edit_user', id=user.id) }}">Edit</a></small></small>
+                        {% endif %}
 
-                </h1>
+                    </h1>
 
-                <div>
-                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Joined on {{ month_day_year }}
+                    <div>
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Joined on {{ month_day_year }}
+                    </div>
+
+                    <div>
+                        <span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span> Score: {{ user.score }}
+                    </div>
+                    <br>
                 </div>
 
-                <div>
-                <span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span> Score: {{ user.score }}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">About:</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ user.about }}
+                    </div>
                 </div>
-
-
             </div>
+
 
 
 
@@ -73,7 +82,9 @@
             {% for r in user.restaurants %}
 
                 <a href="{{ url_for('restaurant_profile', id=r.id) }}" class="thumbnail" id="r-article">
-                    {{ r.name }}
+                    {% if r.image != "" %}
+                        {{ r.name }}
+                    {% endif %}
                     <img src="{{ r.image }}" class="img-rounded" alt="{{ r.name }}" width="190px" height="190px">
                 </a>
                     

@@ -23,26 +23,27 @@
 
         <div class="col-lg-9">
             <div class="page-header text-center">
+                <div class="panel panel-default">
+                    <br>
+                    <img src="{{ (user.image) }}" class="img-circle" alt="{{ (user.name) }}" width = "200" height="200">
 
-                <img src="{{ (user.image) }}" class="img-circle" alt="{{ (user.name) }}" width = "200" height="200">
+                    <h1>
+                        {{ user.name }} 
+                        
+                        {% if user.username != None %}
+                        <small>{{ user.username }} </small>
+                        {% endif %}
 
-                <h1>
-                    {{ user.name }} 
+                    </h1>
 
-                    {% if user.username != None %}
-                    <small>{{ user.username }} </small>
-                    {% endif %}
+                    <div>
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Joined on {{ month_day_year }}
+                    </div>
 
-                </h1>
-
-                <div>
-                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Joined on {{ month_day_year }}
+                    <div>
+                        <span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span> Score: {{ user.score }}
+                    </div>
                 </div>
-
-                 <div>
-                <span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span> Score: {{ user.score }}
-                </div>
-
             </div>
 
         <div class="page-header">
@@ -75,11 +76,19 @@
             </div>
 
             <div class="form-row">
+                    <div class="form-group">
+                        <label class="control-label">{{ form.about.label }}:</label>
+                        {{ form.about(class="form-control", type="text") }}
+                    </div>
+            </div>
+
+            <div class="form-row">
                 <div class="form-group">
                     <hr class="featurette-divider"></hr>
                         <button class="form-control btn btn-primary submit-button" type="submit">Submit</button>
                 </div>
             </div>
+
         </form>
 
     </div>

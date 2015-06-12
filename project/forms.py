@@ -49,3 +49,4 @@ class SearchForm(Form):
 
 class EditUserForm(Form):
     username = StringField('Username', validators=[DataRequired(message="A username is required"), Length(min=2, max=32, message="Must be between 2 and 32 characters")])
+    about = TextAreaField('About Me', validators=[Optional(), Length(min=2, max=512, message="Must be between 2 and 512 characters")])
