@@ -27,7 +27,14 @@
                 <img src="{{ (user.image) }}" class="img-circle" alt="{{ (user.name) }}" width = "200" height="200">
 
                 <h1>
-                    {{ user.name }} <small>{{ user.username }} </small> 
+                    {{ user.name }} 
+                    
+                    {% if user.username != None %}
+                    <small>{{ user.username }} </small>
+                    {% endif %}
+                    
+
+
                     {% if user.id == g.user.id %}
                     <small><small><a href="{{ url_for('edit_user', id=user.id) }}">Edit</a></small></small>
                     {% endif %}

@@ -236,9 +236,6 @@ def user_profile(id):
     user = User.query.filter_by(id=id).first()
     month_day_year = User.query.filter_by(id=id).first().date.strftime("%B %d, %Y")
 
-    if g.user.username == None:
-        g.user.username = ""
-
     return render_template('user_profile.html', month_day_year=month_day_year, user=user)
 
 @app.route('/user/<id>/edit', methods=('GET', 'POST'))
@@ -247,9 +244,6 @@ def edit_user(id):
 
     user = User.query.filter_by(id=id).first()
     month_day_year = User.query.filter_by(id=id).first().date.strftime("%B %d, %Y")
-
-    if g.user.username == None:
-        g.user.username = ""
 
     form = EditUserForm()
 
