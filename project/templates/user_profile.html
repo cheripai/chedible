@@ -24,12 +24,14 @@
         <div class="col-lg-9">
             <div class="page-header text-center">
 
-                <img src="{{ (g.user.image) }}" class="img-circle" alt="{{ (g.user.name) }}" width = "200" height="200">
+                <img src="{{ (user.image) }}" class="img-circle" alt="{{ (user.name) }}" width = "200" height="200">
 
                 <h1>
-                    {{ g.user.name }} <small>{{ g.user.username }} </small> <small><small><a href="{{ url_for('edit_user', id=g.user.id) }}">Edit</a></small></small>
+                    {{ user.name }} <small>{{ user.username }} </small> 
+                    {% if user.id == g.user.id %}
+                    <small><small><a href="{{ url_for('edit_user', id=user.id) }}">Edit</a></small></small>
+                    {% endif %}
 
-                    <!-- <small> g.user.username </small> -->
                 </h1>
 
                 <div>
@@ -37,7 +39,7 @@
                 </div>
 
                 <div>
-                <span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span> Score: {{ g.user.score }}
+                <span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span> Score: {{ user.score }}
                 </div>
 
 
@@ -61,7 +63,7 @@
         <div class="horizontal">
             <div class="table">
             
-            {% for r in g.user.restaurants %}
+            {% for r in user.restaurants %}
 
                 <a href="{{ url_for('restaurant_profile', id=r.id) }}" class="thumbnail" id="r-article">
                     {{ r.name }}
