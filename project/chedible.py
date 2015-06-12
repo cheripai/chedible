@@ -255,6 +255,8 @@ def edit_user(id):
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('user_profile', id=id))
+    else:
+        form.username.data = user.username
 
 
 
