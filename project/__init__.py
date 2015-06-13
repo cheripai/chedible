@@ -14,7 +14,6 @@
 
 
 from flask import Flask
-from flask_admin import Admin
 from flask.ext.sqlalchemy import SQLAlchemy
 
 
