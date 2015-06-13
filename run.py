@@ -15,4 +15,8 @@
 
 from project import app
 
+# For development
 app.run(debug=True)
+
+# For deployment
+# app.run(debug=False)

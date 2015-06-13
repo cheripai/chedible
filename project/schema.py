@@ -132,6 +132,7 @@ class User(db.Model):
     score = db.Column(db.Integer, default=0)
     restaurants = db.relationship('Restaurant', backref='user')
     dishes = db.relationship('Dish', backref='user')
+    is_admin = db.Column(db.Boolean, nullable=False)
     search_vector = db.Column(TSVectorType('name', 'email', 'username'))
    
     def __init__(self, name, auth_id, image, email):
@@ -141,6 +142,7 @@ class User(db.Model):
         self.image = image
         self.email = email
         self.score = 0
+        self.is_admin = False
 
     def __repr__(self):
         return '<User {}>'.format(self.name)

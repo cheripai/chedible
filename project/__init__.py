@@ -14,6 +14,7 @@
 
 
 from flask import Flask
+from flask_admin import Admin
 from flask.ext.sqlalchemy import SQLAlchemy
 
 
@@ -22,5 +23,6 @@ app = Flask(__name__)
 app.config.from_pyfile('_config.py')
 db = SQLAlchemy(app)
 
-from project.schema import Restaurant, Dish
+from project.schema import *
 from project.chedible import *
+from project.admin import *

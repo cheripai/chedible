@@ -46,9 +46,15 @@
                                 </a>
                                 <p class="text-muted">{{ d.price }}</p>
                             {% elif table == "users" %}
-                                <a href="{{ url_for('user_profile', id=d.id) }}">
-                                    <h4 class="media-heading">{{ d.name }}</h4>
-                                </a>
+                                {% if d.username %}
+                                    <a href="{{ url_for('user_profile', id=d.id) }}">
+                                        <h4 class="media-heading">{{ d.username }}</h4>
+                                    </a>
+                                {% else %}
+                                    <a href="{{ url_for('user_profile', id=d.id) }}">
+                                        <h4 class="media-heading">{{ d.name }}</h4>
+                                    </a>
+                                {% endif %}
                                 <p class="text-muted">Score: {{ d.score }}</p>
                             {% endif %}
                             <hr class="featurette-divider"></hr>
