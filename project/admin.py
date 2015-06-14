@@ -61,7 +61,7 @@ class UserView(ModelView):
         super(UserView, self).__init__(User, session, **kwargs)
         
 
-admin = Admin(app, name='Chedible Admin', index_view=AdminHomeView())
-admin.add_view(RestaurantView(db.session))
-admin.add_view(DishView(db.session))
-admin.add_view(UserView(db.session))
+admin = Admin(app, name='Admin', index_view=AdminHomeView())
+admin.add_view(RestaurantView(db.session, name='Restaurants', category='Database'))
+admin.add_view(DishView(db.session, name='Dishes', category='Database'))
+admin.add_view(UserView(db.session, name='Users', category='Database'))
