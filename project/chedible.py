@@ -1,11 +1,11 @@
 #    Copyright 2015 Dat Do
-#    
+#
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
 #    You may obtain a copy of the License at
-#    
+#
 #        http://www.apache.org/licenses/LICENSE-2.0
-#    
+#
 #    Unless required by applicable law or agreed to in writing, software
 #    distributed under the License is distributed on an "AS IS" BASIS,
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,6 +23,7 @@ from project.facebook import *
 from project.pagination import Pagination
 from project.schema import Restaurant, Dish, User
 from sqlalchemy_searchable import search
+from time import time
 
 
 # Global constants
@@ -38,12 +39,12 @@ def load_user():
     g.search_form = SearchForm()
     if 'logged_in' in session and 'user_id' in session:
         g.user = User.query.filter_by(id=session['user_id']).first()
-        
+
         first, last = g.user.name.split()
 
         if len(g.user.name) > MAX_USERNAME_LENGTH:
             g.user.name = first
-        
+
         if len(g.user.name) > MAX_USERNAME_LENGTH:
             charlist = []
             charlist[:0] = first
@@ -116,7 +117,7 @@ def search_results(table, query, page):
     stripped_query = ''.join(c for c in query if c.isalnum() or c == ' ')
     if stripped_query == '':
         return render_template('search.html', message=message, query=query)
-        
+
     if table == "dishes":
         data = Dish.query.search(stripped_query, sort=True).limit(MAX_QUERIES)
     elif table == "restaurants":
@@ -188,10 +189,12 @@ def edit_restaurant(id):
     form = AddRestaurantForm()
     if request.method == 'POST':
         if form.validate_on_submit():
+            restaurant = Restaurant.query.filter_by(id=id)
             for entry in form:
                 if entry.id != "csrf_token":
-                    Restaurant.query.filter_by(id=id).update({entry.id: form[entry.id].data})
-            Restaurant.query.filter_by(id=id).update({'user_id': session['user_id']})
+                    restaurant.update({entry.id: form[entry.id].data})
+            restaurant.update({'user_id': session['user_id']})
+            restaurant.update({'last_edited': int(time())})
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=id))
@@ -208,15 +211,17 @@ def edit_dish(restaurant_id, dish_id):
     form = AddDishForm()
     if request.method == 'POST':
         if form.validate_on_submit():
+            dish = Dish.query.filter_by(id=dish_id)
             for entry in form:
                 if entry.id in ['beef', 'dairy', 'egg', 'fish', 'gluten', 'meat',
                                 'nut', 'pork', 'poultry', 'shellfish', 'soy', 'wheat']:
-                    Dish.query.filter_by(id=dish_id).update({entry.id: stb(form[entry.id].data)})
+                    dish.update({entry.id: stb(form[entry.id].data)})
                 elif entry.id == 'price' and form[entry.id].data:
-                    Dish.query.filter_by(id=dish_id).update({entry.id: currency(float(form[entry.id].data), grouping=True)})
+                    dish.update({entry.id: currency(float(form[entry.id].data), grouping=True)})
                 elif entry.id != 'csrf_token':
-                    Dish.query.filter_by(id=dish_id).update({entry.id: form[entry.id].data})
-            Dish.query.filter_by(id=dish_id).update({'user_id': session['user_id']})
+                    dish.update({entry.id: form[entry.id].data})
+            dish.update({'user_id': session['user_id']})
+            dish.update({'last_edited': int(time())})
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=restaurant_id))
@@ -249,9 +254,11 @@ def edit_user(id):
 
     if request.method == 'POST':
         if form.validate_on_submit():
+            user = User.query.filter_by(id=id)
             for entry in form:
                 if entry.id != 'csrf_token':
-                    User.query.filter_by(id=id).update({entry.id: form[entry.id].data})
+                    user.update({entry.id: form[entry.id].data})
+                user.update({'last_edited': int(time())})
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('user_profile', id=id))

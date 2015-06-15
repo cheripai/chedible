@@ -30,12 +30,11 @@ def db_create():
         elif i % 4 == 2:
             entry = User('test {}'.format(i), '0{}'.format(i), None, 'email{}@email.org'.format(i))
         else:
-           entry = Dish('testdish{}'.format(i), 0.00, '', None, None, None, None, None, 
+           entry = Dish('testdish{}'.format(i), '$0.00', '', None, None, None, None, None, 
                      None, None, None, None, None, None, None, '', 1, 1) 
         db.session.add(entry)
     """
     
-
     db.session.commit()
 
 

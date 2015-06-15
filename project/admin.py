@@ -34,7 +34,7 @@ class ModelView(ModelView):
 class RestaurantView(ModelView):
     
     can_create = False
-    column_list = ('id', 'name', 'category', 'image', 'dishes', 'tags', 'user_id')
+    column_list = ('id', 'name', 'category', 'image', 'dishes', 'tags', 'user_id', 'last_edited')
 
     def __init__(self, session, **kwargs):
         super(RestaurantView, self).__init__(Restaurant, session, **kwargs)
@@ -43,9 +43,9 @@ class RestaurantView(ModelView):
 class DishView(ModelView):
     
     can_create = False
-    column_list = ('id', 'name', 'date', 'price', 'image', 'beef', 'dairy', 'egg',
+    column_list = ('id', 'name', 'price', 'image', 'beef', 'dairy', 'egg',
                    'fish', 'gluten', 'meat', 'nut', 'pork', 'poultry', 'shellfish',
-                   'soy', 'wheat', 'score', 'notes', 'restaurant_id', 'user_id')
+                   'soy', 'wheat', 'score', 'notes', 'restaurant_id', 'user_id', 'last_edited')
 
     def __init__(self, session, **kwargs):
         super(DishView, self).__init__(Dish, session, **kwargs)
@@ -54,8 +54,8 @@ class DishView(ModelView):
 class UserView(ModelView):
     
     can_create = False
-    column_list= ('id', 'name', 'username', 'email', 'date', 'image', 'about', 'score',
-                  'restaurants', 'dishes')
+    column_list= ('id', 'name', 'username', 'email', 'image', 'about', 'score',
+                  'restaurants', 'dishes', 'last_edited')
 
     def __init__(self, session, **kwargs):
         super(UserView, self).__init__(User, session, **kwargs)

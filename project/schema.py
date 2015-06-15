@@ -13,13 +13,14 @@
 #    limitations under the License.
 
 
-import datetime
+from datetime import datetime
 from project import db
 from flask.ext.sqlalchemy import BaseQuery
 from locale import currency
 from sqlalchemy_searchable import SearchQueryMixin
 from sqlalchemy_utils.types import TSVectorType
 from sqlalchemy_searchable import make_searchable
+from time import time
 
 make_searchable()
 
@@ -33,20 +34,24 @@ class Restaurant(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
+    date = db.Column(db.Date, nullable=False)
     category = db.Column(db.String, nullable=True)
     image = db.Column(db.String, nullable=True)
     dishes = db.relationship('Dish', backref='restaurant')
     tags = db.Column(db.String, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    last_edited = db.Column(db.Integer, nullable=False)
     search_vector = db.Column(TSVectorType('name', 'category', 'tags'))
     # FIXME: should there be location? and how will we reference multiple locations
 
     def __init__(self, name, category, image, tags, user_id):
         self.name = name
+        self.date = datetime.utcnow()
         self.category = category
         self.image = image
         self.tags = tags
         self.user_id = user_id
+        self.last_edited = int(time())
 
     def __repr__(self):
         return '<Restaurant {}>'.format(self.name)
@@ -62,7 +67,7 @@ class Dish(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    date = db.Column(db.Date, default=datetime.datetime.utcnow())
+    date = db.Column(db.Date, nullable=False)
     price = db.Column(db.String, nullable=True)
     image = db.Column(db.String, nullable=True)
     beef = db.Column(db.Boolean, nullable=True)
@@ -81,12 +86,13 @@ class Dish(db.Model):
     notes = db.Column(db.String, nullable=True)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    last_edited = db.Column(db.Integer, nullable=False)
     search_vector = db.Column(TSVectorType('name'))
 
     def __init__(self, name, price, image, beef, dairy, egg, fish, gluten, meat, 
                  nut, pork, poultry, shellfish, soy, wheat, notes, restaurant_id, user_id):
         self.name = name
-        self.date = datetime.datetime.utcnow()
+        self.date = datetime.utcnow()
         if price:
             self.price = currency(float(price), grouping=True)
         else:
@@ -108,6 +114,7 @@ class Dish(db.Model):
         self.notes = notes
         self.restaurant_id = restaurant_id
         self.user_id = user_id
+        self.last_edited = int(time())
 
     def __repr__(self):
         return '<Dish {}>'.format(self.name)
@@ -126,22 +133,24 @@ class User(db.Model):
     username = db.Column(db.String, nullable=True)
     email = db.Column(db.String)
     auth_id = db.Column(db.String)
-    date = db.Column(db.Date, default=datetime.datetime.utcnow())
+    date = db.Column(db.Date, nullable=False)
     image = db.Column(db.String, nullable=True)
     about = db.Column(db.String, nullable=True)
     score = db.Column(db.Integer, default=0)
     restaurants = db.relationship('Restaurant', backref='user')
     dishes = db.relationship('Dish', backref='user')
+    last_edited = db.Column(db.Integer, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False)
     search_vector = db.Column(TSVectorType('name', 'email', 'username'))
    
     def __init__(self, name, auth_id, image, email):
         self.name = name
         self.auth_id = auth_id
-        self.date = datetime.datetime.utcnow()
+        self.date = datetime.utcnow()
         self.image = image
         self.email = email
         self.score = 0
+        self.last_edited = int(time())
         self.is_admin = False
 
     def __repr__(self):
