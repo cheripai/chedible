@@ -41,6 +41,7 @@ class Restaurant(db.Model):
     tags = db.Column(db.String, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     last_edited = db.Column(db.Integer, nullable=False)
+    last_editor = db.Column(db.Integer)
     search_vector = db.Column(TSVectorType('name', 'category', 'tags'))
     # FIXME: should there be location? and how will we reference multiple locations
 
@@ -87,6 +88,7 @@ class Dish(db.Model):
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     last_edited = db.Column(db.Integer, nullable=False)
+    last_editor = db.Column(db.Integer)
     search_vector = db.Column(TSVectorType('name'))
 
     def __init__(self, name, price, image, beef, dairy, egg, fish, gluten, meat, 

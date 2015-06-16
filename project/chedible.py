@@ -145,6 +145,7 @@ def add_restaurant():
     if request.method == 'POST':
         if form.validate_on_submit():
             new_restaurant = Restaurant(form.name.data, form.category.data, form.image.data, form.tags.data, session['user_id'])
+            new_restaurant.last_editor = session['user_id']
             db.session.add(new_restaurant)
             db.session.commit()
             flash('Thank you for your addition!')
@@ -176,6 +177,7 @@ def add_dish(id):
                             stb(form.pork.data), stb(form.poultry.data), stb(form.shellfish.data),
                             stb(form.soy.data), stb(form.wheat.data), form.notes.data, 
                             id, session['user_id'])
+            new_dish.last_editor = session['user_id']
             db.session.add(new_dish)
             db.session.commit()
             flash('Thank you for your addition!')
@@ -195,6 +197,7 @@ def edit_restaurant(id):
                     restaurant.update({entry.id: form[entry.id].data})
             restaurant.update({'user_id': session['user_id']})
             restaurant.update({'last_edited': int(time())})
+            restaurant.update({'last_editor': session['user_id']})
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=id))
@@ -222,6 +225,7 @@ def edit_dish(restaurant_id, dish_id):
                     dish.update({entry.id: form[entry.id].data})
             dish.update({'user_id': session['user_id']})
             dish.update({'last_edited': int(time())})
+            dish.update({'last_editor': session['user_id']})
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=restaurant_id))
