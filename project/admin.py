@@ -55,7 +55,7 @@ class UserView(ModelView):
     
     can_create = False
     column_list= ('id', 'name', 'username', 'email', 'image', 'about', 'score',
-                  'restaurants', 'dishes', 'last_edited')
+                  'restaurants', 'dishes', 'is_admin', 'is_banned', 'last_edited')
 
     def __init__(self, session, **kwargs):
         super(UserView, self).__init__(User, session, **kwargs)

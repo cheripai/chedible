@@ -141,6 +141,7 @@ class User(db.Model):
     dishes = db.relationship('Dish', backref='user')
     last_edited = db.Column(db.Integer, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False)
+    is_banned = db.Column(db.Boolean, nullable=False)
     search_vector = db.Column(TSVectorType('name', 'email', 'username'))
    
     def __init__(self, name, auth_id, image, email):
@@ -152,6 +153,7 @@ class User(db.Model):
         self.score = 0
         self.last_edited = int(time())
         self.is_admin = False
+        self.is_banned = False
 
     def __repr__(self):
         return '<User {}>'.format(self.name)

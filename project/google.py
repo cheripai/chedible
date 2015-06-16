@@ -75,8 +75,11 @@ def google_authorized():
     else:
         user = User.get_or_create(me['email'], str(me['id']), me['picture'], me['email'])
     
-    session['logged_in'] = True
-    session['user_id'] = user.id
+    if not user.is_banned:
+        session['logged_in'] = True
+        session['user_id'] = user.id
+        flash('Logged in as {}'.format(user.name))
+    else:
+        flash('Cannot log in with a banned account')
     
-    flash('Logged in as {}'.format(user.name))
     return redirect(USER_RETURN_URL)
