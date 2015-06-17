@@ -18,7 +18,11 @@
 
 {% block content %}
     <div class="container">
-        <legend>Add a restaurant</legend>
+        {% if id %}
+            <legend>Edit a restaurant</legend>
+        {% else %}
+            <legend>Add a restaurant</legend>
+        {% endif %}
         <div class="col-lg-8">
             {% if form.errors %}
                 <ul class="errors">

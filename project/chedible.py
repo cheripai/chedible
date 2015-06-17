@@ -13,7 +13,7 @@
 #    limitations under the License.
 
 
-from flask import Flask, render_template, abort, redirect, url_for, request, flash, session, g
+from flask import render_template, abort, redirect, url_for, request, flash, session, g
 from functools import wraps
 from locale import currency
 from project import app, db
@@ -195,9 +195,10 @@ def edit_restaurant(id):
             for entry in form:
                 if entry.id != "csrf_token":
                     restaurant.update({entry.id: form[entry.id].data})
-            restaurant.update({'user_id': session['user_id']})
             restaurant.update({'last_edited': int(time())})
             restaurant.update({'last_editor': session['user_id']})
+            r = Restaurant.query.get(id)
+            r.editors.append(User.query.get(session['user_id']))
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=id))

@@ -1,11 +1,11 @@
 #    Copyright 2015 Dat Do
-#    
+#
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
 #    You may obtain a copy of the License at
-#    
+#
 #        http://www.apache.org/licenses/LICENSE-2.0
-#    
+#
 #    Unless required by applicable law or agreed to in writing, software
 #    distributed under the License is distributed on an "AS IS" BASIS,
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,7 +22,17 @@ from sqlalchemy_utils.types import TSVectorType
 from sqlalchemy_searchable import make_searchable
 from time import time
 
+
 make_searchable()
+
+
+restaurants_users = db.Table(
+    'restaurants_users',
+    db.Column('restaurants_id', db.Integer, db.ForeignKey('restaurants.id')),
+    db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
+    db.PrimaryKeyConstraint('restaurants_id', 'users_id')
+)
+
 
 class RestaurantQuery(BaseQuery, SearchQueryMixin):
     pass
@@ -39,11 +49,15 @@ class Restaurant(db.Model):
     image = db.Column(db.String, nullable=True)
     dishes = db.relationship('Dish', backref='restaurant')
     tags = db.Column(db.String, nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    editors = db.relationship(
+        'User',
+        backref='restaurant',
+        secondary=restaurants_users
+    )
     last_edited = db.Column(db.Integer, nullable=False)
     last_editor = db.Column(db.Integer)
     search_vector = db.Column(TSVectorType('name', 'category', 'tags'))
-    # FIXME: should there be location? and how will we reference multiple locations
+    # FIXME: should there be location? and how to reference multiple locations
 
     def __init__(self, name, category, image, tags, user_id):
         self.name = name
@@ -51,11 +65,14 @@ class Restaurant(db.Model):
         self.category = category
         self.image = image
         self.tags = tags
-        self.user_id = user_id
+        if user_id is None:
+            self.editors = []
+        else:
+            self.editors.append(User.query.get(user_id))
         self.last_edited = int(time())
 
     def __repr__(self):
-        return '<Restaurant {}>'.format(self.name)
+        return '<Restaurant {}>'.format(self.id)
 
 
 class DishQuery(BaseQuery, SearchQueryMixin):
@@ -63,7 +80,7 @@ class DishQuery(BaseQuery, SearchQueryMixin):
 
 
 class Dish(db.Model):
-    query_class = DishQuery   
+    query_class = DishQuery
     __tablename__ = "dishes"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -91,8 +108,9 @@ class Dish(db.Model):
     last_editor = db.Column(db.Integer)
     search_vector = db.Column(TSVectorType('name'))
 
-    def __init__(self, name, price, image, beef, dairy, egg, fish, gluten, meat, 
-                 nut, pork, poultry, shellfish, soy, wheat, notes, restaurant_id, user_id):
+    def __init__(self, name, price, image, beef, dairy, egg,
+                 fish, gluten, meat, nut, pork, poultry, shellfish,
+                 soy, wheat, notes, restaurant_id, user_id):
         self.name = name
         self.date = datetime.utcnow()
         if price:
@@ -119,7 +137,7 @@ class Dish(db.Model):
         self.last_edited = int(time())
 
     def __repr__(self):
-        return '<Dish {}>'.format(self.name)
+        return '<Dish {}>'.format(self.id)
 
 
 class UserQuery(BaseQuery, SearchQueryMixin):
@@ -127,7 +145,7 @@ class UserQuery(BaseQuery, SearchQueryMixin):
 
 
 class User(db.Model):
-    query_class = UserQuery   
+    query_class = UserQuery
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -139,13 +157,17 @@ class User(db.Model):
     image = db.Column(db.String, nullable=True)
     about = db.Column(db.String, nullable=True)
     score = db.Column(db.Integer, default=0)
-    restaurants = db.relationship('Restaurant', backref='user')
+    restaurants = db.relationship(
+        'Restaurant',
+        backref='user',
+        secondary=restaurants_users
+    )
     dishes = db.relationship('Dish', backref='user')
     last_edited = db.Column(db.Integer, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False)
     is_banned = db.Column(db.Boolean, nullable=False)
     search_vector = db.Column(TSVectorType('name', 'email', 'username'))
-   
+
     def __init__(self, name, auth_id, image, email):
         self.name = name
         self.auth_id = auth_id
@@ -158,7 +180,7 @@ class User(db.Model):
         self.is_banned = False
 
     def __repr__(self):
-        return '<User {}>'.format(self.name)
+        return '<User {}>'.format(self.id)
 
     @staticmethod
     def get_or_create(name, auth_id, image, email):

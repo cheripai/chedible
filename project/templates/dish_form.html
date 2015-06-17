@@ -18,7 +18,11 @@
 
 {% block content %}
     <div class="container">
-        <legend>Add a dish</legend>
+        {% if dish_id %}
+            <legend>Edit a dish</legend>
+        {% else %}
+            <legend>Add a dish</legend>
+        {% endif %}
         <div class="col-lg-8">
             {% if form.errors %}
                 <ul class="errors">
