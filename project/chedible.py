@@ -157,7 +157,7 @@ def add_restaurant():
 def restaurant_profile(id):
     message = "No entries found"
     restaurant = Restaurant.query.filter_by(id=id).first()
-    dishes = Dish.query.filter_by(restaurant_id=id)
+    dishes = Dish.query.filter_by(restaurant_id=id).order_by(Dish.name.asc())
 
     if dishes.first() is not None:
         message = ""
@@ -224,9 +224,10 @@ def edit_dish(restaurant_id, dish_id):
                     dish.update({entry.id: currency(float(form[entry.id].data), grouping=True)})
                 elif entry.id != 'csrf_token':
                     dish.update({entry.id: form[entry.id].data})
-            dish.update({'user_id': session['user_id']})
             dish.update({'last_edited': int(time())})
             dish.update({'last_editor': session['user_id']})
+            d = Dish.query.get(dish_id)
+            d.editors.append(User.query.get(session['user_id']))
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=restaurant_id))

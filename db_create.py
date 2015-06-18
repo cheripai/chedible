@@ -13,6 +13,7 @@
 #    limitations under the License.
 
 from project import db
+from project.schema import *
 
 
 def db_create():
@@ -21,7 +22,6 @@ def db_create():
     db.create_all()
 
     """
-    from project.schema import *
     for i in range(50):
         if i % 4 == 0:
             entry = Restaurant('test {}'.format(i), 'vegetarian', '', '', None)
@@ -31,11 +31,11 @@ def db_create():
             entry = User('test {}'.format(i), '0{}'.format(i), None,
                          'email{}@email.org'.format(i))
         else:
-           entry = Dish('testdish{}'.format(i), '0.00', '', None, None, None,
-                        None, None, None, None, None, None, None, None, None,
-                        '', 1, 1)
+            entry = Dish('testdish{}'.format(i), '0.00', '', None, None, None,
+                         None, None, None, None, None, None, None, None, None,
+                         '', 1, 1)
         db.session.add(entry)
-        """
+    """
 
     db.session.commit()
 

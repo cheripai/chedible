@@ -34,6 +34,14 @@ restaurants_users = db.Table(
 )
 
 
+dishes_users = db.Table(
+    'dishes_users',
+    db.Column('dishes_id', db.Integer, db.ForeignKey('dishes.id')),
+    db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
+    db.PrimaryKeyConstraint('dishes_id', 'users_id')
+)
+
+
 class RestaurantQuery(BaseQuery, SearchQueryMixin):
     pass
 
@@ -103,7 +111,11 @@ class Dish(db.Model):
     score = db.Column(db.Integer)
     notes = db.Column(db.String, nullable=True)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    editors = db.relationship(
+        'User',
+        backref='dish',
+        secondary=dishes_users
+    )
     last_edited = db.Column(db.Integer, nullable=False)
     last_editor = db.Column(db.Integer)
     search_vector = db.Column(TSVectorType('name'))
@@ -133,7 +145,10 @@ class Dish(db.Model):
         self.score = 0
         self.notes = notes
         self.restaurant_id = restaurant_id
-        self.user_id = user_id
+        if user_id is None:
+            self.editors = []
+        else:
+            self.editors.append(User.query.get(user_id))
         self.last_edited = int(time())
 
     def __repr__(self):
@@ -162,7 +177,11 @@ class User(db.Model):
         backref='user',
         secondary=restaurants_users
     )
-    dishes = db.relationship('Dish', backref='user')
+    dishes = db.relationship(
+        'Dish',
+        backref='user',
+        secondary=dishes_users
+    )
     last_edited = db.Column(db.Integer, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False)
     is_banned = db.Column(db.Boolean, nullable=False)
