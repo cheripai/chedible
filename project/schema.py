@@ -64,7 +64,10 @@ class Restaurant(db.Model):
     )
     last_edited = db.Column(db.Integer, nullable=False)
     last_editor = db.Column(db.Integer)
-    search_vector = db.Column(TSVectorType('name', 'category', 'tags'))
+    search_vector = db.Column(
+        TSVectorType('name', 'category', 'tags',
+                     weights={'name': 'A', 'category': 'C', 'tags': 'B'})
+    )
     # FIXME: should there be location? and how to reference multiple locations
 
     def __init__(self, name, category, image, tags, user_id):
@@ -185,7 +188,10 @@ class User(db.Model):
     last_edited = db.Column(db.Integer, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False)
     is_banned = db.Column(db.Boolean, nullable=False)
-    search_vector = db.Column(TSVectorType('name', 'email', 'username'))
+    search_vector = db.Column(
+        TSVectorType('name', 'email', 'username',
+                     weights={'name': 'B', 'email': 'A', 'username': 'A'})
+    )
 
     def __init__(self, name, auth_id, image, email):
         self.name = name
