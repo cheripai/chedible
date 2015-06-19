@@ -36,25 +36,25 @@ PER_PAGE = 5
 # If user is logged in, loads user info into global variable g.user
 @app.before_request
 def load_user():
-    g.search_form = SearchForm()
     if 'logged_in' in session and 'user_id' in session:
         g.user = User.query.filter_by(id=session['user_id']).first()
 
         first, last = g.user.name.split()
-
         if len(g.user.name) > MAX_USERNAME_LENGTH:
             g.user.name = first
-
         if len(g.user.name) > MAX_USERNAME_LENGTH:
             charlist = []
             charlist[:0] = first
-
             while len(charlist) > MAX_USERNAME_LENGTH - 3:
                 del charlist[-1]
-
             g.user.name = ''.join(charlist) + '...'
     else:
         g.user = None
+
+
+@app.before_request
+def load_search_form():
+    g.search_form = SearchForm()
 
 
 @app.errorhandler(404)
@@ -105,7 +105,7 @@ def search(table):
     if g.search_form.validate_on_submit():
         return redirect(url_for('search_results', table=table, query=g.search_form.query.data))
     else:
-        return redirect(url_for('main'))
+        return redirect(request.referrer)
 
 
 @app.route('/search_results/<table>/<query>', defaults={'page': 1})
