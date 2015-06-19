@@ -203,6 +203,7 @@ class User(db.Model):
         self.last_edited = int(time())
         self.is_admin = False
         self.is_banned = False
+        self.about = "I love chedible!"
 
     def __repr__(self):
         return '<User {}>'.format(self.id)

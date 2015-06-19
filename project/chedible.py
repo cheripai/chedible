@@ -157,6 +157,8 @@ def add_restaurant():
 def restaurant_profile(id):
     message = "No entries found"
     restaurant = Restaurant.query.filter_by(id=id).first()
+    if restaurant is None:
+        abort(404)
     dishes = Dish.query.filter_by(restaurant_id=id).order_by(Dish.name.asc())
 
     if dishes.first() is not None:
@@ -202,7 +204,10 @@ def edit_restaurant(id):
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=id))
-    restaurant = rowtodict(Restaurant.query.filter_by(id=id).first())
+    restaurant = Restaurant.query.filter_by(id=id).first()
+    if restaurant is None:
+        abort(404)
+    restaurant = rowtodict(restaurant)
     for entry in form:
         if entry.id != "csrf_token":
             form[entry.id].data = restaurant[entry.id]
@@ -231,7 +236,10 @@ def edit_dish(restaurant_id, dish_id):
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=restaurant_id))
-    dish = rowtodict(Dish.query.filter_by(id=dish_id).first())
+    dish = Dish.query.filter_by(id=dish_id).first()
+    if dish is None:
+        abort(404)
+    dish = rowtodict(dish)
     for entry in form:
         if entry.id == 'price':
             form[entry.id].data = dish[entry.id].replace('$', '').replace(',', '')
@@ -243,8 +251,9 @@ def edit_dish(restaurant_id, dish_id):
 @app.route('/user/<id>')
 def user_profile(id):
     #g.user holds logged-in user data
-
     user = User.query.filter_by(id=id).first()
+    if user is None:
+        abort(404)
     month_day_year = User.query.filter_by(id=id).first().date.strftime("%B %d, %Y")
 
     return render_template('user_profile.html', month_day_year=month_day_year, user=user)
