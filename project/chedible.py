@@ -22,7 +22,6 @@ from project.google import *
 from project.facebook import *
 from project.pagination import Pagination
 from project.schema import Restaurant, Dish, User
-from sqlalchemy_searchable import search
 from time import time
 
 
@@ -103,7 +102,9 @@ def test_login(id):
 def search(table):
     # We need to add filtering based on preferences
     if g.search_form.validate_on_submit():
-        return redirect(url_for('search_results', table=table, query=g.search_form.query.data))
+        # Prevent slashes from breaking routing
+        query = ''.join(c for c in g.search_form.query.data if c not in ['/'])
+        return redirect(url_for('search_results', table=table, query=query))
     else:
         return redirect(request.referrer)
 
@@ -177,7 +178,7 @@ def add_dish(id):
                             stb(form.dairy.data), stb(form.egg.data), stb(form.fish.data),
                             stb(form.gluten.data), stb(form.meat.data), stb(form.nut.data),
                             stb(form.pork.data), stb(form.poultry.data), stb(form.shellfish.data),
-                            stb(form.soy.data), stb(form.wheat.data), form.notes.data, 
+                            stb(form.soy.data), stb(form.wheat.data), form.notes.data,
                             id, session['user_id'])
             new_dish.last_editor = session['user_id']
             db.session.add(new_dish)
@@ -251,7 +252,7 @@ def edit_dish(restaurant_id, dish_id):
 
 @app.route('/user/<id>')
 def user_profile(id):
-    #g.user holds logged-in user data
+    # g.user holds logged-in user data
     user = User.query.filter_by(id=id).first()
     if user is None:
         abort(404)
@@ -259,9 +260,10 @@ def user_profile(id):
 
     return render_template('user_profile.html', month_day_year=month_day_year, user=user)
 
+
 @app.route('/user/<id>/edit', methods=('GET', 'POST'))
 def edit_user(id):
-    #g.user holds logged-in user data
+    # g.user holds logged-in user data
 
     user = User.query.filter_by(id=id).first()
     month_day_year = User.query.filter_by(id=id).first().date.strftime("%B %d, %Y")
