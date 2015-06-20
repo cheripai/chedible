@@ -224,6 +224,7 @@ def edit_dish(restaurant_id, dish_id):
             for entry in form:
                 if entry.id in ['beef', 'dairy', 'egg', 'fish', 'gluten', 'meat',
                                 'nut', 'pork', 'poultry', 'shellfish', 'soy', 'wheat']:
+                    print(stb(form[entry.id].data))
                     dish.update({entry.id: stb(form[entry.id].data)})
                 elif entry.id == 'price' and form[entry.id].data:
                     dish.update({entry.id: currency(float(form[entry.id].data), grouping=True)})
@@ -271,17 +272,25 @@ def edit_user(id):
         if form.validate_on_submit():
             user = User.query.filter_by(id=id)
             for entry in form:
-                if entry.id != 'csrf_token':
+                if entry.id in ['beef', 'dairy', 'egg', 'fish', 'gluten', 'meat',
+                                'nut', 'pork', 'poultry', 'shellfish', 'soy', 'wheat']:
+                    user.update({entry.id: stb(form[entry.id].data)})
+                elif entry.id != 'csrf_token':
                     user.update({entry.id: form[entry.id].data})
                 user.update({'last_edited': int(time())})
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('user_profile', id=id))
     else:
-        form.username.data = user.username
-        form.about.data = user.about
 
-
+        user_dict = rowtodict(user)
+        for entry in form:
+            if entry.id == "username":
+                form.username.data = user.username
+            elif entry.id == "about":
+                form.about.data = user.about
+            elif entry.id != "csrf_token":
+                form[entry.id].data = user_dict[entry.id]
 
     return render_template('edit_user.html', form=form, month_day_year=month_day_year, user=user)
 

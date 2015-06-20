@@ -83,9 +83,45 @@
                     </div>
             </div>
 
+            {% for entry in form %}
+            {% if entry.id not in ['csrf_token', 'name', 'about', 'username'] %}
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <div class="form-row form-inline">
+                    <label for="fun" class="col-sm-4 control-label">{{ form[entry.id].label }}:&nbsp</label>
+                        <div class="input-group">
+                            <div id="radioBtn" class="btn-group">
+                                {% if form[entry.id].data == 'True' %}
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="{{ entry.id }}" data-title="None">Not Sure</a>
+                                    <a class="btn btn-primary btn-sm active" data-toggle="{{ entry.id }}" data-title="True">Yes</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="{{ entry.id }}" data-title="False">No</a>
+                                {% elif form[entry.id].data == 'False' %}
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="{{ entry.id }}" data-title="None">Not Sure</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="{{ entry.id }}" data-title="True">Yes</a>
+                                    <a class="btn btn-primary btn-sm active" data-toggle="{{ entry.id }}" data-title="False">No</a>
+                                {% else %}
+                                    <a class="btn btn-primary btn-sm active" data-toggle="{{ entry.id }}" data-title="None">Not Sure</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="{{ entry.id }}" data-title="True">Yes</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="{{ entry.id }}" data-title="False">No</a>
+                                {% endif %}
+                                {% if form[entry.id].data == None %}
+                                    {{ form[entry.id](type="hidden", value="None", id=entry.id) }}
+                                {% else %}
+                                    {{ form[entry.id](type="hidden", id=entry.id) }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+
             <div class="form-row">
                 <div class="form-group">
+
                     <hr class="featurette-divider"></hr>
+
                         <button class="form-control btn btn-primary submit-button" type="submit">Submit</button>
                 </div>
             </div>
@@ -93,7 +129,6 @@
         </form>
 
     </div>
-
     
          <div class="col-lg-3">
         </div>

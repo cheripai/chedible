@@ -173,6 +173,18 @@ class User(db.Model):
     auth_id = db.Column(db.String)
     date = db.Column(db.Date, nullable=False)
     image = db.Column(db.String, nullable=True)
+    beef = db.Column(db.Boolean, nullable=True)
+    dairy = db.Column(db.Boolean, nullable=True)
+    egg = db.Column(db.Boolean, nullable=True)
+    fish = db.Column(db.Boolean, nullable=True)
+    gluten = db.Column(db.Boolean, nullable=True)
+    meat = db.Column(db.Boolean, nullable=True)
+    nut = db.Column(db.Boolean, nullable=True)
+    pork = db.Column(db.Boolean, nullable=True)
+    poultry = db.Column(db.Boolean, nullable=True)
+    shellfish = db.Column(db.Boolean, nullable=True)
+    soy = db.Column(db.Boolean, nullable=True)
+    wheat = db.Column(db.Boolean, nullable=True)
     about = db.Column(db.String, nullable=True)
     score = db.Column(db.Integer, default=0)
     restaurants = db.relationship(
@@ -198,6 +210,18 @@ class User(db.Model):
         self.auth_id = auth_id
         self.date = datetime.utcnow()
         self.image = image
+        self.beef = None
+        self.dairy = None
+        self.egg = None
+        self.fish = None
+        self.gluten = None
+        self.meat = None
+        self.nut = None
+        self.pork = None
+        self.poultry = None
+        self.shellfish = None
+        self.soy = None
+        self.wheat = None
         self.email = email
         self.score = 0
         self.last_edited = int(time())
