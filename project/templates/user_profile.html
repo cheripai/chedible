@@ -20,7 +20,7 @@
 
     <div class="container">
         <div class="col-lg-9">
-            <div class="page-header text-center">
+            <div class="page-header text-center" style="margin-top: 0px">
                 <div class="panel panel-default">
                     <br>
                     <img src="{{ (user.image) }}" class="img-circle" alt="{{ (user.name) }}" width = "200" height="200">
@@ -60,21 +60,9 @@
                 </div>
             </div>
 
-
-
-
-
-        <div class="page-header">
-
-            <h2>
-                Restaurants
-            </h2>
-
-        </div>
-
-
-
-
+        <h2 class="page-header" style="margin-top: 0px">
+            Restaurants
+        </h2>
 
         <div class="horizontal">
             <div class="table">
@@ -92,6 +80,28 @@
             
             </div>
         </div>
+
+        <h2 class="page-header" style="margin-top: 0px">
+            Dishes
+        </h2>
+
+        <div class="horizontal">
+            <div class="table">
+            
+            {% for d in user.dishes %}
+
+                <a href="#" class="thumbnail" id="r-article">
+                    {% if d.image != "" %}
+                        {{ d.name }}
+                    {% endif %}
+                    <img src="{{ d.image }}" class="img-rounded" alt="{{ d.name }}" width="190px" height="190px">
+                </a>
+                    
+            {% endfor %}
+            
+            </div>
+        </div>
+
     </div>
 
     <div class="col-lg-1">
