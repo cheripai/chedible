@@ -1,11 +1,11 @@
 #    Copyright 2015 Dat Do
-#    
+#
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
 #    You may obtain a copy of the License at
-#    
+#
 #        http://www.apache.org/licenses/LICENSE-2.0
-#    
+#
 #    Unless required by applicable law or agreed to in writing, software
 #    distributed under the License is distributed on an "AS IS" BASIS,
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -13,15 +13,18 @@
 #    limitations under the License.
 
 
-from flask import Flask, render_template, redirect, url_for, request, flash, session, g
+from flask import redirect, url_for, request, flash, session
 from project import app
-from project.schema import Restaurant, Dish, User
+from project.schema import User
 from rauth.service import OAuth2Service
 
 
+USER_RETURN_URL = ""
+
 app.config.update(
-    GOOGLE_CLIENT_ID='114729784165-pf2ojuudj8gorq0gun8i2cv2prclm8lu.apps.googleusercontent.com',
-    GOOGLE_CLIENT_SECRET ='7f28wsnEAiOUa9GZHZLJCtTn',
+    GOOGLE_CLIENT_ID='114729784165-pf2ojuudj8gorq0gun8i2cv2prclm8lu.\
+                     apps.googleusercontent.com',
+    GOOGLE_CLIENT_SECRET='7f28wsnEAiOUa9GZHZLJCtTn',
 )
 
 
@@ -29,8 +32,8 @@ google = OAuth2Service(
     name='google',
     authorize_url='https://accounts.google.com/o/oauth2/auth',
     access_token_url='https://accounts.google.com/o/oauth2/token',
-    client_id = app.config['GOOGLE_CLIENT_ID'],
-    client_secret = app.config['GOOGLE_CLIENT_SECRET'],
+    client_id=app.config['GOOGLE_CLIENT_ID'],
+    client_secret=app.config['GOOGLE_CLIENT_SECRET'],
     base_url='https://www.googleapis.com/oauth2/v1/',
 )
 
@@ -47,7 +50,7 @@ def google_login():
 
     redirect_uri = url_for('google_authorized', _external=True)
     params = {
-        'scope': 'https://www.googleapis.com/auth/userinfo.email', 
+        'scope': 'https://www.googleapis.com/auth/userinfo.email',
         'response_type': 'code',
         'redirect_uri': redirect_uri
     }
@@ -56,12 +59,16 @@ def google_login():
 
 @app.route('/google/authorized')
 def google_authorized():
-    if not 'code' in request.args:
+    if 'code' not in request.args:
         flash('You did not authorize the request')
         return redirect(USER_RETURN_URL)
 
     redirect_uri = url_for('google_authorized', _external=True)
-    data = dict(code=request.args['code'], redirect_uri=redirect_uri, grant_type='authorization_code')
+    data = dict(
+        code=request.args['code'],
+        redirect_uri=redirect_uri,
+        grant_type='authorization_code'
+    )
 
     response = google.get_raw_access_token(data=data)
     response = response.json()
@@ -71,15 +78,27 @@ def google_authorized():
     me = user_session.get(json_path).json()
 
     if me['name']:
-        user = User.get_or_create(me['name'], str(me['id']), me['picture'], me['email'])
+        user = User.get_or_create(
+            me['name'],
+            str(me['id']),
+            me['picture'],
+            me['email']
+        )
     else:
-        user = User.get_or_create(me['email'], str(me['id']), me['picture'], me['email'])
-    
+        user = User.get_or_create(
+            me['email'],
+            str(me['id']),
+            me['picture'],
+            me['email']
+        )
+
     if not user.is_banned:
+        # Update user profile picture in case it may have changed
+        User.query.filter_by(id=user.id).update({'image': me['picture']})
         session['logged_in'] = True
         session['user_id'] = user.id
         flash('Logged in as {}'.format(user.name))
     else:
         flash('Cannot log in with a banned account')
-    
+
     return redirect(USER_RETURN_URL)

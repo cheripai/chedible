@@ -1,11 +1,11 @@
 #    Copyright 2015 Dat Do
-#    
+#
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
 #    You may obtain a copy of the License at
-#    
+#
 #        http://www.apache.org/licenses/LICENSE-2.0
-#    
+#
 #    Unless required by applicable law or agreed to in writing, software
 #    distributed under the License is distributed on an "AS IS" BASIS,
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -13,15 +13,19 @@
 #    limitations under the License.
 
 
-from flask import Flask, render_template, redirect, url_for, request, flash, session, g
+from flask import redirect, url_for, request, flash, session
 import json
 from project import app
-from project.schema import Restaurant, Dish, User
+from project.schema import User
 from rauth.service import OAuth2Service
+from urllib.request import urlopen
+
+
+USER_RETURN_URL = ""
 
 app.config.update(
     FACEBOOK_CLIENT_ID='1659176284311034',
-    FACEBOOK_CLIENT_SECRET ='81219aaf2059e1ebd760bdb1fb0387a1',
+    FACEBOOK_CLIENT_SECRET='81219aaf2059e1ebd760bdb1fb0387a1',
 )
 
 
@@ -32,6 +36,7 @@ facebook = OAuth2Service(
     authorize_url='https://graph.facebook.com/oauth/authorize',
     access_token_url='https://graph.facebook.com/oauth/access_token',
     base_url='https://graph.facebook.com/')
+
 
 @app.route('/facebook/login')
 def facebook_login():
@@ -54,7 +59,7 @@ def facebook_login():
 
 @app.route('/facebook/authorized')
 def facebook_authorized():
-    if not 'code' in request.args:
+    if 'code' not in request.args:
         flash('You did not authorize the request')
         return redirect(USER_RETURN_URL)
 
@@ -65,19 +70,31 @@ def facebook_authorized():
 
     me = user_session.get('me').json()
 
-    picture_url = 'https://graph.facebook.com/' + me['id'] + '/picture'
-
+    picture_json = json.loads(
+        urlopen(
+            'https://graph.facebook.com/' +
+            me['id'] +
+            '/picture?redirect=false&height=480&width=480'
+        ).readall().decode('utf-8')
+    )
+    picture_url = picture_json['data']['url']
 
     if me['name']:
-        user = User.get_or_create(me['name'], me['id'], picture_url, me['email'])
+        user = User.get_or_create(
+            me['name'], me['id'], picture_url, me['email']
+        )
     else:
-        user = User.get_or_create(me['email'], me['id'], picture_url, me['email'])
-    
+        user = User.get_or_create(
+            me['email'], me['id'], picture_url, me['email']
+        )
+
     if not user.is_banned:
+        # Update user profile picture in case it may have changed
+        User.query.filter_by(id=user.id).update({'image': picture_url})
         session['logged_in'] = True
         session['user_id'] = user.id
         flash('Logged in as {}'.format(user.name))
     else:
         flash('Cannot log in with a banned account')
-    
+
     return redirect(USER_RETURN_URL)
