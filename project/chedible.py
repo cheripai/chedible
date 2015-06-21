@@ -126,7 +126,7 @@ def search_results(table, query, page):
     elif table == "users":
         data = User.query.search(stripped_query, sort=True).limit(MAX_QUERIES)
     else:
-        return render_template('search.html', message=message)
+        abort(404)
 
     if data.first() is not None:
         message = ""
