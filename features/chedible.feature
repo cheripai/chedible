@@ -40,7 +40,7 @@ Scenario: search for existing restaurant
 Scenario: search non-existing table
     Given chedible is set up
     When we search "test" for "test"
-    Then we should see the text "No entries found"
+    Then we should see the text "404"
 
 
 Scenario: fuzzy search
