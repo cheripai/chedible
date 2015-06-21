@@ -22,8 +22,7 @@ from rauth.service import OAuth2Service
 USER_RETURN_URL = ""
 
 app.config.update(
-    GOOGLE_CLIENT_ID='114729784165-pf2ojuudj8gorq0gun8i2cv2prclm8lu.\
-                     apps.googleusercontent.com',
+    GOOGLE_CLIENT_ID='114729784165-pf2ojuudj8gorq0gun8i2cv2prclm8lu.apps.googleusercontent.com',
     GOOGLE_CLIENT_SECRET='7f28wsnEAiOUa9GZHZLJCtTn',
 )
 
