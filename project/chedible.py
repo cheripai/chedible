@@ -252,7 +252,6 @@ def edit_dish(restaurant_id, dish_id):
 
 @app.route('/user/<id>')
 def user_profile(id):
-    # g.user holds logged-in user data
     user = User.query.filter_by(id=id).first()
     if user is None:
         abort(404)
@@ -262,10 +261,11 @@ def user_profile(id):
 
 
 @app.route('/user/<id>/edit', methods=('GET', 'POST'))
+@login_required
 def edit_user(id):
-    # g.user holds logged-in user data
-
     user = User.query.filter_by(id=id).first()
+    if user is None:
+        abort(404)
     month_day_year = User.query.filter_by(id=id).first().date.strftime("%B %d, %Y")
 
     form = EditUserForm()
