@@ -72,7 +72,11 @@
                                 </a>
                             </li>
                         {% endif %}
-                        <li><span>Page {{ pagination.page }} of {{ pagination.pages }}</span></li>
+                        {% if pagination.pages == 0 %}
+                            <li><span>Page {{ pagination.page }} of 1</span></li>
+                        {% else %}
+                            <li><span>Page {{ pagination.page }} of {{ pagination.pages }}</span></li>
+                        {% endif %}
                         {% if pagination.has_next %}
                             <li>
                                 <a href="{{ url_for('search_results', table=table, query=query, page=pagination.page+1) }}" aria-label="Next">
