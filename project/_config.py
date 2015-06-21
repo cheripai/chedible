@@ -1,11 +1,11 @@
 #    Copyright 2015 Dat Do
-#    
+#
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
 #    You may obtain a copy of the License at
-#    
+#
 #        http://www.apache.org/licenses/LICENSE-2.0
-#    
+#
 #    Unless required by applicable law or agreed to in writing, software
 #    distributed under the License is distributed on an "AS IS" BASIS,
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,13 +14,12 @@
 
 
 import os
-from project import app
-from locale import currency, LC_ALL, setlocale
+from locale import LC_ALL, setlocale
 
 
 DATABASE = 'data.db'
 TEST_DATABASE = 'test.db'
-SECRET_KEY = '\xfb\x12\xdf\xa1@i\xd6>V\xc0\xbb\x8fp\x16#Z\x0b\x81\xeb\x16'
+SECRET_KEY = '48e02fc39bae1a191a44277af6b97b1fed08929ee1dc133e733c43e18c496742'
 WTF_CSRF_ENABLED = True    # cross-site request forgery prevention
 
 # sets locale for pricing
