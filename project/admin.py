@@ -1,4 +1,4 @@
-from flask import Flask, session, g
+from flask import Flask, session, g, abort
 from flask_admin import Admin, AdminIndexView, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
 from project import app, db
@@ -13,7 +13,7 @@ class AdminHomeView(AdminIndexView):
         if session['logged_in']:
             if g.user.is_admin:
                 return True
-        return False
+        abort(404)
 
     @expose('/')
     def index(self):
@@ -28,7 +28,7 @@ class ModelView(ModelView):
         if session['logged_in']:
             if g.user.is_admin:
                 return True
-        return False
+        abort(404)
 
 
 class RestaurantView(ModelView):
