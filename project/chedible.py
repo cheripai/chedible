@@ -13,13 +13,13 @@
 #    limitations under the License.
 
 
-from flask import render_template, abort, redirect, url_for, request, flash, session, g
+from flask import render_template, abort, redirect, url_for, request, flash
+from flask import session, g
 from functools import wraps
 from locale import currency
 from project import app, db
-from project.forms import AddRestaurantForm, AddDishForm, SearchForm, EditUserForm
-from project.google import *
-from project.facebook import *
+from project.forms import AddRestaurantForm, AddDishForm, SearchForm
+from project.forms import EditUserForm
 from project.pagination import Pagination
 from project.schema import Restaurant, Dish, User
 from time import time
@@ -115,16 +115,16 @@ def search_results(table, query, page):
     message = "No entries found"
 
     # removes special characters from search to prevent errors
-    stripped_query = ''.join(c for c in query if c.isalnum() or c == ' ')
-    if stripped_query == '':
+    new_query = ''.join(c for c in query if c.isalnum() or c == ' ')
+    if new_query == '':
         return render_template('search.html', message=message, query=query)
 
     if table == "dishes":
-        data = Dish.query.search(stripped_query, sort=True).limit(MAX_QUERIES)
+        data = Dish.query.search(new_query, sort=True).limit(MAX_QUERIES)
     elif table == "restaurants":
-        data = Restaurant.query.search(stripped_query, sort=True).limit(MAX_QUERIES)
+        data = Restaurant.query.search(new_query, sort=True).limit(MAX_QUERIES)
     elif table == "users":
-        data = User.query.search(stripped_query, sort=True).limit(MAX_QUERIES)
+        data = User.query.search(new_query, sort=True).limit(MAX_QUERIES)
     else:
         abort(404)
 
@@ -136,7 +136,14 @@ def search_results(table, query, page):
     if not data and page != 1:
         abort(404)
 
-    return render_template('search.html', message=message, data=data, query=query, table=table, pagination=pagination)
+    return render_template(
+        'search.html',
+        message=message,
+        data=data,
+        query=query,
+        table=table,
+        pagination=pagination
+    )
 
 
 @app.route('/add', methods=('GET', 'POST'))
@@ -145,12 +152,20 @@ def add_restaurant():
     form = AddRestaurantForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            new_restaurant = Restaurant(form.name.data, form.category.data, form.image.data, form.tags.data, session['user_id'])
+            new_restaurant = Restaurant(
+                form.name.data,
+                form.category.data,
+                form.image.data,
+                form.tags.data,
+                session['user_id']
+            )
             new_restaurant.last_editor = session['user_id']
             db.session.add(new_restaurant)
             db.session.commit()
             flash('Thank you for your addition!')
-            return redirect(url_for('restaurant_profile', id=new_restaurant.id))
+            return redirect(
+                url_for('restaurant_profile', id=new_restaurant.id)
+            )
     return render_template('restaurant_form.html', form=form)
 
 
@@ -161,7 +176,8 @@ def restaurant_profile(id, page):
     restaurant = Restaurant.query.filter_by(id=id).first()
     if restaurant is None:
         abort(404)
-    dishes = Dish.query.filter_by(restaurant_id=id).order_by(Dish.last_edited.desc())
+    dishes = Dish.query.filter_by(restaurant_id=id).\
+        order_by(Dish.last_edited.desc())
     if dishes.first() is not None:
         message = ""
     pagination = Pagination(page, PER_PAGE, dishes.count())
@@ -169,7 +185,13 @@ def restaurant_profile(id, page):
     if not dishes and page != 1:
         abort(404)
 
-    return render_template('restaurant_profile.html', message=message, restaurant=restaurant, dishes=dishes, pagination=pagination)
+    return render_template(
+        'restaurant_profile.html',
+        message=message,
+        restaurant=restaurant,
+        dishes=dishes,
+        pagination=pagination
+    )
 
 
 @app.route('/restaurant/<id>/add', methods=('GET', 'POST'))
@@ -178,12 +200,15 @@ def add_dish(id):
     form = AddDishForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            new_dish = Dish(form.name.data, form.price.data, form.image.data, stb(form.beef.data),
-                            stb(form.dairy.data), stb(form.egg.data), stb(form.fish.data),
-                            stb(form.gluten.data), stb(form.meat.data), stb(form.nut.data),
-                            stb(form.pork.data), stb(form.poultry.data), stb(form.shellfish.data),
-                            stb(form.soy.data), stb(form.wheat.data), form.notes.data,
-                            id, session['user_id'])
+            new_dish = Dish(
+                form.name.data, form.price.data, form.image.data,
+                stb(form.beef.data), stb(form.dairy.data), stb(form.egg.data),
+                stb(form.fish.data), stb(form.gluten.data),
+                stb(form.meat.data), stb(form.nut.data), stb(form.pork.data),
+                stb(form.poultry.data), stb(form.shellfish.data),
+                stb(form.soy.data), stb(form.wheat.data), form.notes.data,
+                id, session['user_id']
+            )
             new_dish.last_editor = session['user_id']
             db.session.add(new_dish)
             db.session.commit()
@@ -209,17 +234,20 @@ def edit_restaurant(id):
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=id))
-    restaurant = Restaurant.query.filter_by(id=id).first()
-    if restaurant is None:
-        abort(404)
-    restaurant = rowtodict(restaurant)
-    for entry in form:
-        if entry.id != "csrf_token":
-            form[entry.id].data = restaurant[entry.id]
-    return render_template('restaurant_form.html', form=form, id=id)
+        return render_template('restaurant_form.html', form=form, id=id)
+    if request.method == 'GET':
+        restaurant = Restaurant.query.filter_by(id=id).first()
+        if restaurant is None:
+            abort(404)
+        restaurant = rowtodict(restaurant)
+        for entry in form:
+            if entry.id != "csrf_token":
+                form[entry.id].data = restaurant[entry.id]
+        return render_template('restaurant_form.html', form=form, id=id)
 
 
-@app.route('/restaurant/<restaurant_id>/<dish_id>/edit', methods=('GET', 'POST'))
+@app.route('/restaurant/<restaurant_id>/<dish_id>/edit',
+           methods=('GET', 'POST'))
 @login_required
 def edit_dish(restaurant_id, dish_id):
     form = AddDishForm()
@@ -227,12 +255,13 @@ def edit_dish(restaurant_id, dish_id):
         if form.validate_on_submit():
             dish = Dish.query.filter_by(id=dish_id)
             for entry in form:
-                if entry.id in ['beef', 'dairy', 'egg', 'fish', 'gluten', 'meat',
-                                'nut', 'pork', 'poultry', 'shellfish', 'soy', 'wheat']:
-                    print(stb(form[entry.id].data))
+                if entry.id in ['beef', 'dairy', 'egg', 'fish', 'gluten',
+                                'meat', 'nut', 'pork', 'poultry',
+                                'shellfish', 'soy', 'wheat']:
                     dish.update({entry.id: stb(form[entry.id].data)})
                 elif entry.id == 'price' and form[entry.id].data:
-                    dish.update({entry.id: currency(float(form[entry.id].data), grouping=True)})
+                    dish.update({entry.id: currency(float(form[entry.id].data),
+                                grouping=True)})
                 elif entry.id != 'csrf_token':
                     dish.update({entry.id: form[entry.id].data})
             dish.update({'last_edited': int(time())})
@@ -242,16 +271,29 @@ def edit_dish(restaurant_id, dish_id):
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=restaurant_id))
-    dish = Dish.query.filter_by(id=dish_id).first()
-    if dish is None:
-        abort(404)
-    dish = rowtodict(dish)
-    for entry in form:
-        if entry.id == 'price':
-            form[entry.id].data = dish[entry.id].replace('$', '').replace(',', '')
-        elif entry.id != "csrf_token":
-            form[entry.id].data = dish[entry.id]
-    return render_template('dish_form.html', form=form, id=restaurant_id, dish_id=dish_id)
+        return render_template(
+            'dish_form.html',
+            form=form,
+            id=restaurant_id,
+            dish_id=dish_id
+        )
+    if request.method == 'GET':
+        dish = Dish.query.filter_by(id=dish_id).first()
+        if dish is None:
+            abort(404)
+        dish = rowtodict(dish)
+        for entry in form:
+            if entry.id == 'price':
+                form[entry.id].data = dish[entry.id].replace('$', '').\
+                    replace(',', '')
+            elif entry.id != "csrf_token":
+                form[entry.id].data = dish[entry.id]
+        return render_template(
+            'dish_form.html',
+            form=form,
+            id=restaurant_id,
+            dish_id=dish_id
+        )
 
 
 @app.route('/user/<id>')
@@ -259,9 +301,14 @@ def user_profile(id):
     user = User.query.filter_by(id=id).first()
     if user is None:
         abort(404)
-    month_day_year = User.query.filter_by(id=id).first().date.strftime("%B %d, %Y")
+    month_day_year = User.query.filter_by(id=id).first().\
+        date.strftime("%B %d, %Y")
 
-    return render_template('user_profile.html', month_day_year=month_day_year, user=user)
+    return render_template(
+        'user_profile.html',
+        month_day_year=month_day_year,
+        user=user
+    )
 
 
 @app.route('/user/<id>/edit', methods=('GET', 'POST'))
@@ -270,7 +317,8 @@ def edit_user(id):
     user = User.query.filter_by(id=id).first()
     if user is None:
         abort(404)
-    month_day_year = User.query.filter_by(id=id).first().date.strftime("%B %d, %Y")
+    month_day_year = User.query.filter_by(id=id).first().\
+        date.strftime("%B %d, %Y")
 
     form = EditUserForm()
 
@@ -278,8 +326,9 @@ def edit_user(id):
         if form.validate_on_submit():
             user = User.query.filter_by(id=id)
             for entry in form:
-                if entry.id in ['beef', 'dairy', 'egg', 'fish', 'gluten', 'meat',
-                                'nut', 'pork', 'poultry', 'shellfish', 'soy', 'wheat']:
+                if entry.id in ['beef', 'dairy', 'egg', 'fish', 'gluten',
+                                'meat', 'nut', 'pork', 'poultry',
+                                'shellfish', 'soy', 'wheat']:
                     user.update({entry.id: stb(form[entry.id].data)})
                 elif entry.id != 'csrf_token':
                     user.update({entry.id: form[entry.id].data})
@@ -298,7 +347,12 @@ def edit_user(id):
             elif entry.id != "csrf_token":
                 form[entry.id].data = user_dict[entry.id]
 
-    return render_template('edit_user.html', form=form, month_day_year=month_day_year, user=user)
+    return render_template(
+        'edit_user.html',
+        form=form,
+        month_day_year=month_day_year,
+        user=user
+    )
 
 
 # Convert string value from HTML form to boolean value
