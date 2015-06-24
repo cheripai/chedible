@@ -58,6 +58,31 @@
                     </div>
                 {% endfor %}
             </div>
+            <nav>
+                {% if pagination %}
+                    <ul class="pagination">
+                        {% if pagination.has_prev %}
+                            <li>
+                                <a href="{{ url_for('restaurant_profile', id=restaurant.id, page=pagination.page-1) }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if pagination.pages == 0 %}
+                            <li><span>Page {{ pagination.page }} of 1</span></li>
+                        {% else %}
+                            <li><span>Page {{ pagination.page }} of {{ pagination.pages }}</span></li>
+                        {% endif %}
+                        {% if pagination.has_next %}
+                            <li>
+                                <a href="{{ url_for('restaurant_profile', id=restaurant.id, page=pagination.page+1) }}" aria-label="Previous">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
+            </nav>
         </div>
 
         <div class="col-lg-1">

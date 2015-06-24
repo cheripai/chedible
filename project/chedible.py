@@ -154,18 +154,22 @@ def add_restaurant():
     return render_template('restaurant_form.html', form=form)
 
 
-@app.route('/restaurant/<id>')
-def restaurant_profile(id):
+@app.route('/restaurant/<id>', defaults={'page': 1})
+@app.route('/restaurant/<id>/<int:page>')
+def restaurant_profile(id, page):
     message = "No entries found"
     restaurant = Restaurant.query.filter_by(id=id).first()
     if restaurant is None:
         abort(404)
-    dishes = Dish.query.filter_by(restaurant_id=id).order_by(Dish.name.asc())
-
+    dishes = Dish.query.filter_by(restaurant_id=id).order_by(Dish.last_edited.desc())
     if dishes.first() is not None:
         message = ""
+    pagination = Pagination(page, PER_PAGE, dishes.count())
+    dishes = split_data(dishes, page, PER_PAGE, dishes.count())
+    if not dishes and page != 1:
+        abort(404)
 
-    return render_template('restaurant_profile.html', message=message, restaurant=restaurant, dishes=dishes)
+    return render_template('restaurant_profile.html', message=message, restaurant=restaurant, dishes=dishes, pagination=pagination)
 
 
 @app.route('/restaurant/<id>/add', methods=('GET', 'POST'))
