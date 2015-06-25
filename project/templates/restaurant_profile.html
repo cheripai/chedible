@@ -50,11 +50,34 @@
                             {% endif %}
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading">{{ d.name }}</h4>
-                            {% if d.price %}<p class="text-muted">{{ d.price }}</p>{% endif %}
-                            <a href="{{ url_for('edit_dish', restaurant_id=restaurant.id, dish_id=d.id) }}">Edit</a>
-                            <hr class="featurette-divider"></hr>
+                            <div class="col-lg-6">
+                                <h4 class="media-heading">{{ d.name }}</h4>
+                                {% if d.price %}<p class="text-muted">{{ d.price }}</p>{% endif %}
+                                {% if g.user %}<a href="{{ url_for('edit_dish', restaurant_id=restaurant.id, dish_id=d.id) }}">Edit</a>{% endif %}
+                            </div>
+                            <div class="col-lg-6">
+                                {% set contents = ['beef', 'dairy', 'egg', 'fish', 'gluten', 'meat', 'nut', 'pork', 'poultry', 'shellfish', 'soy', 'wheat'] %}
+                                <h4>Contains:
+                                    <small>
+                                        {% for c in contents %}
+                                            {% if d[c] == True %}
+                                                {{ c.title() }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </small>
+                                </h4>
+                                <h4>May Contain:
+                                    <small>
+                                        {% for c in contents %}
+                                            {% if d[c] == None %}
+                                                {{ c.title() }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </small>
+                                </h4>
+                            </div>
                         </div>
+                        <hr class="featurette-divider"></hr>
                     </div>
                 {% endfor %}
             </div>

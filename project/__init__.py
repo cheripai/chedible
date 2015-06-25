@@ -25,3 +25,5 @@ db = SQLAlchemy(app)
 from project.schema import *
 from project.chedible import *
 from project.admin import *
+import project.google
+import project.facebook

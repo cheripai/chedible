@@ -31,8 +31,8 @@ def db_create():
             entry = User('test {}'.format(i), '0{}'.format(i), None,
                          'email{}@email.org'.format(i))
         else:
-            entry = Dish('testdish{}'.format(i), '0.00', '', None, None, None,
-                         None, None, None, None, None, None, None, None, None,
+            entry = Dish('testdish{}'.format(i), '0.00', '', None, True, None,
+                         False, False, True, False, True, None, None, None, None,
                          '', 1, 1)
         db.session.add(entry)
     """
