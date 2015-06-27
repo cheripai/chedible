@@ -90,7 +90,7 @@
             
             {% for d in user.dishes %}
 
-                <a href="#" class="thumbnail" id="r-article">
+                <a href="{{ url_for('restaurant_profile', id=d.restaurant_id) }}" class="thumbnail" id="r-article">
                     {% if d.image != "" %}
                         {{ d.name }}
                     {% endif %}
