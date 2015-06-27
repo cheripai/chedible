@@ -177,7 +177,7 @@ def restaurant_profile(id, page):
     if restaurant is None:
         abort(404)
     dishes = Dish.query.filter_by(restaurant_id=id).\
-        order_by(Dish.last_edited.desc())
+        order_by(Dish.score.desc()).order_by(Dish.last_edited.desc())
     if dishes.first() is not None:
         message = ""
     pagination = Pagination(page, PER_PAGE, dishes.count())
