@@ -17,3 +17,20 @@ $('.table_ddmi').on('click', function(){
     $('#'+tog).prop('action', sel);
     $('#'+btn).text($(this).text()+' ');
 })
+
+
+/* For changing value of voting system */
+$("[id^=upvote]").click(function(){
+    var index = parseInt($(this).attr("id").replace('upvote', ''), 10);
+    var count = $("#count" + index);
+    var n = parseInt(count.text());
+    count.text(n+1);
+});
+
+
+$("[id^=downvote]").click(function(){
+    var index = parseInt($(this).attr("id").replace('downvote', ''), 10);
+    var count = $("#count" + index);
+    var n = parseInt(count.text());
+    count.text(n-1);
+});
