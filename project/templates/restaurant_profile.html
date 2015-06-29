@@ -38,7 +38,7 @@
                 {% if g.user %}
                     <a href="{{ url_for('add_dish', id=restaurant.id) }}"><button type="button" class="btn btn-primary">Add a dish</button></a>
                 {% else %}
-                    <p class="text-warning">Log in to add a dish!</p>
+                    <a href="#mustlogin" data-toggle="modal"><button type="button" class="btn btn-primary">Add a dish</button></a>
                 {% endif %}
             </div>  
             <p>{{ message }}</p>
@@ -57,9 +57,15 @@
                                 <h4 class="media-heading">{{ d.name }}{% if g.user %} <small><small><a href="{{ url_for('edit_dish', restaurant_id=restaurant.id, dish_id=d.id) }}">Edit</a></small></small>{% endif %}</h4>
                                 <p class="text-muted">{{ d.price }}</p>
                                 <h5><p class="text-muted">
-                                    <a href="javascript:;" title="Information is accurate"><i class="glyphicon glyphicon-chevron-up" id="upvote{{ d.id }}"></i></a>
-                                    <span id="count{{ d.id }}"> {{ d.score }} </span>
-                                    <a href="javascript:;" title="Information is not accurate"><i class="glyphicon glyphicon-chevron-down" id="downvote{{ d.id }}"></i></a>
+                                    {% if g.user %}
+                                        <a href="javascript:;" title="Information is accurate"><i class="glyphicon glyphicon-chevron-up" id="upvote{{ d.id }}"></i></a>
+                                        <span id="count{{ d.id }}"> {{ d.score }} </span>
+                                        <a href="javascript:;" title="Information is not accurate"><i class="glyphicon glyphicon-chevron-down" id="downvote{{ d.id }}"></i></a>
+                                    {% else %}
+                                        <a href="#mustlogin" data-toggle="modal" title="Information is accurate"><i class="glyphicon glyphicon-chevron-up" id="upvote{{ d.id }}"></i></a>
+                                        <span id="count{{ d.id }}"> {{ d.score }} </span>
+                                        <a href="#mustlogin" data-toggle="modal" title="Information is not accurate"><i class="glyphicon glyphicon-chevron-down" id="downvote{{ d.id }}"></i></a>
+                                    {% endif %}
                                 </p></h5>
                             </div>
                             <div class="col-lg-6">
