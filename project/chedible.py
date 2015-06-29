@@ -14,7 +14,7 @@
 
 
 from flask import render_template, abort, redirect, url_for, request, flash
-from flask import session, g
+from flask import session, g, jsonify
 from functools import wraps
 from locale import currency
 from project import app, db
@@ -353,6 +353,21 @@ def edit_user(id):
         month_day_year=month_day_year,
         user=user
     )
+
+
+@app.route('/vote')
+def vote():
+    v = request.args.get('vote', type=str)
+    id = request.args.get('id', type=int)
+    dish = Dish.query.filter_by(id=id)
+    if dish.first() is None or g.user is None:
+        abort(404)
+    if v == 'upvote':
+        dish.update({'score': dish.first().score+1})
+    elif v == 'downvote':
+        dish.update({'score': dish.first().score-1})
+    db.session.commit()
+    return jsonify(result=dish.first().score)
 
 
 # Convert string value from HTML form to boolean value

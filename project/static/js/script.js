@@ -21,16 +21,24 @@ $('.table_ddmi').on('click', function(){
 
 /* For changing value of voting system */
 $("[id^=upvote]").click(function(){
-    var index = parseInt($(this).attr("id").replace('upvote', ''), 10);
-    var count = $("#count" + index);
-    var n = parseInt(count.text());
-    count.text(n+1);
+    var index = parseInt($(this).attr('id').replace('upvote', ''), 10);
+    $.getJSON($SCRIPT_ROOT + '/vote', {
+        vote: 'upvote',
+        id: index
+    }, function(data) {
+        var count = $('#count' + index);
+        count.text(data.result);
+    });
 });
 
 
 $("[id^=downvote]").click(function(){
-    var index = parseInt($(this).attr("id").replace('downvote', ''), 10);
-    var count = $("#count" + index);
-    var n = parseInt(count.text());
-    count.text(n-1);
+    var index = parseInt($(this).attr('id').replace('downvote', ''), 10);
+    $.getJSON($SCRIPT_ROOT + '/vote', {
+        vote: 'downvote',
+        id: index
+    }, function(data) {
+        var count = $('#count' + index);
+        count.text(data.result);
+    });
 });
