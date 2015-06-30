@@ -14,9 +14,9 @@
 
 
 from datetime import datetime
-from project import db
 from flask.ext.sqlalchemy import BaseQuery
 from locale import currency
+from project import db
 from sqlalchemy_searchable import SearchQueryMixin
 from sqlalchemy_utils.types import TSVectorType
 from sqlalchemy_searchable import make_searchable
@@ -120,6 +120,7 @@ class Dish(db.Model):
         secondary=dishes_users
     )
     last_edited = db.Column(db.Integer, nullable=False)
+    voters = db.Column(db.PickleType, nullable=True)
     last_editor = db.Column(db.Integer)
     search_vector = db.Column(TSVectorType('name'))
 
@@ -153,6 +154,7 @@ class Dish(db.Model):
         else:
             self.editors.append(User.query.get(user_id))
         self.last_edited = int(time())
+        self.voters = {}
 
     def __repr__(self):
         return '<Dish {}>'.format(self.id)
