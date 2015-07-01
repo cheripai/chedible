@@ -315,12 +315,8 @@ def user_profile(id):
 @app.route('/user/<id>/edit', methods=('GET', 'POST'))
 @login_required
 def edit_user(id):
-    
-    if str(id) != str(g.user.id):
-        return redirect(url_for('main'))
-
     user = User.query.filter_by(id=id).first()
-    if user is None:
+    if user is None or id != str(g.user.id):
         abort(404)
     month_day_year = User.query.filter_by(id=id).first().\
         date.strftime("%B %d, %Y")
@@ -358,6 +354,7 @@ def edit_user(id):
             month_day_year=month_day_year,
             user=user
         )
+
 
 @app.route('/vote')
 def vote():
