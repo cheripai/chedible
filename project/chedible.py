@@ -315,6 +315,10 @@ def user_profile(id):
 @app.route('/user/<id>/edit', methods=('GET', 'POST'))
 @login_required
 def edit_user(id):
+    
+    if str(id) != str(g.user.id):
+        return redirect(url_for('main'))
+
     user = User.query.filter_by(id=id).first()
     if user is None:
         abort(404)
@@ -337,8 +341,8 @@ def edit_user(id):
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('user_profile', id=id))
-    else:
 
+    if request.method == 'GET':
         user_dict = rowtodict(user)
         for entry in form:
             if entry.id == "username":
@@ -348,13 +352,12 @@ def edit_user(id):
             elif entry.id != "csrf_token":
                 form[entry.id].data = user_dict[entry.id]
 
-    return render_template(
-        'edit_user.html',
-        form=form,
-        month_day_year=month_day_year,
-        user=user
-    )
-
+        return render_template(
+            'edit_user.html',
+            form=form,
+            month_day_year=month_day_year,
+            user=user
+        )
 
 @app.route('/vote')
 def vote():
