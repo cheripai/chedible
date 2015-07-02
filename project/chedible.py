@@ -305,10 +305,24 @@ def user_profile(id):
     month_day_year = User.query.filter_by(id=id).first().\
         date.strftime("%B %d, %Y")
 
+    user_opts = []
+    user_opts.append( ['beef', user.beef])
+    user_opts.append( ['dairy', user.dairy])
+    user_opts.append( ['egg', user.egg])
+    user_opts.append( ['fish', user.fish])
+    user_opts.append( ['gluten', user.gluten])
+    user_opts.append( ['meat', user.meat])
+    user_opts.append( ['nut', user.nut])
+    user_opts.append( ['pork', user.pork])
+    user_opts.append( ['poultry', user.poultry])
+    user_opts.append( ['shellfish', user.shellfish])
+    user_opts.append( ['soy', user.soy])
+    user_opts.append( ['wheat', user.wheat])
+
     return render_template(
         'user_profile.html',
         month_day_year=month_day_year,
-        user=user
+        user=user, user_opts=user_opts
     )
 
 
