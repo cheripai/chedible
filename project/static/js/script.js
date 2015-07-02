@@ -27,6 +27,15 @@ $("[id^=upvote]").click(function(){
         id: index
     }, function(data) {
         var count = $('#count' + index);
+        var uparrow = $('#upvote' + index);
+        var downarrow = $('#downvote' + index);
+        if(count.text() < data.result){
+            uparrow.css('color', '#337AB7');
+            downarrow.css('color', '#777');
+        }
+        else{
+            uparrow.css('color', '#777');
+        }
         count.text(data.result);
     });
 });
@@ -39,6 +48,15 @@ $("[id^=downvote]").click(function(){
         id: index
     }, function(data) {
         var count = $('#count' + index);
+        var uparrow = $('#upvote' + index);
+        var downarrow = $('#downvote' + index);
+        if(count.text() > data.result){
+            downarrow.css('color', '#337AB7');
+            uparrow.css('color', '#777');
+        }
+        else{
+            downarrow.css('color', '#777');
+        }
         count.text(data.result);
     });
 });

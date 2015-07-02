@@ -59,22 +59,22 @@
                                 <h5><p class="text-muted">
                                     {% if g.user %}
                                         {% if d.voters[g.user.id] == True %}
-                                            <a href="javascript:;" title="Information is accurate"><i class="glyphicon glyphicon-chevron-up" id="upvote{{ d.id }}"></i></a>
+                                            <a class="clickable" title="Information is accurate"><i class="glyphicon glyphicon-chevron-up" id="upvote{{ d.id }}"></i></a>
                                             <span id="count{{ d.id }}"> {{ d.score }} </span>
-                                            <a href="javascript:;" style="color: #777" title="Information is not accurate"><i class="glyphicon glyphicon-chevron-down" id="downvote{{ d.id }}"></i></a>
+                                            <a class="clickable" style="color: #777" title="Information is not accurate"><i class="glyphicon glyphicon-chevron-down" id="downvote{{ d.id }}"></i></a>
                                         {% elif d.voters[g.user.id] == False %}
-                                            <a href="javascript:;" style="color: #777" title="Information is accurate"><i class="glyphicon glyphicon-chevron-up" id="upvote{{ d.id }}"></i></a>
+                                            <a class="clickable" style="color: #777" title="Information is accurate"><i class="glyphicon glyphicon-chevron-up" id="upvote{{ d.id }}"></i></a>
                                             <span id="count{{ d.id }}"> {{ d.score }} </span>
-                                            <a href="javascript:;" title="Information is not accurate"><i class="glyphicon glyphicon-chevron-down" id="downvote{{ d.id }}"></i></a>
+                                            <a class="clickable" title="Information is not accurate"><i class="glyphicon glyphicon-chevron-down" id="downvote{{ d.id }}"></i></a>
                                         {% else %}
-                                            <a href="javascript:;" style="color: #777" title="Information is accurate"><i class="glyphicon glyphicon-chevron-up" id="upvote{{ d.id }}"></i></a>
+                                            <a class="clickable" style="color: #777" title="Information is accurate"><i class="glyphicon glyphicon-chevron-up" id="upvote{{ d.id }}"></i></a>
                                             <span id="count{{ d.id }}"> {{ d.score }} </span>
-                                            <a href="javascript:;" style="color: #777" title="Information is not accurate"><i class="glyphicon glyphicon-chevron-down" id="downvote{{ d.id }}"></i></a>
+                                            <a class="clickable" style="color: #777" title="Information is not accurate"><i class="glyphicon glyphicon-chevron-down" id="downvote{{ d.id }}"></i></a>
                                         {% endif %}
                                     {% else %}
-                                        <a href="#mustlogin" data-toggle="modal" title="Information is accurate"><i class="glyphicon glyphicon-chevron-up" id="upvote{{ d.id }}"></i></a>
+                                        <a href="#mustlogin" style="color: #777" data-toggle="modal" title="Information is accurate"><i class="glyphicon glyphicon-chevron-up" id="upvote{{ d.id }}"></i></a>
                                         <span id="count{{ d.id }}"> {{ d.score }} </span>
-                                        <a href="#mustlogin" data-toggle="modal" title="Information is not accurate"><i class="glyphicon glyphicon-chevron-down" id="downvote{{ d.id }}"></i></a>
+                                        <a href="#mustlogin" style="color: #777" data-toggle="modal" title="Information is not accurate"><i class="glyphicon glyphicon-chevron-down" id="downvote{{ d.id }}"></i></a>
                                     {% endif %}
                                 </p></h5>
                             </div>
