@@ -45,13 +45,13 @@ div.horizontal {
     width: 200px;
     height: 200px;
     display: table-cell;
-    background: #e3e3e3;
+    background: #ffffff;
     vertical-align: middle;
     text-align: center;
 }
 
 #r-article:nth-child(2n+2) {
-    background: #d1d1d1;
+    background: #e3e3e3;
 }
 
 
