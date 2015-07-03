@@ -300,6 +300,7 @@ def edit_dish(restaurant_id, dish_id):
 @app.route('/user/<id>')
 def user_profile(id):
     user = User.query.filter_by(id=id).first()
+
     if user is None:
         abort(404)
     month_day_year = User.query.filter_by(id=id).first().\
