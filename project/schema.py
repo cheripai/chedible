@@ -55,7 +55,11 @@ class Restaurant(db.Model):
     date = db.Column(db.Date, nullable=False)
     category = db.Column(db.String, nullable=True)
     image = db.Column(db.String, nullable=True)
-    dishes = db.relationship('Dish', backref='restaurant')
+    dishes = db.relationship(
+        'Dish',
+        cascade="all, delete, delete-orphan",
+        backref='restaurant'
+    )
     tags = db.Column(db.String, nullable=True)
     editors = db.relationship(
         'User',
@@ -192,11 +196,13 @@ class User(db.Model):
     restaurants = db.relationship(
         'Restaurant',
         backref='user',
+        viewonly=True,
         secondary=restaurants_users
     )
     dishes = db.relationship(
         'Dish',
         backref='user',
+        viewonly=True,
         secondary=dishes_users
     )
     last_edited = db.Column(db.Integer, nullable=False)
