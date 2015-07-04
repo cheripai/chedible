@@ -44,7 +44,7 @@
                                 <a href="{{ url_for('restaurant_profile', id=d.restaurant_id) }}">
                                     <h4 class="media-heading">{{ d.name }}</h4>
                                 </a>
-                                <p class="text-muted">{{ d.price }}</p>
+                                <p class="text-muted">{{ Restaurant.query.filter_by(id=d.restaurant_id).first().name }}</p>
                             {% elif table == "users" %}
                                 {% if d.username %}
                                     <a href="{{ url_for('user_profile', id=d.id) }}">
