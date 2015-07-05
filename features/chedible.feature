@@ -124,9 +124,41 @@ Scenario: we can edit a dish
     Then we should see "test_dish2" in "dishes"
     And we should not see "test_dish1" in "dishes"
 
+
 Scenario: we can view a user's profile
     Given chedible is set up
     When we log in
     And we visit "/user/1"
     Then we should see the text "Joined on"
      
+
+Scenario: we can upvote a dish
+    Given chedible is set up
+    When we log in
+    And we visit "/vote?vote=upvote&id=1"
+    Then we should see "1" as the "score" of "dishes" "1"
+
+
+Scenario: we can remove an upvote on a dish
+    Given chedible is set up
+    When we log in
+    And we visit "/vote?vote=upvote&id=2"
+    And we visit "/vote?vote=upvote&id=2"
+    Then we should see "0" as the "score" of "dishes" "2"
+
+
+Scenario: we can downvote a dish
+    Given chedible is set up
+    When we log in
+    And we add dish "test_dish3" to restaurant "test2"
+    And we visit "/vote?vote=downvote&id=3"
+    Then we should see "-1" as the "score" of "dishes" "3"
+
+
+Scenario: we can remove a downvote on a dish
+    Given chedible is set up
+    When we log in
+    And we add dish "test_dish4" to restaurant "test2"
+    And we visit "/vote?vote=downvote&id=4"
+    And we visit "/vote?vote=downvote&id=4"
+    Then we should see "0" as the "score" of "dishes" "4"
