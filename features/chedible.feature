@@ -123,3 +123,10 @@ Scenario: we can edit a dish
     And we edit dish "test_dish1" of restaurant "test5" to "test_dish2"
     Then we should see "test_dish2" in "dishes"
     And we should not see "test_dish1" in "dishes"
+
+Scenario: we can view a user's profile
+    Given chedible is set up
+    When we log in
+    And we visit "/user/1"
+    Then we should see the text "Joined on"
+     
