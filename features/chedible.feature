@@ -130,7 +130,15 @@ Scenario: we can view a user's profile
     When we log in
     And we visit "/user/1"
     Then we should see the text "Joined on"
-     
+
+Scenario: we can edit a user's profile
+    Given chedible is set up
+    When we log in
+    And we visit "/user/1/edit"
+    And we update the username "1337user" to user "test user"
+    And we visit "/user/1"
+    Then we should see "1337user" as the "username" of "users" "1"
+    And we should see the text "1337user"
 
 Scenario: we can upvote a dish
     Given chedible is set up

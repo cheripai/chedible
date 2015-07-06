@@ -56,6 +56,13 @@ def db_update(context, text, text_update, table):
     context.db.session.commit()
 
 
+@when(u'we update the username "{username}" to user "{text}"')
+def db_user_column_update(context, username, text):
+    entry = context.db.session.query(User).filter_by(name=text)
+    entry.first().username = username
+    context.db.session.commit()
+
+
 @then(u'we should see "{text}" in "{table}"')
 def db_add_check(context, text, table):
     if table == "restaurants":
