@@ -108,7 +108,6 @@ div.horizontal {
 }
 
 /* Carousel on index page */
-body { padding-top: 20px; }
 #indexCarousel .nav a small {
     display:block;
 }
