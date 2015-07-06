@@ -27,6 +27,11 @@ body {
     cursor: pointer;
 }
 
+textarea {
+    resize: none;
+    background-color: white;
+}
+
 /* --------------------------- Horizontal scrolling field */
 
 div.horizontal {
