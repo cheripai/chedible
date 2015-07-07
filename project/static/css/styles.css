@@ -31,6 +31,10 @@ textarea {
     resize: none;
 }
 
+#search_ddm {
+    padding: 16px;
+}
+
 /* --------------------------- Horizontal scrolling field */
 
 div.horizontal {
@@ -109,11 +113,11 @@ div.horizontal {
 
 /* Carousel on index page */
 #indexCarousel .nav a small {
-    display:block;
+    display: block;
 }
 #indexCarousel .nav {
-	background:#eee;
+	background: #eee;
 }
 #indexCarousel .nav a {
-    border-radius:0px;
+    border-radius: 0px;
 }

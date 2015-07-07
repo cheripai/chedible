@@ -41,25 +41,41 @@
 
                     <form class="navbar-form navbar-left" method="post" action="/search/restaurants" id="search_table">
                     {{ g.search_form.csrf_token }}
-                        <div class="form-group">
+                        <div class="input-group" id="adv-search">
                             <div class="input-group">
-                            {% if query %}
-                                {{ g.search_form.query(value=query, class="form-control", type="text", placeholder="Search") }}
-                            {% else %}
-                                {{ g.search_form.query(class="form-control", type="text", placeholder="Search") }}
-                            {% endif %}
+                                <span data-toggle="dropdown" aria-expanded="false">
+                                    {% if query %}
+                                        {{ g.search_form.query(
+                                            value=query, 
+                                            class="form-control",
+                                            type="text",
+                                            placeholder="Search",
+                                            autocomplete="off"
+                                        ) }}
+                                    {% else %}
+                                        {{ g.search_form.query(
+                                            class="form-control",
+                                            type="text",
+                                            placeholder="Search",
+                                            autocomplete="off"
+                                        ) }}
+                                    {% endif %}
+                                </span>
+                                <div class="dropdown-menu" role="menu" id="search_ddm">
+                                    <div class="form-group">
+                                        <label>Filter by:</label><br>
+                                        <select class="form-control" id="table_ddmi">
+                                            <option value="/search/restaurants" selected>Restaurants</option>
+                                            <option value="/search/dishes">Dishes</option>
+                                            <option value="/search/users">Users</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <br><label>Location:</label>
+                                        <input class="form-control" type="text"/>
+                                    </div>
+                                </div>
                                 <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default hidden-xs" data-toggle="dropdown" aria-expanded="false">
-                                        <span id="table_ddm_button">Restaurants </span><span class="caret"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-default hidden-md hidden-lg hidden-sm" data-toggle="dropdown" aria-expanded="false">
-                                        <span id="table_ddm_button"></span><span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                        <li><a data-toggle="search_table" data-button="table_ddm_button" data-title="/search/restaurants" class="table_ddmi clickable">Restaurants</a></li>
-                                        <li><a data-toggle="search_table" data-button="table_ddm_button" data-title="/search/dishes" class="table_ddmi clickable">Dishes</a></li>
-                                        <li><a data-toggle="search_table" data-button="table_ddm_button" data-title="/search/users" class="table_ddmi clickable">Users</a></li>
-                                    </ul>
                                     <button type="submit" class="btn btn-default">
                                         <i class="glyphicon glyphicon-ice-lolly-tasted"></i>
                                     </button>
@@ -94,7 +110,9 @@
                             <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ url_for('user_profile', id=g.user.id) }}">Profile &nbsp <img class="img-circle" src="{{ g.user.image }}" height="30" width="30"/></a></li>
+                                <li><a href="{{ url_for('user_profile', id=g.user.id) }}">
+                                    Profile &nbsp <img class="img-circle" src="{{ g.user.image }}" height="30" width="30"/>
+                                </a></li>
                                 <li><a href="{{ url_for('logout') }}">Log out</a></li>
                             </ul>
                         {% else %}

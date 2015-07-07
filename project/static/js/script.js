@@ -9,13 +9,10 @@ $('#radioBtn a').on('click', function(){
 })
 
 
-// Animates and sets value for drop-down menu in search bar
-$('.table_ddmi').on('click', function(){
-    var sel = $(this).data('title');
-    var tog = $(this).data('toggle');
-    var btn = $(this).data('button');
-    $('#'+tog).prop('action', sel);
-    $('#'+btn).text($(this).text()+' ');
+// Sets value for form action based on which table to search
+$('#table_ddmi').on('click', function(){
+    var sel = $(this).children(":selected").prop('value');
+    $('#search_table').prop('action', sel);
 })
 
 
@@ -85,4 +82,26 @@ $(document).ready( function() {
 		}
 		clickEvent = false;
 	});
+});
+
+/* Prevents #search_ddm from closing when clicking inside of it */
+$('#search_ddm').on('click', function(event){
+    var events = $._data(document, 'events') || {};
+    events = events.click || [];
+    for(var i = 0; i < events.length; i++) {
+        if(events[i].selector) {
+
+            //Check if the clicked element matches the event selector
+            if($(event.target).is(events[i].selector)) {
+                events[i].handler.call(event.target, event);
+            }
+
+            // Check if any of the clicked element parents matches the 
+            // delegated event selector (Emulating propagation)
+            $(event.target).parents(events[i].selector).each(function(){
+                events[i].handler.call(this, event);
+            });
+        }
+    }
+    event.stopPropagation(); //Always stop propagation
 });
