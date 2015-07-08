@@ -103,6 +103,8 @@ def test_login(id):
 def search(table):
     # We need to add filtering based on preferences
     if g.search_form.validate_on_submit():
+        # FIXME: Verify zip code exists or change city name to zip code
+        location = g.search_form.location.data
         # Prevent slashes from breaking routing
         query = ''.join(c for c in g.search_form.query.data if c not in ['/'])
         return redirect(url_for('search_results', table=table, query=query))
@@ -332,7 +334,7 @@ def user_profile(id):
 @login_required
 def edit_user(id):
     user = User.query.filter_by(id=id).first()
-    
+
     if user is None or id != str(g.user.id):
         abort(404)
     month_day_year = User.query.filter_by(id=id).first().\

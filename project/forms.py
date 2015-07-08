@@ -144,6 +144,15 @@ class SearchForm(Form):
             )
         ]
     )
+    location = StringField(
+        'Location',
+        validators=[
+            Length(
+                max=32,
+                message="Must be less than 32 characters"
+            )
+        ]
+    )
 
 
 class EditUserForm(Form):
