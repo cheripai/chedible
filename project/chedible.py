@@ -332,6 +332,7 @@ def user_profile(id):
 @login_required
 def edit_user(id):
     user = User.query.filter_by(id=id).first()
+    
     if user is None or id != str(g.user.id):
         abort(404)
     month_day_year = User.query.filter_by(id=id).first().\
@@ -364,12 +365,12 @@ def edit_user(id):
             elif entry.id != "csrf_token":
                 form[entry.id].data = user_dict[entry.id]
 
-        return render_template(
-            'edit_user.html',
-            form=form,
-            month_day_year=month_day_year,
-            user=user
-        )
+    return render_template(
+        'edit_user.html',
+        form=form,
+        month_day_year=month_day_year,
+        user=user
+    )
 
 
 @app.route('/vote')
