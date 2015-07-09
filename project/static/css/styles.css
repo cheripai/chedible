@@ -35,6 +35,9 @@ textarea {
     padding: 16px;
 }
 
+#map {
+    margin-bottom: 20px !important;
+}
 /* --------------------------- Horizontal scrolling field */
 
 div.horizontal {

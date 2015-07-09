@@ -103,7 +103,7 @@ def test_login(id):
 def search(table):
     # We need to add filtering based on preferences
     if g.search_form.validate_on_submit():
-        # FIXME: Verify zip code exists or change city name to zip code
+        # FIXME: Verify location exists and convert to latitude / longitude
         location = g.search_form.location.data
         # Prevent slashes from breaking routing
         query = ''.join(c for c in g.search_form.query.data if c not in ['/'])
