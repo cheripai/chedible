@@ -20,7 +20,7 @@
 
     <div class="container">
         <legend>Entries matching "{{ query }}": </legend>
-        <div class="col-lg-7 col-md-5">
+        <div class="col-sm-7">
             <p>{{ message }}</p>
             <div class="media">
                 {% for d in data %}
@@ -89,9 +89,9 @@
             </nav>
         </div>
 
-        <div class="col-lg-2 col-md-1">
-        </div>
-        <div class="col-lg-3 col-md-4">
+        <div class="col-xs-hidden col-sm-hidden col-md-1"></div>
+
+        <div class="col-sm-5 col-md-4">
             {{ googlemap("map", lat=37.775, lng=-122.418, markers=[(37.7795, -122.4192)]) }}
             <div class="list-group">
                 <a href="#" class="list-group-item">
