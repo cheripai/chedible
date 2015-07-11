@@ -23,6 +23,8 @@ from project.forms import EditUserForm
 from project.pagination import Pagination
 from project.schema import Restaurant, Dish, User
 from time import time
+import urllib.request
+import json
 
 
 # Global constants
@@ -102,19 +104,45 @@ def test_login(id):
 @app.route('/search/<table>', methods=['POST'])
 def search(table):
     # We need to add filtering based on preferences
+    lat = None
+    lng = None
     if g.search_form.validate_on_submit():
-        # FIXME: Verify location exists and convert to latitude / longitude
-        location = g.search_form.location.data
+        location = ''.join(c for c in g.search_form.location.data if c.isalnum())
+        request = 'https://maps.googleapis.com/maps/api/geocode/json?address={}'.format(location)
+        response = urllib.request.urlopen(request)
+        obj = json.loads(response.read().decode('utf-8'))
+        if obj['status'] == 'OK':
+            lat = obj['results'][0]['geometry']['location']['lat']
+            lng = obj['results'][0]['geometry']['location']['lng']
+        else:
+            # FIXME: Add proper error handling
+            print('ERROR HERE')
         # Prevent slashes from breaking routing
         query = ''.join(c for c in g.search_form.query.data if c not in ['/'])
-        return redirect(url_for('search_results', table=table, query=query))
+        if lat is None or lng is None:
+            # Sets default location to San Francisco
+            return redirect(url_for(
+                'search_results',
+                table=table,
+                query=query,
+                lat=37.775,
+                lng=-122.419
+            ))
+        else:
+            return redirect(url_for(
+                'search_results',
+                table=table,
+                query=query,
+                lat=lat,
+                lng=lng
+            ))
     else:
         return redirect(request.referrer)
 
 
-@app.route('/search_results/<table>/<query>', defaults={'page': 1})
-@app.route('/search_results/<table>/<query>/<int:page>')
-def search_results(table, query, page):
+@app.route('/search_results/<table>/<query>/<lat>/<lng>', defaults={'page': 1})
+@app.route('/search_results/<table>/<query>/<lat>/<lng>/<int:page>')
+def search_results(table, query, lat, lng, page):
     message = "No entries found"
 
     # removes special characters from search to prevent errors
@@ -138,12 +166,13 @@ def search_results(table, query, page):
     data = split_data(data, page, PER_PAGE, data.count())
     if not data and page != 1:
         abort(404)
-
     return render_template(
         'search.html',
         message=message,
         data=data,
         query=query,
+        lat=lat,
+        lng=lng,
         table=table,
         pagination=pagination,
         Restaurant=Restaurant
