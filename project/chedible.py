@@ -16,6 +16,7 @@
 from flask import render_template, abort, redirect, url_for, request, flash
 from flask import session, g, jsonify
 from functools import wraps
+import json
 from locale import currency
 from project import app, db
 from project.forms import AddRestaurantForm, AddDishForm, SearchForm
@@ -23,8 +24,7 @@ from project.forms import EditUserForm
 from project.pagination import Pagination
 from project.schema import Restaurant, Dish, User
 from time import time
-import urllib.request
-import json
+from urllib.request import urlopen
 
 
 # Global constants
@@ -107,9 +107,11 @@ def search(table):
     lat = None
     lng = None
     if g.search_form.validate_on_submit():
-        location = ''.join(c for c in g.search_form.location.data if c.isalnum())
-        request = 'https://maps.googleapis.com/maps/api/geocode/json?address={}'.format(location)
-        response = urllib.request.urlopen(request)
+        location = ''.join(
+            c for c in g.search_form.location.data if c.isalnum()
+        )
+        geocode = 'https://maps.googleapis.com/maps/api/geocode/json?address='
+        response = urlopen(geocode + location)
         obj = json.loads(response.read().decode('utf-8'))
         if obj['status'] == 'OK':
             lat = obj['results'][0]['geometry']['location']['lat']
