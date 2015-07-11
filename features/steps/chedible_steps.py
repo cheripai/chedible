@@ -32,7 +32,7 @@ def visit(context):
 
 @when(u'we search "{table}" for "{text}"')
 def search_restaurant(context, table, text):
-    context.page = context.client.get('/search_results/{}/{}'.format(table, text))
+    context.page = context.client.get('/search_results/{}/{}/0/0'.format(table, text))
 
 
 @when(u'we visit "{route}"')
