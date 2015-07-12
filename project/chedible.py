@@ -116,6 +116,7 @@ def search(table):
         if obj['status'] == 'OK':
             lat = obj['results'][0]['geometry']['location']['lat']
             lng = obj['results'][0]['geometry']['location']['lng']
+            session['location'] = obj['results'][0]
         else:
             # FIXME: Add proper error handling
             print('ERROR HERE')
@@ -168,6 +169,12 @@ def search_results(table, query, lat, lng, page):
     data = split_data(data, page, PER_PAGE, data.count())
     if not data and page != 1:
         abort(404)
+
+    if session['location']:
+        loc_name = session['location']['address_components'][0]['long_name']
+    else:
+        loc_name = None
+
     return render_template(
         'search.html',
         message=message,
@@ -175,6 +182,7 @@ def search_results(table, query, lat, lng, page):
         query=query,
         lat=lat,
         lng=lng,
+        loc_name=loc_name,
         table=table,
         pagination=pagination,
         Restaurant=Restaurant
