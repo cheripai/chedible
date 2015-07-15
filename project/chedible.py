@@ -58,6 +58,14 @@ def load_user():
 def load_search_form():
     g.search_form = SearchForm()
 
+    if not g.search_form.location.data:
+        if 'location' in session:
+            # Sets the location input as the last searched location
+            g.search_form.location.data = session['location']['address_components'][0]['long_name']
+        else:
+            # If no location data available, use San Francisco
+            g.search_form.location.data = 'San Francisco'
+
 
 @app.errorhandler(404)
 def page_not_found(error):
@@ -120,25 +128,17 @@ def search(table):
         else:
             # FIXME: Add proper error handling
             print('ERROR HERE')
+
         # Prevent slashes from breaking routing
         query = ''.join(c for c in g.search_form.query.data if c not in ['/'])
-        if lat is None or lng is None:
-            # Sets default location to San Francisco
-            return redirect(url_for(
-                'search_results',
-                table=table,
-                query=query,
-                lat=37.775,
-                lng=-122.419
-            ))
-        else:
-            return redirect(url_for(
-                'search_results',
-                table=table,
-                query=query,
-                lat=lat,
-                lng=lng
-            ))
+
+        return redirect(url_for(
+            'search_results',
+            table=table,
+            query=query,
+            lat=lat,
+            lng=lng
+        ))
     else:
         return redirect(request.referrer)
 
@@ -170,10 +170,6 @@ def search_results(table, query, lat, lng, page):
     if not data and page != 1:
         abort(404)
 
-    if session['location']:
-        loc_name = session['location']['address_components'][0]['long_name']
-    else:
-        loc_name = None
 
     return render_template(
         'search.html',
@@ -182,7 +178,6 @@ def search_results(table, query, lat, lng, page):
         query=query,
         lat=lat,
         lng=lng,
-        loc_name=loc_name,
         table=table,
         pagination=pagination,
         Restaurant=Restaurant
