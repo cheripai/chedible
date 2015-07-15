@@ -150,8 +150,15 @@ def search_results(table, query, lat, lng, page):
 
     # removes special characters from search to prevent errors
     new_query = ''.join(c for c in query if c.isalnum() or c == ' ')
-    if new_query == '':
-        return render_template('search.html', message=message, query=query)
+    if not new_query:
+        return render_template(
+            'search.html',
+            message=message,
+            query=query,
+            lat=lat,
+            lng=lng,
+            table=table
+        )
 
     if table == "dishes":
         data = Dish.query.search(new_query, sort=True).limit(MAX_QUERIES)
