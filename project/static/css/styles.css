@@ -29,6 +29,7 @@ body {
 
 textarea {
     resize: none;
+    cursor: default !important;
 }
 
 #search_ddm {
