@@ -41,7 +41,7 @@ textarea {
 }
 
 .panel-body {
-    word-break: break-word;
+    overflow: auto;
 }
 
 /* --------------------------- Horizontal scrolling field */
