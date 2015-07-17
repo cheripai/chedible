@@ -39,6 +39,11 @@ textarea {
 #map {
     margin-bottom: 20px !important;
 }
+
+.panel-body {
+    word-break: break-word;
+}
+
 /* --------------------------- Horizontal scrolling field */
 
 div.horizontal {
