@@ -10,9 +10,10 @@ $('#radioBtn a').on('click', function(){
 
 
 // Sets value for form action based on which table to search
-$('#table_ddmi').on('click', function(){
-    var sel = $(this).children(":selected").prop('value');
-    $('#search_table').prop('action', sel);
+$('.table_select a').on('click', function(){
+    var sel = $(this).data('title');
+    var tog = $(this).data('toggle');
+    $('#'+tog).prop('action', '/search/'+sel);
 })
 
 

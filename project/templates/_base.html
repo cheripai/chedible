@@ -64,11 +64,11 @@
                                 <div class="dropdown-menu" role="menu" id="search_ddm">
                                     <div class="form-group">
                                         <label>Filter by:</label><br>
-                                        <select class="form-control" id="table_ddmi">
-                                            <option value="/search/restaurants" selected>Restaurants</option>
-                                            <option value="/search/dishes">Dishes</option>
-                                            <option value="/search/users">Users</option>
-                                        </select>
+                                        <div id="radioBtn" class="btn-group table_select">
+                                            <a class="btn btn-primary btn-sm active" data-toggle="search_table" data-title="restaurants">Restaurants</a>
+                                            <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="dishes">Dishes</a>
+                                            <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="users">Users</a>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <br><label>Location:</label>
