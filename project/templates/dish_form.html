@@ -64,7 +64,7 @@
 
                 {% for entry in form %}
                     {% if entry.id not in ['csrf_token', 'name', 'price', 'image', 'notes'] %}
-                    <div class="col-lg-6">
+                    <div class="col-sm-6">
                         <div class="form-group">
                             <div class="form-row form-inline">
                             <label for="fun" class="col-sm-4 control-label">{{ form[entry.id].label }}:&nbsp</label>
