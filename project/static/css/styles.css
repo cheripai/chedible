@@ -44,6 +44,10 @@ textarea {
     overflow: auto;
 }
 
+#query {
+    min-width: 210px;
+}
+
 /* --------------------------- Horizontal scrolling field */
 
 div.horizontal {
