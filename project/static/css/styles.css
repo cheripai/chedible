@@ -45,7 +45,11 @@ textarea {
 }
 
 #query {
-    min-width: 210px;
+    min-width: 195px;
+}
+
+#location {
+    min-width: 200px;
 }
 
 /* --------------------------- Horizontal scrolling field */
