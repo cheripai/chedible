@@ -2,9 +2,13 @@
     font-size: 180%; 
 }
 
-#radioBtn .notActive{
+#radioBtn .notActive {
     color: #3276b1;
     background-color: #fff;
+}
+
+#radioBtn .active {
+    background-color: #3276b1;
 }
 
 .entry {
