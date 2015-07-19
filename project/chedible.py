@@ -147,6 +147,7 @@ def search(table):
 @app.route('/search_results/<table>/<query>/<lat>/<lng>/<int:page>')
 def search_results(table, query, lat, lng, page):
     message = "No entries found"
+    chedibilitylist = []
 
     # removes special characters from search to prevent errors
     new_query = ''.join(c for c in query if c.isalnum() or c == ' ')
@@ -162,6 +163,8 @@ def search_results(table, query, lat, lng, page):
 
     if table == "dishes":
         data = Dish.query.search(new_query, sort=True).limit(MAX_QUERIES)
+        for dish in data:
+            chedibilitylist.append(is_chedible(data))
     elif table == "restaurants":
         data = Restaurant.query.search(new_query, sort=True).limit(MAX_QUERIES)
     elif table == "users":
@@ -174,6 +177,7 @@ def search_results(table, query, lat, lng, page):
 
     pagination = Pagination(page, PER_PAGE, data.count())
     data = split_data(data, page, PER_PAGE, data.count())
+
     if not data and page != 1:
         abort(404)
 
@@ -182,6 +186,7 @@ def search_results(table, query, lat, lng, page):
         'search.html',
         message=message,
         data=data,
+        chedibilitylist=chedibilitylist,
         query=query,
         lat=lat,
         lng=lng,
@@ -484,3 +489,57 @@ def split_data(data, cur_page, per_page, total):
     else:
         end = total
     return split[begin:end]
+
+# Checks if a dish is chedible for a user
+def is_chedible(data):
+    for dish in data:
+        chedible = True
+        if dish.beef is not g.user.beef:
+            chedible = False
+            if g.user.beef is None:
+                chedible = True
+        elif dish.dairy is not g.user.dairy and chedible:
+            chedible = False
+            if dish.dairy is None:
+                chedible = True
+        elif dish.egg is not g.user.egg and chedible:
+            chedible = False
+            if dish.egg is None:
+                chedible = True
+        elif dish.fish is not g.user.fish and chedible:
+            chedible = False
+            if dish.fish is None:
+                chedible = True
+        elif dish.gluten is not g.user.gluten and chedible:
+            chedible = False
+            if dish.gluten is None:
+                chedible = True
+        elif dish.meat is not g.user.meat and chedible:
+            chedible = False
+            if dish.meat is None:
+                chedible = True
+        elif dish.nut is not g.user.nut and chedible:
+            chedible = False
+            if dish.nut is None:
+                chedible = True
+        elif dish.pork is not g.user.pork and chedible:
+            chedible = False
+            if dish.pork is None:
+                chedible = True
+        elif dish.poultry is not g.user.poultry and chedible:
+            chedible = False
+            if dish.poultry is None:
+                chedible = True
+        elif dish.shellfish is not g.user.shellfish and chedible:
+            chedible = False
+            if dish.shellfish is None:
+                chedible = True
+        elif dish.soy is not g.user.soy and chedible:
+            chedible = False
+            if dish.soy is None:
+                chedible = True
+        elif dish.wheat is not g.user.wheat and chedible:
+            chedible = False
+            if dish.wheat is None:
+                chedible = True
+    return chedible
