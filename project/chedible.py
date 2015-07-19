@@ -164,7 +164,7 @@ def search_results(table, query, lat, lng, page):
     if table == "dishes":
         data = Dish.query.search(new_query, sort=True).limit(MAX_QUERIES)
         for dish in data:
-            chedibilitylist.append(is_chedible(data))
+            chedibilitylist.append(is_chedible(dish, g.user))
     elif table == "restaurants":
         data = Restaurant.query.search(new_query, sort=True).limit(MAX_QUERIES)
     elif table == "users":
@@ -490,57 +490,63 @@ def split_data(data, cur_page, per_page, total):
         end = total
     return split[begin:end]
 
-# Checks if a dish is chedible for a user
-def is_chedible(data):
-    for dish in data:
-        chedible = True
-        if dish.beef and not g.user.beef:
-            chedible = False
-        elif (dish.beef is None and not g.user.beef) or not chedible:
-            chedible = False
-        elif dish.dairy and not g.user.dairy:
-            chedible = False
-        elif (dish.dairy is None and not g.user.dairy):
-            chedible = False
-        elif dish.egg and not g.user.egg:
-            chedible = False
-        elif (dish.egg is None and not g.user.egg):
-            chedible = False
-        elif dish.fish and not g.user.fish:
-            chedible = False
-        elif (dish.fish is None and not g.user.fish):
-            chedible = False
-        elif dish.gluten and not g.user.gluten:
-            chedible = False
-        elif (dish.gluten is None and not g.user.gluten):
-            chedible = False
-        elif dish.meat and not g.user.meat:
-            chedible = False
-        elif (dish.meat is None and not g.user.meat):
-            chedible = False
-        elif dish.nut and not g.user.nut:
-            chedible = False
-        elif (dish.nut is None and not g.user.nut):
-            chedible = False
-        elif dish.pork and not g.user.pork:
-            chedible = False
-        elif (dish.pork is None and not g.user.pork):
-            chedible = False
-        elif dish.poultry and not g.user.poultry:
-            chedible = False
-        elif (dish.poultry is None and not g.user.poultry):
-            chedible = False
-        elif dish.shellfish and not g.user.shellfish:
-            chedible = False
-        elif (dish.shellfish is None and not g.user.shellfish):
-            chedible = False
-        elif dish.soy and not g.user.soy:
-            chedible = False
-        elif (dish.soy is None and not g.user.soy):
-            chedible = False
-        elif dish.wheat and not g.user.wheat:
-            chedible = False
-        elif (dish.wheat is None and not g.user.wheat):
-            chedible = False
+# Rudimentary Chedibility algorithm
+# If the dish contains an item, and the user does not want the item
+#   Not chedible
+# If the dish might contain the item, and the user does not want the item
+#   Not chedible
+# Else
+#   Chedible
+def is_chedible(dish, user):
+    chedible = True
+
+    if dish.beef and not user.beef:
+        chedible = False
+    elif dish.beef is None and not user.beef:
+        chedible = False
+    elif dish.dairy and not user.dairy:
+        chedible = False
+    elif dish.dairy is None and not user.dairy:
+        chedible = False
+    elif dish.egg and not user.egg:
+        chedible = False
+    elif dish.egg is None and not user.egg:
+        chedible = False
+    elif dish.fish and not user.fish:
+        chedible = False
+    elif dish.fish is None and not user.fish:
+        chedible = False
+    elif dish.gluten and not user.gluten:
+        chedible = False
+    elif dish.gluten is None and not user.gluten:
+        chedible = False
+    elif dish.meat and not user.meat:
+        chedible = False
+    elif dish.meat is None and not user.meat:
+        chedible = False
+    elif dish.nut and not user.nut:
+        chedible = False
+    elif dish.nut is None and not user.nut:
+        chedible = False
+    elif dish.pork and not user.pork:
+        chedible = False
+    elif dish.pork is None and not user.pork:
+        chedible = False
+    elif dish.poultry and not user.poultry:
+        chedible = False
+    elif dish.poultry is None and not user.poultry:
+        chedible = False
+    elif dish.shellfish and not user.shellfish:
+        chedible = False
+    elif dish.shellfish is None and not user.shellfish:
+        chedible = False
+    elif dish.soy and not user.soy:
+        chedible = False
+    elif dish.soy is None and not user.soy:
+        chedible = False
+    elif dish.wheat and not user.wheat:
+        chedible = False
+    elif dish.wheat is None and not user.wheat:
+        chedible = False
 
     return chedible

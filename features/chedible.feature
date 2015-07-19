@@ -170,3 +170,34 @@ Scenario: we can remove a downvote on a dish
     And we visit "/vote?vote=downvote&id=4"
     And we visit "/vote?vote=downvote&id=4"
     Then we should see "0" as the "score" of "dishes" "4"
+
+Scenario: we check the chediblity of a dish that contains nothing for a user that will eat anything
+    Given chedible is set up
+    When we add "ched test" to "users"
+    And we set all of user "ched test" preferences to "True" except for "none"
+    And we add dish "test_dish5" to restaurant "test2"
+    And we set dish "test_dish5" so contains is "False" for attribute/s "everything"
+    Then is_chedible should evaluate to True given user "ched test" and "test_dish5"
+
+Scenario: we check the chediblity of a dish that contains everything for a user that will eat nothing
+    Given chedible is set up
+    When we add "ched test2" to "users"
+    And we set all of user "ched test2" preferences to "False" except for "none"
+    And we add dish "test_dish6" to restaurant "test2"
+    And we set dish "test_dish6" so contains is "True" for attribute/s "everything"
+    Then is_chedible should evaluate to False given user "ched test2" and "test_dish6"
+
+Scenario: we check the chediblity of a dish that contains shellfish for a user that can't eat shellfish
+    Given chedible is set up
+    When we add "ched test3" to "users"
+    And we set all of user "ched test3" preferences to "True" except for "shellfish"
+    And we add dish "test_dish7" to restaurant "test2"
+    And we set dish "test_dish7" so contains is "True" for attribute/s "everything"
+    Then is_chedible should evaluate to False given user "ched test3" and "test_dish7"
+
+    Scenario: we check the chediblity of a dish that might contain everything for a user that can't eat shellfish
+    Given chedible is set up 
+    When we add dish "test_dish8" to restaurant "test2"
+    And we set dish "test_dish8" so contains is "None" for attribute/s "everything"
+    Then is_chedible should evaluate to False given user "ched test3" and "test_dish8"
+

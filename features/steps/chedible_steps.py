@@ -14,7 +14,11 @@
 
 
 from behave import *
+from flask import g
+import parse
+
 from project.schema import Restaurant, Dish, User
+import project.chedible as chedible
 
 #using steps from database_steps.py
 #       @when(u'we add "{text}" to "{table}"')
@@ -72,3 +76,21 @@ def text(context, text):
 @then(u'we should not see the text "{text}"')
 def not_text(context, text):
     assert text not in str(context.page.data)
+
+@then('is_chedible should evaluate to True given user "{user}" and "{dish}"')
+def is_chedible_eval(context, user, dish):
+    
+    user_result = context.db.session.query(User).filter_by(name=user).first()
+    dish_result = context.db.session.query(Dish).filter_by(name=dish).first()
+
+    chedibility = chedible.is_chedible(dish_result, user_result)
+    assert chedibility
+
+@then('is_chedible should evaluate to False given user "{user}" and "{dish}"')
+def is_chedible_eval(context, user, dish):
+    
+    user_result = context.db.session.query(User).filter_by(name=user).first()
+    dish_result = context.db.session.query(Dish).filter_by(name=dish).first()
+
+    chedibility = chedible.is_chedible(dish_result, user_result)
+    assert not chedibility
