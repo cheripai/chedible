@@ -136,17 +136,17 @@ def search(table):
             'search_results',
             table=table,
             query=query,
-            lat=lat,
-            lng=lng
+            coords='{},{}'.format(lat, lng)
         ))
     else:
         return redirect(request.referrer)
 
 
-@app.route('/search_results/<table>/<query>/<lat>/<lng>', defaults={'page': 1})
-@app.route('/search_results/<table>/<query>/<lat>/<lng>/<int:page>')
-def search_results(table, query, lat, lng, page):
+@app.route('/search_results/<table>/<query>/<coords>', defaults={'page': 1})
+@app.route('/search_results/<table>/<query>/<coords>/<int:page>')
+def search_results(table, query, coords, page):
     message = "No entries found"
+    lat, lng = coords.split(',')
 
     # removes special characters from search to prevent errors
     new_query = ''.join(c for c in query if c.isalnum() or c == ' ')

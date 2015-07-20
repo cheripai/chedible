@@ -67,7 +67,7 @@
                     <ul class="pagination">
                         {% if pagination.has_prev %}
                             <li>
-                                <a href="{{ url_for('search_results', table=table, query=query, lat=lat, lng=lng, page=pagination.page-1) }}" aria-label="Previous">
+                                <a href="{{ url_for('search_results', table=table, query=query, coords='{},{}'.format(lat, lng), page=pagination.page-1) }}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -79,7 +79,7 @@
                         {% endif %}
                         {% if pagination.has_next %}
                             <li>
-                                <a href="{{ url_for('search_results', table=table, query=query, lat=lat, lng=lng, page=pagination.page+1) }}" aria-label="Next">
+                                <a href="{{ url_for('search_results', table=table, query=query, coords='{},{}'.format(lat, lng), page=pagination.page+1) }}" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
