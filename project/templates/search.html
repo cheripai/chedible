@@ -19,6 +19,11 @@
 {% block content %}
 
     <div class="container">
+        <div class="col-xs-12">
+            {% if table != "users" %}
+                {{ googlemap("map", lat=lat, lng=lng, markers=[(lat, lng)], style="height:300px;width:100%;margin:0;") }}
+            {% endif %}
+        </div>
         <legend>Entries matching "{{ query }}": </legend>
         <div class="col-sm-7">
             <p>{{ message }}</p>
@@ -92,14 +97,11 @@
         <div class="col-xs-hidden col-sm-hidden col-md-1"></div>
 
         <div class="col-sm-5 col-md-4">
-            {% if table != "users" %}
-                {{ googlemap("map", lat=lat, lng=lng, markers=[(lat, lng)]) }}
-            {% endif %}
             <div class="list-group">
                 <a href="#" class="list-group-item">
                     <h4 class="list-group-item-heading">Ads n shit</h4>
                     <p class="list-group-item-text">
-                        <img src="http://placehold.it/220x400/cccccc/ffffff"/>
+                        <img src="http://placehold.it/220x530/cccccc/ffffff"/>
                     </p>
                 </a>
             </div>

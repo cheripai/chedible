@@ -63,32 +63,41 @@
                                 </span>
                                 <div class="dropdown-menu" role="menu" id="search_ddm">
                                     <div class="form-group">
-                                        <label>Filter by:</label><br>
+                                        <label>Filter by:</label>
                                         <div id="radioBtn" class="btn-group table_select">
                                             <a class="btn btn-primary btn-sm active" data-toggle="search_table" data-title="restaurants">Restaurants</a>
                                             <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="dishes">Dishes</a>
                                             <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="users">Users</a>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <br><label>Location:</label>
+                                    <label><br>Location:</label>
+                                    <div class="input-group">
                                         {% if loc_name %}
                                             {{ g.search_form.location(
                                                 value=loc_name,
                                                 class="form-control",
                                                 type="text",
                                                 placeholder="City or Zip Code",
-                                                autocomplete="off"
+                                                autocomplete="off",
+                                                id="locationInput"
                                             ) }}
                                         {% else %}
                                             {{ g.search_form.location(
                                                 class="form-control",
                                                 type="text",
                                                 placeholder="City or Zip Code",
-                                                autocomplete="off"
+                                                autocomplete="off",
+                                                id="locationInput"
                                             ) }}
                                         {% endif %}
+                                        <div class="input-group-btn">
+                                            <button id="locationButton" class="btn btn-default" type="button">
+                                                <i class="glyphicon glyphicon-screenshot"></i>
+                                            </button>
+                                        </div>
                                     </div>
+                                    {{ g.search_form.lat(id="lat", type="hidden") }}
+                                    {{ g.search_form.lng(id="lng", type="hidden") }}
                                 </div>
                                 <div class="input-group-btn">
                                     <button type="submit" class="btn btn-default">

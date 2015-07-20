@@ -106,3 +106,35 @@ $('#search_ddm').on('click', function(event){
     }
     event.stopPropagation(); //Always stop propagation
 });
+
+
+/* Grabs the user's location to find nearby restaurants */
+$('#locationButton').on('click', function(event){
+    if(navigator.geolocation) {
+        var startPos;
+        var geoOptions = {
+            // 5 minutes maximum age to request updated location
+            maximumAge: 5 * 60 * 1000,
+            // 10 second maximum timeout
+            timeout: 10 * 1000,
+        }
+        var geoSuccess = function(position) {
+            startPos = position;
+            document.getElementById('lat').value = startPos.coords.latitude;
+            document.getElementById('lng').value = startPos.coords.longitude;
+            document.getElementById('locationInput').value = 'Current Location';
+        };
+        var geoError = function(position) {
+            console.log('Error occurred. Error code: ' + error.code);
+            // error.code can be:
+            //   0: unknown error
+            //   1: permission denied
+            //   2: position unavailable (error response from location provider)
+            //   3: timed out
+        };
+        navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
+    }
+    else {
+        alert('Your device does not support geolocation');
+    }
+});

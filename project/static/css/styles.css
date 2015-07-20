@@ -52,8 +52,8 @@ textarea {
     min-width: 195px;
 }
 
-#location {
-    width: 200px;
+#locationInput {
+    width: 160px;
 }
 
 /* --------------------------- Horizontal scrolling field */
