@@ -49,7 +49,7 @@ textarea {
 }
 
 #query {
-    min-width: 195px;
+    width: 100%;
 }
 
 #locationInput {
