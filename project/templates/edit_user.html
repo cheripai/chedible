@@ -21,7 +21,7 @@
     <div class="container">
 
 
-        <div class="col-lg-9">
+        <div class="col-md-9">
             <div class="text-center" style="margin-top: 0px">
                 <div class="panel panel-default">
                     <br>
@@ -91,7 +91,7 @@
 
             {% for entry in form %}
             {% if entry.id not in ['csrf_token', 'name', 'about', 'username'] %}
-            <div class="col-lg-6">
+            <div class="col-sm-6">
                 <div class="form-group">
                     <div class="form-row form-inline">
                     <label for="fun" class="col-sm-4 control-label">{{ form[entry.id].label }}:&nbsp</label>
@@ -136,11 +136,11 @@
         </form>
     </div>
     
-         <div class="col-lg-3">
+         <div class="col-md-3">
         </div>
 
         
-        <div class="col-lg-3">
+        <div class="col-md-3">
             <div class="list-group">
                 <a href="#" class="list-group-item">
                     <h4 class="list-group-item-heading">Ads n shit</h4>

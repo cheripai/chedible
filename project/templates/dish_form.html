@@ -23,7 +23,7 @@
         {% else %}
             <legend>Add a dish</legend>
         {% endif %}
-        <div class="col-lg-8">
+        <div class="col-md-8">
             {% if form.errors %}
                 <ul class="errors">
                     {% for field_name, field_errors in form.errors|dictsort if field_errors %}
@@ -111,10 +111,10 @@
             </form>
         </div>
 
-        <div class="col-lg-1">
+        <div class="col-md-1">
         </div>
 
-        <div class="col-lg-3">
+        <div class="col-md-3">
             <div class="list-group">
                 <a href="#" class="list-group-item">
                     <h4 class="list-group-item-heading">Ads n shit</h4>
