@@ -57,7 +57,8 @@ textarea {
 }
 
 .login-modal {
-    padding: 30px;
+    padding-top: 18px;
+    padding-bottom: 18px;
 }
 
 /* --------------------------- Horizontal scrolling field */
