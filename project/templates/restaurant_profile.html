@@ -22,6 +22,9 @@
       $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     </script>
     <div class="container">
+        <div class="col-xs-12">
+            {{ googlemap("map", lat=37.775, lng=-122.418, markers=[(37.7795, -122.4192)], style="height:300px;width:100%;margin:0;") }}
+        </div>
         <div class="col-sm-7">
             <div class="page-header">
                 <h2>
@@ -158,12 +161,11 @@
         <div class="col-xs-hidden col-sm-hidden col-md-1"></div>
 
         <div class="col-sm-5 col-md-4">
-            {{ googlemap("map", lat=37.775, lng=-122.418, markers=[(37.7795, -122.4192)]) }}
             <div class="list-group">
                 <a href="#" class="list-group-item">
                     <h4 class="list-group-item-heading">Ads n shit</h4>
                     <p class="list-group-item-text">
-                        <img src="http://placehold.it/220x400/cccccc/ffffff"/>
+                        <img src="http://placehold.it/220x530/cccccc/ffffff"/>
                     </p>
                 </a>
             </div>
