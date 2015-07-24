@@ -116,6 +116,9 @@ def search(table):
     lng = None
     geocode = 'https://maps.googleapis.com/maps/api/geocode/json?address='
 
+    # Prevent slashes from breaking routing
+    query = ''.join(c for c in g.search_form.query.data if c not in ['/'])
+
     if g.search_form.validate_on_submit():
         if g.search_form.lat.data and g.search_form.lng.data \
            and g.search_form.location.data == 'Current Location':
@@ -132,11 +135,16 @@ def search(table):
                 lng = obj['results'][0]['geometry']['location']['lng']
                 session['location'] = obj['results'][0]
             else:
-                # FIXME: Add proper error handling
-                print('ERROR HERE')
-
-        # Prevent slashes from breaking routing
-        query = ''.join(c for c in g.search_form.query.data if c not in ['/'])
+                return render_template(
+                    'search.html',
+                    query=query,
+                    message='Error: Could not find location {}'.format(
+                        g.search_form.location.data
+                    ),
+                    lat='0',
+                    lng='0',
+                    table=table
+                )
 
         return redirect(url_for(
             'search_results',
