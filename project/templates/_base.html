@@ -38,8 +38,13 @@
                     </button>
                     <a href="{{ url_for('main') }}" class="navbar-brand hidden-xs">chedible</a>
                     <a href="{{ url_for('main') }}" class="navbar-brand visible-xs">c</a>
-
-                    <form class="navbar-form navbar-left" method="post" action="/search/restaurants" id="search_table">
+                    
+                    {% if table %}
+                        <form class="navbar-form navbar-left" method="post" action="/search/{{ table }}" id="search_table">
+                    {% else %}
+                        <form class="navbar-form navbar-left" method="post" action="/search/restaurants" id="search_table">
+                    {% endif %}
+                    
                     {{ g.search_form.csrf_token }}
                         <div class="input-group" id="adv-search">
                             <div class="input-group">
@@ -65,9 +70,19 @@
                                     <div class="form-group">
                                         <label>Filter by:</label>
                                         <div id="radioBtn" class="btn-group table_select">
-                                            <a class="btn btn-primary btn-sm active" data-toggle="search_table" data-title="restaurants">Restaurants</a>
-                                            <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="dishes">Dishes</a>
-                                            <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="users">Users</a>
+                                            {% if table == 'users' %}
+                                                <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="restaurants">Restaurants</a>
+                                                <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="dishes">Dishes</a>
+                                                <a class="btn btn-primary btn-sm active" data-toggle="search_table" data-title="users">Users</a>
+                                            {% elif table == 'dishes' %}
+                                                <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="restaurants">Restaurants</a>
+                                                <a class="btn btn-primary btn-sm active" data-toggle="search_table" data-title="dishes">Dishes</a>
+                                                <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="users">Users</a>
+                                            {% else %}
+                                                <a class="btn btn-primary btn-sm active" data-toggle="search_table" data-title="restaurants">Restaurants</a>
+                                                <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="dishes">Dishes</a>
+                                                <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="users">Users</a>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <label><br>Location:</label>
