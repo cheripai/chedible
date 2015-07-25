@@ -28,11 +28,11 @@ $("[id^=upvote]").click(function(){
         var uparrow = $('#upvote' + index);
         var downarrow = $('#downvote' + index);
         if(count.text() < data.result){
-            uparrow.css('color', '#337AB7');
-            downarrow.css('color', '#777');
+            uparrow.addClass('active');
+            downarrow.removeClass('active');
         }
         else{
-            uparrow.css('color', '#777');
+            uparrow.removeClass('active');
         }
         count.text(data.result);
     });
@@ -49,11 +49,11 @@ $("[id^=downvote]").click(function(){
         var uparrow = $('#upvote' + index);
         var downarrow = $('#downvote' + index);
         if(count.text() > data.result){
-            downarrow.css('color', '#337AB7');
-            uparrow.css('color', '#777');
+            downarrow.addClass('active');
+            uparrow.removeClass('active');
         }
         else{
-            downarrow.css('color', '#777');
+            downarrow.removeClass('active');
         }
         count.text(data.result);
     });
