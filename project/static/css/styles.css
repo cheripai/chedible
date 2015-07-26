@@ -61,7 +61,7 @@ textarea {
     padding-bottom: 18px;
 }
 
-/* --------------------------- Horizontal scrolling field */
+/* Horizontal scrolling field */
 
 div.horizontal {
     width: 100%;
@@ -83,11 +83,6 @@ div.horizontal {
     vertical-align: middle;
     text-align: center;
 }
-
-#r-article:nth-child(2n+2) {
-    background: #F4F5ED;
-}
-
 
 /* Used for navbar search */
 

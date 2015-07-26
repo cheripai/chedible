@@ -21,7 +21,7 @@ def db_create():
     db.configure_mappers()
     db.create_all()
 
-    """
+    '''
     for i in range(50):
         if i % 4 == 0:
             entry = Restaurant('test {}'.format(i), 'vegetarian', '', '', None)
@@ -35,7 +35,7 @@ def db_create():
                          False, False, True, False, True, None, None, None,
                          None, 1, 1)
         db.session.add(entry)
-    """
+    '''
 
     db.session.commit()
 
