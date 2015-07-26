@@ -63,7 +63,7 @@
                 </div>
 
                 {% for entry in form %}
-                    {% if entry.id not in ['csrf_token', 'name', 'price', 'image', 'notes'] %}
+                    {% if entry.id not in ['csrf_token', 'name', 'price', 'image'] %}
                     <div class="col-sm-6">
                         <div class="form-group">
                             <div class="form-row form-inline">
@@ -96,12 +96,6 @@
                     {% endif %}
                 {% endfor %}
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="control-label">{{ form.notes.label }}:</label>
-                        {{ form.notes(placeholder="Special notes for your server", class="form-control", type="text", rows="6") }}
-                    </div>
-                </div>
                 <div class="form-row">
                     <div class="form-group">
                         <hr class="featurette-divider"></hr>

@@ -32,8 +32,8 @@ def db_create():
                          'email{}@email.org'.format(i))
         else:
             entry = Dish('testdish{}'.format(i), '0.00', '', None, True, None,
-                         False, False, True, False, True, None, None, None, None,
-                         '', 1, 1)
+                         False, False, True, False, True, None, None, None,
+                         None, 1, 1)
         db.session.add(entry)
     """
 

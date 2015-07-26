@@ -119,17 +119,6 @@ class AddDishForm(Form):
     shellfish = StringField('Shellfish')
     soy = StringField('Soy')
     wheat = StringField('Wheat')
-    notes = TextAreaField(
-        'Additional Notes',
-        validators=[
-            Optional(),
-            Length(
-                min=2,
-                max=512,
-                message="Must be between 2 and 512 characters"
-            )
-        ]
-    )
 
 
 class SearchForm(Form):

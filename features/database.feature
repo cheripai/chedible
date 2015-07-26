@@ -34,6 +34,12 @@ Scenario: entry is added to Users table
     Then we should see "test" in "users"
 
 
+# Scenario: entry is added to Comments table
+#     Given chedible is set up
+#     When we add "test" to "comments"
+#     Then we should see "test" in "comments"
+
+
 Scenario: entry is updated in Restaurants table
     Given chedible is set up
     When we update "test" in "restaurants" with "test_update"

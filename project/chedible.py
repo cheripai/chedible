@@ -265,8 +265,8 @@ def add_dish(id):
                 stb(form.fish.data), stb(form.gluten.data),
                 stb(form.meat.data), stb(form.nut.data), stb(form.pork.data),
                 stb(form.poultry.data), stb(form.shellfish.data),
-                stb(form.soy.data), stb(form.wheat.data), form.notes.data,
-                id, session['user_id']
+                stb(form.soy.data), stb(form.wheat.data), id,
+                session['user_id']
             )
             new_dish.last_editor = session['user_id']
             db.session.add(new_dish)

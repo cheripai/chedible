@@ -116,7 +116,6 @@ class Dish(db.Model):
     soy = db.Column(db.Boolean, nullable=True)
     wheat = db.Column(db.Boolean, nullable=True)
     score = db.Column(db.Integer)
-    notes = db.Column(db.String, nullable=True)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
     editors = db.relationship(
         'User',
@@ -126,11 +125,12 @@ class Dish(db.Model):
     last_edited = db.Column(db.Integer, nullable=False)
     voters = db.Column(db.PickleType, nullable=True)
     last_editor = db.Column(db.Integer)
+    commenters = db.relationship('Comment', backref='dish')
     search_vector = db.Column(TSVectorType('name'))
 
     def __init__(self, name, price, image, beef, dairy, egg,
                  fish, gluten, meat, nut, pork, poultry, shellfish,
-                 soy, wheat, notes, restaurant_id, user_id):
+                 soy, wheat, restaurant_id, user_id):
         self.name = name
         self.date = datetime.utcnow()
         if price:
@@ -151,7 +151,6 @@ class Dish(db.Model):
         self.soy = soy
         self.wheat = wheat
         self.score = 0
-        self.notes = notes
         self.restaurant_id = restaurant_id
         if user_id is None:
             self.editors = []
@@ -248,3 +247,23 @@ class User(db.Model):
             db.session.add(user)
             db.session.commit()
         return user
+
+
+class Comment(db.Model):
+
+    __tablename__ = "comments"
+
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id'))
+    content = db.Column(db.String, nullable=False)
+
+    def __init__(self, date, user_id, dish_id, content):
+        self.date = datetime.utcnow()
+        self.user_id = user_id
+        self.dish_id = dish_id
+        self.content = content
+
+    def __repr__(self):
+        return '<Comment {}>'.format(self.id)
