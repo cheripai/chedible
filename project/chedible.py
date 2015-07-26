@@ -500,53 +500,53 @@ def split_data(data, cur_page, per_page, total):
 def is_chedible(dish, user):
     chedible = True
 
-    if dish.beef and not user.beef:
+    if dish.beef and user.beef is False:
         chedible = False
-    elif dish.beef is None and not user.beef:
+    elif dish.beef is None and user.beef is False:
         chedible = False
-    elif dish.dairy and not user.dairy:
+    elif dish.dairy and user.dairy is False:
         chedible = False
-    elif dish.dairy is None and not user.dairy:
+    elif dish.dairy is None and user.dairy is False:
         chedible = False
-    elif dish.egg and not user.egg:
+    elif dish.egg and user.egg is False:
         chedible = False
-    elif dish.egg is None and not user.egg:
+    elif dish.egg is None and user.egg is False:
         chedible = False
-    elif dish.fish and not user.fish:
+    elif dish.fish and user.fish is False:
         chedible = False
-    elif dish.fish is None and not user.fish:
+    elif dish.fish is None and user.fish is False:
         chedible = False
-    elif dish.gluten and not user.gluten:
+    elif dish.gluten and user.gluten is False:
         chedible = False
-    elif dish.gluten is None and not user.gluten:
+    elif dish.gluten is None and user.gluten is False:
         chedible = False
-    elif dish.meat and not user.meat:
+    elif dish.meat and user.meat is False:
         chedible = False
-    elif dish.meat is None and not user.meat:
+    elif dish.meat is None and user.meat is False:
         chedible = False
-    elif dish.nut and not user.nut:
+    elif dish.nut and user.nut is False:
         chedible = False
-    elif dish.nut is None and not user.nut:
+    elif dish.nut is None and user.nut is False:
         chedible = False
-    elif dish.pork and not user.pork:
+    elif dish.pork and user.pork is False:
         chedible = False
-    elif dish.pork is None and not user.pork:
+    elif dish.pork is None and user.pork is False:
         chedible = False
-    elif dish.poultry and not user.poultry:
+    elif dish.poultry and user.poultry is False:
         chedible = False
-    elif dish.poultry is None and not user.poultry:
+    elif dish.poultry is None and user.poultry is False:
         chedible = False
-    elif dish.shellfish and not user.shellfish:
+    elif dish.shellfish and user.shellfish is False:
         chedible = False
-    elif dish.shellfish is None and not user.shellfish:
+    elif dish.shellfish is None and user.shellfish is False:
         chedible = False
-    elif dish.soy and not user.soy:
+    elif dish.soy and user.soy is False:
         chedible = False
-    elif dish.soy is None and not user.soy:
+    elif dish.soy is None and user.soy is False:
         chedible = False
-    elif dish.wheat and not user.wheat:
+    elif dish.wheat and user.wheat is False:
         chedible = False
-    elif dish.wheat is None and not user.wheat:
+    elif dish.wheat is None and user.wheat is False:
         chedible = False
 
     return chedible

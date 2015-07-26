@@ -187,7 +187,7 @@ Scenario: we check the chediblity of a dish that contains everything for a user 
     And we set dish "test_dish6" so contains is "True" for attribute/s "everything"
     Then is_chedible should evaluate to False given user "ched test2" and "test_dish6"
 
-Scenario: we check the chediblity of a dish that contains shellfish for a user that can't eat shellfish
+Scenario: we check the chediblity of a dish that contains everything for a user that can't eat shellfish
     Given chedible is set up
     When we add "ched test3" to "users"
     And we set all of user "ched test3" preferences to "True" except for "shellfish"

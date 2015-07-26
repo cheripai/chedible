@@ -81,7 +81,7 @@ def db_user_preferences_all(context, user, boolean, food):
     entry.nut = boolean
     entry.pork = boolean
     entry.poultry = boolean
-    if food is "shellfish":
+    if food == "shellfish":
         entry.shellfish = not boolean
     else:
         entry.shellfish = boolean
