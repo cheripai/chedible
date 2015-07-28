@@ -93,53 +93,51 @@
                             <div class="modal-content">
                                 <form class="form-horizontal">
                                     <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <h4>{{ d.name }}</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <p>
-                                            {% if g.user %}
-                                                {% if d.voters[g.user.id] == True %}
-                                                    <button class="btn btn-primary active" type="button" id="upvote{{ d.id }}">
-                                                        <i class="glyphicon glyphicon-ok"></i>
-                                                    </button>
-                                                    <span id="count{{ d.id }}" hidden> {{ d.score }} </span>
-                                                    <button class="btn btn-danger" type="button" id="downvote{{ d.id }}">
-                                                        <i class="glyphicon glyphicon-remove"></i>
-                                                    </button>
-                                                {% elif d.voters[g.user.id] == False %}
-                                                    <button class="btn btn-primary" type="button" id="upvote{{ d.id }}">
-                                                        <i class="glyphicon glyphicon-ok"></i>
-                                                    </button>
-                                                    <span id="count{{ d.id }}" hidden> {{ d.score }} </span>
-                                                    <button class="btn btn-danger active" type="button" id="downvote{{ d.id }}">
-                                                        <i class="glyphicon glyphicon-remove"></i>
-                                                    </button>
-                                                {% else %}
-                                                    <button class="btn btn-primary" type="button" id="upvote{{ d.id }}">
-                                                        <i class="glyphicon glyphicon-ok"></i>
-                                                    </button>
-                                                    <span id="count{{ d.id }}" hidden> {{ d.score }} </span>
-                                                    <button class="btn btn-danger" type="button" id="downvote{{ d.id }}">
-                                                        <i class="glyphicon glyphicon-remove"></i>
-                                                    </button>
-                                                {% endif %}
-                                            {% else %}
-                                                <a href="#mustlogin" data-toggle="modal" data-dismiss="modal">
-                                                    <button class="btn btn-primary" type="button" id="upvote{{ d.id }}">
-                                                        <i class="glyphicon glyphicon-ok"></i>
-                                                    </button>
-                                                </a>
+                                        <p><textarea class="form-control" type="text" placeholder="Comment"></textarea></p>
+                                        {% if g.user %}
+                                            {% if d.voters[g.user.id] == True %}
+                                                <button class="btn btn-primary active" type="button" id="upvote{{ d.id }}">
+                                                    <i class="glyphicon glyphicon-ok"></i>
+                                                </button>
                                                 <span id="count{{ d.id }}" hidden> {{ d.score }} </span>
-                                                <a href="#mustlogin" data-toggle="modal" data-dismiss="modal">
-                                                    <button class="btn btn-danger" type="button" id="downvote{{ d.id }}">
-                                                        <i class="glyphicon glyphicon-remove"></i>
-                                                    </button>
-                                                </a>
+                                                <button class="btn btn-danger" type="button" id="downvote{{ d.id }}">
+                                                    <i class="glyphicon glyphicon-remove"></i>
+                                                </button>
+                                            {% elif d.voters[g.user.id] == False %}
+                                                <button class="btn btn-primary" type="button" id="upvote{{ d.id }}">
+                                                    <i class="glyphicon glyphicon-ok"></i>
+                                                </button>
+                                                <span id="count{{ d.id }}" hidden> {{ d.score }} </span>
+                                                <button class="btn btn-danger active" type="button" id="downvote{{ d.id }}">
+                                                    <i class="glyphicon glyphicon-remove"></i>
+                                                </button>
+                                            {% else %}
+                                                <button class="btn btn-primary" type="button" id="upvote{{ d.id }}">
+                                                    <i class="glyphicon glyphicon-ok"></i>
+                                                </button>
+                                                <span id="count{{ d.id }}" hidden> {{ d.score }} </span>
+                                                <button class="btn btn-danger" type="button" id="downvote{{ d.id }}">
+                                                    <i class="glyphicon glyphicon-remove"></i>
+                                                </button>
                                             {% endif %}
-                                        </p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <a class="btn btn-default" data-dismiss="modal">Close</a>
+                                        {% else %}
+                                            <a href="#mustlogin" data-toggle="modal" data-dismiss="modal">
+                                                <button class="btn btn-primary" type="button" id="upvote{{ d.id }}">
+                                                    <i class="glyphicon glyphicon-ok"></i>
+                                                </button>
+                                            </a>
+                                            <span id="count{{ d.id }}" hidden> {{ d.score }} </span>
+                                            <a href="#mustlogin" data-toggle="modal" data-dismiss="modal">
+                                                <button class="btn btn-danger" type="button" id="downvote{{ d.id }}">
+                                                    <i class="glyphicon glyphicon-remove"></i>
+                                                </button>
+                                            </a>
+                                        {% endif %}
+                                        <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-share"></i> Post</button>
                                     </div>
                                 </form>
                             </div>
