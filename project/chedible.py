@@ -504,7 +504,7 @@ def split_data(data, cur_page, per_page, total):
         end = total
     return split[begin:end]
 
-# Rudimentary Chedibility algorithm
+
 # If the dish contains an item, and the user does not want the item
 #   Not chedible
 # If the dish might contain the item, and the user does not want the item
@@ -512,55 +512,11 @@ def split_data(data, cur_page, per_page, total):
 # Else
 #   Chedible
 def is_chedible(dish, user):
-    chedible = True
-
-    if dish.beef and user.beef is False:
-        chedible = False
-    elif dish.beef is None and user.beef is False:
-        chedible = False
-    elif dish.dairy and user.dairy is False:
-        chedible = False
-    elif dish.dairy is None and user.dairy is False:
-        chedible = False
-    elif dish.egg and user.egg is False:
-        chedible = False
-    elif dish.egg is None and user.egg is False:
-        chedible = False
-    elif dish.fish and user.fish is False:
-        chedible = False
-    elif dish.fish is None and user.fish is False:
-        chedible = False
-    elif dish.gluten and user.gluten is False:
-        chedible = False
-    elif dish.gluten is None and user.gluten is False:
-        chedible = False
-    elif dish.meat and user.meat is False:
-        chedible = False
-    elif dish.meat is None and user.meat is False:
-        chedible = False
-    elif dish.nut and user.nut is False:
-        chedible = False
-    elif dish.nut is None and user.nut is False:
-        chedible = False
-    elif dish.pork and user.pork is False:
-        chedible = False
-    elif dish.pork is None and user.pork is False:
-        chedible = False
-    elif dish.poultry and user.poultry is False:
-        chedible = False
-    elif dish.poultry is None and user.poultry is False:
-        chedible = False
-    elif dish.shellfish and user.shellfish is False:
-        chedible = False
-    elif dish.shellfish is None and user.shellfish is False:
-        chedible = False
-    elif dish.soy and user.soy is False:
-        chedible = False
-    elif dish.soy is None and user.soy is False:
-        chedible = False
-    elif dish.wheat and user.wheat is False:
-        chedible = False
-    elif dish.wheat is None and user.wheat is False:
-        chedible = False
-
-    return chedible
+    dish = rowtodict(dish)
+    user = rowtodict(user)
+    for entry in ['beef', 'dairy', 'egg', 'fish', 'gluten', 'meat', 'nut',
+                  'pork', 'poultry', 'shellfish', 'soy', 'wheat']:
+        if (dish[entry] == 'True' and user[entry] == 'False') or \
+           (dish[entry] == 'None' and user[entry] == 'False'):
+            return False
+    return True
