@@ -195,7 +195,6 @@ def search_results(table, query, coords, page):
     if not data and page != 1:
         abort(404)
 
-
     return render_template(
         'search.html',
         message=message,
@@ -306,7 +305,7 @@ def edit_restaurant(id):
         restaurant = rowtodict(restaurant)
         for entry in form:
             if entry.id != "csrf_token":
-                form[entry.id].data = restaurant[entry.id]
+                form[entry.id].data = str(restaurant[entry.id])
         return render_template('restaurant_form.html', form=form, id=id)
 
 
@@ -348,10 +347,10 @@ def edit_dish(restaurant_id, dish_id):
         dish = rowtodict(dish)
         for entry in form:
             if entry.id == 'price':
-                form[entry.id].data = dish[entry.id].replace('$', '').\
+                form[entry.id].data = str(dish[entry.id]).replace('$', '').\
                     replace(',', '')
             elif entry.id != "csrf_token":
-                form[entry.id].data = dish[entry.id]
+                form[entry.id].data = str(dish[entry.id])
         return render_template(
             'dish_form.html',
             form=form,
@@ -490,7 +489,7 @@ def stb(s):
 def rowtodict(row):
     d = {}
     for column in row.__table__.columns:
-        d[column.name] = str(getattr(row, column.name))
+        d[column.name] = getattr(row, column.name)
     return d
 
 
@@ -516,7 +515,7 @@ def is_chedible(dish, user):
     user = rowtodict(user)
     for entry in ['beef', 'dairy', 'egg', 'fish', 'gluten', 'meat', 'nut',
                   'pork', 'poultry', 'shellfish', 'soy', 'wheat']:
-        if (dish[entry] == 'True' and user[entry] == 'False') or \
-           (dish[entry] == 'None' and user[entry] == 'False'):
+        if (dish[entry] and not user[entry]) or \
+           (dish[entry] is None and not user[entry]):
             return False
     return True
