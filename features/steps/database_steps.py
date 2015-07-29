@@ -141,10 +141,10 @@ def db_delete_check(context, text, table):
 def db_check_value(context, value, column, table, id):
     if table == "restaurants":
         entry = rowtodict(Restaurant.query.filter_by(id=id).first())
-        assert entry[column] == value
+        assert str(entry[column]) == value
     elif table == "dishes":
         entry = rowtodict(Dish.query.filter_by(id=id).first())
-        assert entry[column] == value
+        assert str(entry[column]) == value
     else:
         entry = rowtodict(User.query.filter_by(id=id).first())
-        assert entry[column] == value
+        assert str(entry[column]) == value
