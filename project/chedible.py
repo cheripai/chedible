@@ -13,6 +13,7 @@
 #    limitations under the License.
 
 
+from datetime import datetime
 from flask import render_template, abort, redirect, url_for, request, flash
 from flask import session, g, jsonify
 from functools import wraps
@@ -22,7 +23,7 @@ from project import app, db
 from project.forms import AddRestaurantForm, AddDishForm, SearchForm
 from project.forms import EditUserForm
 from project.pagination import Pagination
-from project.schema import Restaurant, Dish, User
+from project.schema import Restaurant, Dish, User, Comment
 from time import time
 from urllib.request import urlopen
 
@@ -471,6 +472,19 @@ def vote():
     dish.update({'voters': voters})
     db.session.commit()
     return jsonify(result=dish.first().score)
+
+
+@app.route('/comment')
+def comment():
+    content = request.args.get('content', type=str)
+    id = request.args.get('id', type=int)
+    if Dish.query.filter_by(id=id).first() is None or g.user is None:
+        abort(404)
+    new_comment = Comment(g.user.id, id, content)
+    db.session.add(new_comment)
+    db.session.commit()
+    date = new_comment.date
+    return jsonify(date='{}-{}-{}'.format(date.month, date.day, date.year))
 
 
 # Convert string value from HTML form to boolean value

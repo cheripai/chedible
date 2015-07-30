@@ -1,5 +1,5 @@
-from flask import Flask, session, g, abort
-from flask_admin import Admin, AdminIndexView, BaseView, expose
+from flask import session, g, abort
+from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from project import app, db
 from project.schema import *
@@ -32,7 +32,7 @@ class ModelView(ModelView):
 
 
 class RestaurantView(ModelView):
-    
+
     can_create = False
     column_list = ('id', 'name', 'category', 'image', 'dishes', 'tags', 'editors', 'last_editor', 'last_edited')
 
@@ -41,7 +41,7 @@ class RestaurantView(ModelView):
 
 
 class DishView(ModelView):
-    
+
     can_create = False
     column_list = ('id', 'name', 'price', 'image', 'beef', 'dairy', 'egg',
                    'fish', 'gluten', 'meat', 'nut', 'pork', 'poultry', 'shellfish',
@@ -52,16 +52,26 @@ class DishView(ModelView):
 
 
 class UserView(ModelView):
-    
+
     can_create = False
-    column_list= ('id', 'name', 'username', 'email', 'image', 'about', 'score',
+    column_list = ('id', 'name', 'username', 'email', 'image', 'about', 'score',
                   'restaurants', 'dishes', 'is_admin', 'is_banned', 'last_edited')
 
     def __init__(self, session, **kwargs):
         super(UserView, self).__init__(User, session, **kwargs)
-        
+
+
+class CommentView(ModelView):
+
+    can_create = False
+    column_list = ('id', 'date', 'user_id', 'dish_id', 'content')
+
+    def __init__(self, session, **kwargs):
+        super(CommentView, self).__init__(Comment, session, **kwargs)
+
 
 admin = Admin(app, name='Admin', index_view=AdminHomeView())
 admin.add_view(RestaurantView(db.session, name='Restaurants', category='Database'))
 admin.add_view(DishView(db.session, name='Dishes', category='Database'))
 admin.add_view(UserView(db.session, name='Users', category='Database'))
+admin.add_view(CommentView(db.session, name='Comments', category='Database'))

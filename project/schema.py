@@ -259,7 +259,7 @@ class Comment(db.Model):
     dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id'))
     content = db.Column(db.String, nullable=False)
 
-    def __init__(self, date, user_id, dish_id, content):
+    def __init__(self, user_id, dish_id, content):
         self.date = datetime.utcnow()
         self.user_id = user_id
         self.dish_id = dish_id

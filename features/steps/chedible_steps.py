@@ -77,6 +77,7 @@ def text(context, text):
 def not_text(context, text):
     assert text not in str(context.page.data)
 
+
 @then('is_chedible should evaluate to True given user "{user}" and "{dish}"')
 def is_chedible_eval(context, user, dish):
     
@@ -85,6 +86,7 @@ def is_chedible_eval(context, user, dish):
 
     chedibility = chedible.is_chedible(dish_result, user_result)
     assert chedibility
+
 
 @then('is_chedible should evaluate to False given user "{user}" and "{dish}"')
 def is_chedible_eval(context, user, dish):

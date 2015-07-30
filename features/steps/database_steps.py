@@ -17,7 +17,7 @@ from behave import *
 import parse
 
 from project.chedible import rowtodict
-from project.schema import Restaurant, Dish, User
+from project.schema import Restaurant, Dish, User, Comment
 
 
 @when(u'we add "{text}" to "{table}"')
@@ -27,8 +27,10 @@ def db_add(context, text, table):
     elif table == "dishes":
         entry = Dish(text, 0.00, '', None, None, None, None, None,
                      None, None, None, None, None, None, None, None, None)
-    else:
+    elif table == "users":
         entry = User(text, '', '', '')
+    elif table == "comments":
+        entry = Comment(None, None, text)
     context.db.session.add(entry)
     context.db.session.commit()
 
@@ -39,8 +41,10 @@ def db_delete(context, text, table):
         entry = context.db.session.query(Restaurant).filter_by(name=text)
     elif table == "dishes":
         entry = context.db.session.query(Dish).filter_by(name=text)
-    else:
+    elif table == "users":
         entry = context.db.session.query(User).filter_by(name=text)
+    elif table == "comments":
+        entry = context.db.session.query(Comment).filter_by(content=text)
     assert entry.first() is not None
     entry.delete()
     context.db.session.commit()
@@ -50,11 +54,16 @@ def db_delete(context, text, table):
 def db_update(context, text, text_update, table):
     if table == "restaurants":
         entry = context.db.session.query(Restaurant).filter_by(name=text)
+        entry.first().name = text_update
     elif table == "dishes":
         entry = context.db.session.query(Dish).filter_by(name=text)
-    else:
+        entry.first().name = text_update
+    elif table == "users":
         entry = context.db.session.query(User).filter_by(name=text)
-    entry.first().name = text_update
+        entry.first().name = text_update
+    elif table == "comments":
+        entry = context.db.session.query(Comment).filter_by(content=text)
+        entry.first().content = text_update
     context.db.session.commit()
 
 
@@ -63,6 +72,7 @@ def db_user_column_update(context, username, text):
     entry = context.db.session.query(User).filter_by(name=text)
     entry.first().username = username
     context.db.session.commit()
+
 
 @when(u'we set all of user "{user}" preferences to "{boolean}" except for "{food}"')
 def db_user_preferences_all(context, user, boolean, food):
@@ -89,6 +99,7 @@ def db_user_preferences_all(context, user, boolean, food):
     entry.wheat = boolean
 
     context.db.session.commit()
+
 
 @when(u'we set dish "{dish}" so contains is "{boolean}" for attribute/s "{food_attrs}"')
 def db_dish_attributes_all(context, dish, boolean, food_attrs):
@@ -123,8 +134,10 @@ def db_add_check(context, text, table):
         assert context.db.session.query(Restaurant).filter_by(name=text).first() is not None
     elif table == "dishes":
         assert context.db.session.query(Dish).filter_by(name=text).first() is not None
-    else:
+    elif table == "users":
         assert context.db.session.query(User).filter_by(name=text).first() is not None
+    elif table == "comments":
+        assert context.db.session.query(Comment).filter_by(content=text).first() is not None
 
 
 @then(u'we should not see "{text}" in "{table}"')
@@ -133,8 +146,10 @@ def db_delete_check(context, text, table):
         assert context.db.session.query(Restaurant).filter_by(name=text).first() is None
     elif table == "dishes":
         assert context.db.session.query(Dish).filter_by(name=text).first() is None
-    else:
+    elif table == "users":
         assert context.db.session.query(User).filter_by(name=text).first() is None
+    elif table == "comments":
+        assert context.db.session.query(Comment).filter_by(content=text).first() is None
 
 
 @then(u'we should see "{value}" as the "{column}" of "{table}" "{id}"')
@@ -145,6 +160,9 @@ def db_check_value(context, value, column, table, id):
     elif table == "dishes":
         entry = rowtodict(Dish.query.filter_by(id=id).first())
         assert str(entry[column]) == value
-    else:
+    elif table == "users":
         entry = rowtodict(User.query.filter_by(id=id).first())
+        assert str(entry[column]) == value
+    elif table == "comments":
+        entry = rowtodict(Comment.query.filter_by(id=id).first())
         assert str(entry[column]) == value

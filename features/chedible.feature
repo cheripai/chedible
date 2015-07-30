@@ -131,6 +131,7 @@ Scenario: we can view a user's profile
     And we visit "/user/1"
     Then we should see the text "Joined on"
 
+
 Scenario: we can edit a user's profile
     Given chedible is set up
     When we log in
@@ -139,6 +140,7 @@ Scenario: we can edit a user's profile
     And we visit "/user/1"
     Then we should see "1337user" as the "username" of "users" "1"
     And we should see the text "1337user"
+
 
 Scenario: we can upvote a dish
     Given chedible is set up
@@ -170,6 +172,20 @@ Scenario: we can remove a downvote on a dish
     And we visit "/vote?vote=downvote&id=4"
     And we visit "/vote?vote=downvote&id=4"
     Then we should see "0" as the "score" of "dishes" "4"
+
+
+Scenario: we can comment on a dish
+    Given chedible is set up
+    When we log in
+    And we visit "/comment?content=Test&id=1"
+    Then we should see "Test" as the "content" of "comments" "1"
+
+
+Scenario: we can comment using escaped reserved characters on a dish
+    Given chedible is set up
+    When we log in
+    And we visit "/comment?content=Test %26 stuff'%3B&id=1"
+    Then we should see "Test & stuff';" as the "content" of "comments" "2"
 
 
 Scenario: we check the chediblity of a dish that contains nothing for a user that will eat anything
