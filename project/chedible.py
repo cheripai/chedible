@@ -425,7 +425,7 @@ def edit_user(id):
             elif entry.id == "about":
                 form.about.data = user.about
             elif entry.id != "csrf_token":
-                form[entry.id].data = user_dict[entry.id]
+                form[entry.id].data = str(user_dict[entry.id])
 
     return render_template(
         'edit_user.html',
