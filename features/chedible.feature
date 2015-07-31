@@ -174,6 +174,13 @@ Scenario: we can remove a downvote on a dish
     Then we should see "0" as the "score" of "dishes" "4"
 
 
+Scenario: we cannot vote when not logged in
+    Given chedible is set up
+    When we log out
+    And we visit "/vote?vote=downvote&id=4"
+    Then we should see the text "404"
+
+
 Scenario: we can comment on a dish
     Given chedible is set up
     When we log in
@@ -188,8 +195,16 @@ Scenario: we can comment using escaped reserved characters on a dish
     Then we should see "Test & stuff';" as the "content" of "comments" "2"
 
 
+Scenario: we cannot comment when not logged in
+    Given chedible is set up
+    When we log out
+    And we visit "/comment?content=Test&id=1"
+    Then we should see the text "404"
+
+
 Scenario: we check the chediblity of a dish that contains nothing for a user that will eat anything
     Given chedible is set up
+    When we log in
     When we add "ched test" to "users"
     And we set all of user "ched test" preferences to "True" except for "none"
     And we add dish "test_dish5" to restaurant "test2"
