@@ -478,7 +478,8 @@ def vote():
 def comment():
     content = request.args.get('content', type=str)
     id = request.args.get('id', type=int)
-    if Dish.query.filter_by(id=id).first() is None or g.user is None:
+    if Dish.query.filter_by(id=id).first() is None or \
+            g.user is None or not content:
         abort(404)
     new_comment = Comment(g.user.id, id, content)
     db.session.add(new_comment)

@@ -202,6 +202,13 @@ Scenario: we cannot comment when not logged in
     Then we should see the text "404"
 
 
+Scenario: comment must contain text
+    Given chedible is set up
+    When we log in
+    And we visit "/comment?content=&id=1"
+    Then we should see the text "404"
+
+
 Scenario: we check the chediblity of a dish that contains nothing for a user that will eat anything
     Given chedible is set up
     When we log in
