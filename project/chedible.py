@@ -13,7 +13,6 @@
 #    limitations under the License.
 
 
-from datetime import datetime
 from flask import render_template, abort, redirect, url_for, request, flash
 from flask import session, g, jsonify
 from functools import wraps
@@ -244,6 +243,7 @@ def restaurant_profile(id, page):
         order_by(Dish.score.desc()).order_by(Dish.last_edited.desc())
     if dishes.first() is not None:
         message = ""
+    comments = [Comment.query.filter_by(dish_id=d.id).order_by(Comment.id.desc()) for d in dishes]
     pagination = Pagination(page, PER_PAGE, dishes.count())
     dishes = split_data(dishes, page, PER_PAGE, dishes.count())
     if not dishes and page != 1:
@@ -254,7 +254,9 @@ def restaurant_profile(id, page):
         message=message,
         restaurant=restaurant,
         dishes=dishes,
-        pagination=pagination
+        pagination=pagination,
+        comments=comments,
+        User=User
     )
 
 

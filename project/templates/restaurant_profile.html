@@ -139,26 +139,29 @@
                                         {% endif %}
                                         <button type="button" class="btn btn-primary pull-right"><i class="fa fa-share"></i> Post</button>
                                         <hr class="featurette-divider"></hr>
-                                        <ul class="media-list">
-                                            <li class="media">
-                                                <span class="pull-left">
-                                                    <img class="media-object img-circle" width="64" height="64" src="{{ g.user.image }}"></img>
-                                                </span>
-                                                <div class="media-body">
-                                                    <div class="well well-lg">
-                                                        <h6 class="media-date pull-right">July 29, 2015</h6>
-                                                        {% if g.user.username %}
-                                                            <h4 class="media-heading">{{ g.user.username }}</h4>
-                                                        {% else %}
-                                                            <h4 class="media-heading">{{ g.user.name }}</h4>
-                                                        {% endif %} 
-                                                        <p class="media-comment">
-                                                            This is a comment.
-                                                        </p>
-                                                    </div>              
-                                                </div>
-                                            </li>
-                                        </ul>
+                                        {% for c in comments[((pagination.page-1) * pagination.per_page + loop.index) - 1] %}
+                                            {% set user = User.query.filter_by(id=c.user_id).first() %}
+                                            <ul class="media-list">
+                                                <li class="media">
+                                                    <span class="pull-left">
+                                                        <br><img class="media-object img-circle" width="64" height="64" src="{{ user.image }}"></img>
+                                                    </span>
+                                                    <div class="media-body">
+                                                        <div class="well well-lg">
+                                                            <h6 class="media-date pull-right">{{ c.date }}</h6>
+                                                            {% if user.username %}
+                                                                <h4 class="media-heading">{{ user.username }}</h4>
+                                                            {% else %}
+                                                                <h4 class="media-heading">{{ user.name }}</h4>
+                                                            {% endif %} 
+                                                            <p class="media-comment">
+                                                                {{ c.content }}
+                                                            </p>
+                                                        </div>              
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        {% endfor %}
                                     </div>
                                 </form>
                             </div>
