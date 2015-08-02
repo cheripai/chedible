@@ -142,3 +142,14 @@ div.horizontal {
 #indexCarousel .nav a {
     border-radius: 0px;
 }
+
+/* Float two tables side by side */
+table.lefttable {
+    float:left;
+    width:45%;   
+}
+
+table.righttable {
+    width:45%;
+    float:right;
+}
