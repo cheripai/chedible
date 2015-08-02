@@ -52,7 +52,7 @@
             </div>
 
 
-                 <div class="col-lg-9 col-md-9 col-sm-9">
+                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">About:</h3>
@@ -63,35 +63,51 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-md-3 col-sm-3">
+                <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">Preferences:</h3>
                         </div>
                         <div class="panel-body">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered lefttable">
                                 {% for o in user_opts %}
-
                                     <tr>
-                                        <td> {{ o[0].title() }} </td>
-                                    {% if o[1] == True %}
-                                        <td class="success"> <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> </td>
-                                    {% elif o[1] == False %}
-                                        <td class="danger"> <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </td>
-                                    {% elif o[1] == None %}
-                                        <td> <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> </td>
-                                    {% endif %}
+                                        {% if loop.index % 2 != 0 %}
+                                            <td> {{ o[0].title() }} </td>
+                                            {% if o[1] == True %}
+                                                <td class="success"> <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> </td>
+                                            {% elif o[1] == False %}
+                                                <td class="danger"> <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </td>
+                                            {% elif o[1] == None %}
+                                                <td> <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> </td>
+                                            {% endif %}
+                                        {% endif %}
                                     </tr>
-
                                 {% endfor %}
+                            </table>
 
+                            <table class="table table-bordered righttable">
+                                {% for o in user_opts %}
+                                    <tr>
+                                        {% if loop.index % 2 == 0 %}
+                                                <td> {{ o[0].title() }} </td>
+                                            {% if o[1] == True %}
+                                                <td class="success"> <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> </td>
+                                            {% elif o[1] == False %}
+                                                <td class="danger"> <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </td>
+                                            {% elif o[1] == None %}
+                                                <td> <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> </td>
+                                            {% endif %}
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
                             </table>
                         </div>
                     </div>
                 </div>
 
             
-        <h2 class="page-header" style="margin-top: 0px">
+        <h2 class="page-header col-md-9">
             Restaurants
         </h2>
 
@@ -120,7 +136,7 @@
             </div>
         </div>
 
-        <h2 class="page-header" style="margin-top: 0px">
+        <h2 class="page-header col-md-9">
             Dishes
         </h2>
 
