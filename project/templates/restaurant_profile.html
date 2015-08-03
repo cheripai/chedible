@@ -148,7 +148,7 @@
                                                     </span>
                                                     <div class="media-body">
                                                         <div class="well well-lg">
-                                                            <h6 class="media-date pull-right">{{ c.date }}</h6>
+                                                            <h6 class="media-date pull-right">{{ c.date.strftime("%B %d, %Y") }}</h6>
                                                             {% if user.username %}
                                                                 <h4 class="media-heading">{{ user.username }}</h4>
                                                             {% else %}
