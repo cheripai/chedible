@@ -126,18 +126,24 @@
                                             {% endif %}
                                         {% else %}
                                             <a href="#mustlogin" data-toggle="modal" data-dismiss="modal">
-                                                <button class="btn btn-primary" type="button" id="upvote{{ d.id }}">
+                                                <button class="btn btn-primary" type="button">
                                                     <i class="glyphicon glyphicon-ok"></i>
                                                 </button>
                                             </a>
                                             <span id="count{{ d.id }}" hidden> {{ d.score }} </span>
                                             <a href="#mustlogin" data-toggle="modal" data-dismiss="modal">
-                                                <button class="btn btn-danger" type="button" id="downvote{{ d.id }}">
+                                                <button class="btn btn-danger" type="button">
                                                     <i class="glyphicon glyphicon-remove"></i>
                                                 </button>
                                             </a>
                                         {% endif %}
-                                        <button type="button" class="btn btn-primary pull-right" id="post{{ d.id }}"><i class="fa fa-share"></i> Post</button>
+                                        {% if g.user %}
+                                            <button type="button" class="btn btn-primary pull-right" id="post{{ d.id }}"><i class="fa fa-share"></i> Post</button>
+                                        {% else %}
+                                            <a href="#mustlogin" data-toggle="modal" data-dismiss="modal">
+                                                <button type="button" class="btn btn-primary pull-right"><i class="fa fa-share"></i> Post</button>
+                                            </a>
+                                        {% endif %}
                                         <hr class="featurette-divider"></hr>
                                         <ul class="media-list">
                                             <span id="hidden-comment{{ d.id }}" hidden>{{ comment(g.user, "", "", d.id, 1) }}</span>
