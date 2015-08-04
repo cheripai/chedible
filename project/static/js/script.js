@@ -85,6 +85,7 @@ $(document).ready( function() {
 	});
 });
 
+
 /* Prevents #search_ddm from closing when clicking inside of it */
 $('#search_ddm').on('click', function(event){
     var events = $._data(document, 'events') || {};
@@ -159,5 +160,25 @@ $(document).ready(function(){
             oldRSB.apply(this);
             $('.navbar-fixed-top, .navbar-fixed-bottom').css('padding-right', '');
         }
+    });
+});
+
+
+/* For posting comment to dish modal */
+$("[id^=post]").click(function(){
+    var index = parseInt($(this).attr('id').replace('post', ''), 10);
+    var content = $('#content'+index).val();
+    // Convert string to url valid characters here
+    $.getJSON($SCRIPT_ROOT + '/comment', {
+        content: content,
+        id: index
+    }, function(data) {
+        $('#hidden-content'+index).text(content);
+        $('#hidden-comment'+index).removeAttr('hidden');
+        $('#content'+index).val('');
+        $('#content'+index).attr('disabled', 'disabled');
+        $('#content'+index).attr('placeholder', 'Submitted!');
+        $('#post'+index).attr('disabled', true);
+        // alert(data)
     });
 });

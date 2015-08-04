@@ -97,7 +97,7 @@
                                         <h4>{{ d.name }}</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <p><textarea class="form-control" type="text" placeholder="Comment"></textarea></p>
+                                        <p><textarea class="form-control" type="text" placeholder="Comment" id="content{{ d.id }}"></textarea></p>
                                         {% if g.user %}
                                             {% if d.voters[g.user.id] == True %}
                                                 <button class="btn btn-primary active" type="button" id="upvote{{ d.id }}">
@@ -137,31 +137,15 @@
                                                 </button>
                                             </a>
                                         {% endif %}
-                                        <button type="button" class="btn btn-primary pull-right"><i class="fa fa-share"></i> Post</button>
+                                        <button type="button" class="btn btn-primary pull-right" id="post{{ d.id }}"><i class="fa fa-share"></i> Post</button>
                                         <hr class="featurette-divider"></hr>
-                                        {% for c in comments[((pagination.page-1) * pagination.per_page + loop.index) - 1] %}
-                                            {% set user = User.query.filter_by(id=c.user_id).first() %}
-                                            <ul class="media-list">
-                                                <li class="media">
-                                                    <span class="pull-left">
-                                                        <br><img class="media-object img-circle" width="64" height="64" src="{{ user.image }}"></img>
-                                                    </span>
-                                                    <div class="media-body">
-                                                        <div class="well well-lg">
-                                                            <h6 class="media-date pull-right">{{ c.date.strftime("%B %d, %Y") }}</h6>
-                                                            {% if user.username %}
-                                                                <h4 class="media-heading">{{ user.username }}</h4>
-                                                            {% else %}
-                                                                <h4 class="media-heading">{{ user.name }}</h4>
-                                                            {% endif %} 
-                                                            <p class="media-comment">
-                                                                {{ c.content }}
-                                                            </p>
-                                                        </div>              
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        {% endfor %}
+                                        <ul class="media-list">
+                                            <span id="hidden-comment{{ d.id }}" hidden>{{ comment(g.user, "", "", d.id, 1) }}</span>
+                                            {% for c in comments[((pagination.page-1) * pagination.per_page + loop.index) - 1] %}
+                                                {% set user = User.query.filter_by(id=c.user_id).first() %}
+                                                {{ comment(user, c.date.strftime("%B %d, %Y"), c.content, d.id) }}
+                                            {% endfor %}
+                                        </ul>
                                     </div>
                                 </form>
                             </div>
@@ -214,3 +198,30 @@
     </div>
 
 {% endblock %}
+
+
+
+{% macro comment(user, date, content, id, hidden=0) -%}
+    <li class="media">
+        <span class="pull-left">
+            <br><img class="media-object img-circle" width="64" height="64" src="{{ user.image }}"></img>
+        </span>
+        <div class="media-body">
+            <div class="well well-lg">
+                <h6 class="media-date pull-right">{{ date }}</h6>
+                {% if user.username %}
+                    <h4 class="media-heading">{{ user.username }}</h4>
+                {% else %}
+                    <h4 class="media-heading">{{ user.name }}</h4>
+                {% endif %} 
+                {% if hidden == 1 %}
+                    <p class="media-comment" id="hidden-content{{ id }}">
+                {% else %}
+                    <p class="media-comment">
+                {% endif %}
+                    {{ content }}
+                </p>
+            </div>              
+        </div>
+    </li>
+{%- endmacro %}
