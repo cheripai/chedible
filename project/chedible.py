@@ -487,8 +487,8 @@ def comment():
     new_comment = Comment(g.user.id, id, content)
     db.session.add(new_comment)
     db.session.commit()
-    date = new_comment.date
-    return jsonify(date='{}-{}-{}'.format(date.month, date.day, date.year))
+    date = new_comment.date.strftime("%B %d, %Y")
+    return jsonify(date=date)
 
 
 # Convert string value from HTML form to boolean value

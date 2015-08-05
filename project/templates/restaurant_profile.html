@@ -214,7 +214,11 @@
         </span>
         <div class="media-body">
             <div class="well well-lg">
-                <h6 class="media-date pull-right">{{ date }}</h6>
+                {% if hidden == 1 %}
+                    <h6 class="media-date pull-right" id="hidden-date{{ id }}">{{ date }}</h6>
+                {% else %}
+                    <h6 class="media-date pull-right">{{ date }}</h6>
+                {% endif %}
                 {% if user.username %}
                     <h4 class="media-heading">{{ user.username }}</h4>
                 {% else %}

@@ -179,6 +179,6 @@ $("[id^=post]").click(function(){
         $('#content'+index).attr('disabled', 'disabled');
         $('#content'+index).attr('placeholder', 'Submitted!');
         $('#post'+index).attr('disabled', true);
-        // alert(data)
+        $('#hidden-date'+index).text(data.date);
     });
 });
