@@ -168,9 +168,9 @@ $(document).ready(function(){
 $("[id^=post]").click(function(){
     var index = parseInt($(this).attr('id').replace('post', ''), 10);
     var content = $('#content'+index).val();
-    // Convert string to url valid characters here
+    encoded_content = encodeURIComponent(content).replace(/[!'()]/g, escape).replace(/\*/g, "%2A");
     $.getJSON($SCRIPT_ROOT + '/comment', {
-        content: content,
+        content: encoded_content,
         id: index
     }, function(data) {
         $('#hidden-content'+index).text(content);

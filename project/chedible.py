@@ -24,6 +24,7 @@ from project.forms import EditUserForm
 from project.pagination import Pagination
 from project.schema import Restaurant, Dish, User, Comment
 from time import time
+from urllib.parse import unquote
 from urllib.request import urlopen
 
 
@@ -478,7 +479,7 @@ def vote():
 
 @app.route('/comment')
 def comment():
-    content = request.args.get('content', type=str)
+    content = unquote(request.args.get('content', type=str))
     id = request.args.get('id', type=int)
     if Dish.query.filter_by(id=id).first() is None or \
             g.user is None or not content:
