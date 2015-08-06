@@ -111,27 +111,6 @@ div.horizontal {
     box-shadow: none;
 }
 
-
-/* Vertical centering modal */
-
-.modal {
-  text-align: center;
-}
-
-.modal:before {
-  display: inline-block;
-  vertical-align: middle;
-  content: " ";
-  height: 100%;
-}
-
-.modal-dialog {
-  display: inline-block;
-  text-align: left;
-  vertical-align: middle;
-  top: -15%;
-}
-
 /* Carousel on index page */
 #indexCarousel .nav a small {
     display: block;
