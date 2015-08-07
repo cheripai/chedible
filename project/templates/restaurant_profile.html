@@ -27,22 +27,26 @@
         </div>
         <div class="col-sm-7">
             <div class="page-header">
-                <h2>
-                    {% if restaurant.image %}
-                        <img src="{{ restaurant.image }}" class="img-thumbnail" height="200" width="200"/>
-                    {% else %}
-                        <img class="img-thumbnail" src="http://www.indre-reisid.ee/wp-content/themes/envision/lib/images/default-placeholder.png" height="200" width="200"/>
-                    {% endif %}
-                    {{ restaurant.name }}
-                    {% if g.user %}
-                        <small><small><a href="{{ url_for('edit_restaurant', id=restaurant.id) }}">Edit</a></small></small>
-                    {% endif %}
-                </h2>
-                {% if g.user %}
-                    <a href="{{ url_for('add_dish', id=restaurant.id) }}"><button type="button" class="btn btn-primary">Add a dish</button></a>
-                {% else %}
-                    <a href="#mustlogin" data-toggle="modal"><button type="button" class="btn btn-primary">Add a dish</button></a>
-                {% endif %}
+                <div class="row">
+                    <div class="col-sm-7">
+                        {% if restaurant.image %}
+                            <img src="{{ restaurant.image }}" class="img-thumbnail" height="200" width="200"/>
+                        {% else %}
+                            <img class="img-thumbnail" src="http://www.indre-reisid.ee/wp-content/themes/envision/lib/images/default-placeholder.png" height="200" width="200"/>
+                        {% endif %}
+                        <h1>
+                            {{ restaurant.name }}
+                            {% if g.user %}
+                                <small><small><a href="{{ url_for('edit_restaurant', id=restaurant.id) }}">Edit</a></small></small>
+                            {% endif %}
+                        </h1>
+                        {% if g.user %}
+                            <a href="{{ url_for('add_dish', id=restaurant.id) }}"><button type="button" class="btn btn-primary">Add a dish</button></a>
+                        {% else %}
+                            <a href="#mustlogin" data-toggle="modal"><button type="button" class="btn btn-primary">Add a dish</button></a>
+                        {% endif %}
+                    </div>
+                </div>   
             </div>  
             <p>{{ message }}</p>
             <div class="media">
