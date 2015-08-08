@@ -32,6 +32,9 @@ from urllib.request import urlopen
 MAX_USERNAME_LENGTH = 12
 MAX_QUERIES = 100
 PER_PAGE = 5
+CONTENTS = ['beef', 'dairy', 'egg', 'fish',
+            'gluten', 'meat', 'nut', 'pork',
+            'poultry', 'shellfish', 'soy', 'wheat']
 
 
 # This function runs before each request
@@ -62,7 +65,8 @@ def load_search_form():
     if not g.search_form.location.data:
         if 'location' in session:
             # Sets the location input as the last searched location
-            g.search_form.location.data = session['location']['address_components'][0]['long_name']
+            g.search_form.location.data = \
+                session['location']['address_components'][0]['long_name']
         else:
             # If no location data available, use San Francisco
             g.search_form.location.data = 'San Francisco'
@@ -244,7 +248,10 @@ def restaurant_profile(id, page):
         order_by(Dish.score.desc()).order_by(Dish.last_edited.desc())
     if dishes.first() is not None:
         message = ""
-    comments = [Comment.query.filter_by(dish_id=d.id).order_by(Comment.id.desc()) for d in dishes]
+    comments = [
+        Comment.query.filter_by(dish_id=d.id).order_by(Comment.id.desc())
+        for d in dishes
+    ]
     pagination = Pagination(page, PER_PAGE, dishes.count())
     dishes = split_data(dishes, page, PER_PAGE, dishes.count())
     if not dishes and page != 1:
@@ -322,9 +329,7 @@ def edit_dish(restaurant_id, dish_id):
         if form.validate_on_submit():
             dish = Dish.query.filter_by(id=dish_id)
             for entry in form:
-                if entry.id in ['beef', 'dairy', 'egg', 'fish', 'gluten',
-                                'meat', 'nut', 'pork', 'poultry',
-                                'shellfish', 'soy', 'wheat']:
+                if entry.id in CONTENTS:
                     dish.update({entry.id: stb(form[entry.id].data)})
                 elif entry.id == 'price' and form[entry.id].data:
                     dish.update({entry.id: currency(float(form[entry.id].data),
@@ -343,7 +348,8 @@ def edit_dish(restaurant_id, dish_id):
             form=form,
             id=restaurant_id,
             dish_id=dish_id
-        )
+        )['beef', 'dairy', 'egg', 'fish', 'gluten', 'meat', 'nut',
+                  'pork', 'poultry', 'shellfish', 'soy', 'wheat']
     if request.method == 'GET':
         dish = Dish.query.filter_by(id=dish_id).first()
         if dish is None:
@@ -409,9 +415,7 @@ def edit_user(id):
         if form.validate_on_submit():
             user = User.query.filter_by(id=id)
             for entry in form:
-                if entry.id in ['beef', 'dairy', 'egg', 'fish', 'gluten',
-                                'meat', 'nut', 'pork', 'poultry',
-                                'shellfish', 'soy', 'wheat']:
+                if entry.id in CONTENTS:
                     user.update({entry.id: stb(form[entry.id].data)})
                 elif entry.id != 'csrf_token':
                     user.update({entry.id: form[entry.id].data})
@@ -531,8 +535,7 @@ def split_data(data, cur_page, per_page, total):
 def is_chedible(dish, user):
     dish = rowtodict(dish)
     user = rowtodict(user)
-    for entry in ['beef', 'dairy', 'egg', 'fish', 'gluten', 'meat', 'nut',
-                  'pork', 'poultry', 'shellfish', 'soy', 'wheat']:
+    for entry in CONTENTS:
         if (dish[entry] and not user[entry]) or \
            (dish[entry] is None and not user[entry]):
             return False
