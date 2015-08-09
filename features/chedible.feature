@@ -174,6 +174,20 @@ Scenario: we can remove a downvote on a dish
     Then we should see "0" as the "score" of "dishes" "4"
 
 
+Scenario: vote must contain id
+    Given chedible is set up
+    When we log in
+    And we visit "/vote?vote=upvote&id="
+    Then we should see the text "404"
+
+
+Scenario: vote must contain type of vote
+    Given chedible is set up
+    When we log in
+    And we visit "/vote?vote=&id=4"
+    Then we should see the text "404"
+
+
 Scenario: we cannot vote when not logged in
     Given chedible is set up
     When we log out
@@ -206,6 +220,13 @@ Scenario: comment must contain text
     Given chedible is set up
     When we log in
     And we visit "/comment?content=&id=1"
+    Then we should see the text "404"
+
+
+Scenario: comment must contain id
+    Given chedible is set up
+    When we log in
+    And we visit "/comment?content=test&id="
     Then we should see the text "404"
 
 
