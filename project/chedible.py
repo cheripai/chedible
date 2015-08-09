@@ -446,6 +446,8 @@ def edit_user(id):
 def vote():
     v = request.args.get('vote', type=str)
     id = request.args.get('id', type=int)
+    if not v or id is None:
+        abort(404)
     dish = Dish.query.filter_by(id=id)
     voters = dish.first().voters
     if dish.first() is None or g.user is None:
