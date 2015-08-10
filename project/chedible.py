@@ -372,25 +372,14 @@ def edit_dish(restaurant_id, dish_id):
 @app.route('/user/<id>')
 def user_profile(id):
     user = User.query.filter_by(id=id).first()
+    user_dict = rowtodict(user)
 
     if user is None:
         abort(404)
     month_day_year = User.query.filter_by(id=id).first().\
         date.strftime("%B %d, %Y")
 
-    user_opts = []
-    user_opts.append(['beef', user.beef])
-    user_opts.append(['dairy', user.dairy])
-    user_opts.append(['egg', user.egg])
-    user_opts.append(['fish', user.fish])
-    user_opts.append(['gluten', user.gluten])
-    user_opts.append(['meat', user.meat])
-    user_opts.append(['nut', user.nut])
-    user_opts.append(['pork', user.pork])
-    user_opts.append(['poultry', user.poultry])
-    user_opts.append(['shellfish', user.shellfish])
-    user_opts.append(['soy', user.soy])
-    user_opts.append(['wheat', user.wheat])
+    user_opts = [(entry, user_dict[entry]) for entry in CONTENTS]
 
     return render_template(
         'user_profile.html',
