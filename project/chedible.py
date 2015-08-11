@@ -524,6 +524,8 @@ def split_data(data, cur_page, per_page, total):
 # Else
 #   Chedible
 def is_chedible(dish, user):
+    if user is None or dish is None:
+        return None
     dish = rowtodict(dish)
     user = rowtodict(user)
     for entry in CONTENTS:
