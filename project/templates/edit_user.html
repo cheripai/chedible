@@ -28,10 +28,11 @@
                     <img src="{{ (user.image) }}" class="img-circle" alt="{{ (user.name) }}" width = "200" height="200">
 
                     <h1>
-                        {{ user.name }} 
                         
                         {% if user.username != None %}
-                        <small>{{ user.username }} </small>
+                            {{ user.username }}
+                        {% else %}
+                            {{ user.name }} 
                         {% endif %}
 
                     </h1>
