@@ -1,14 +1,18 @@
+.btn {
+    text-transform: none !important;
+}
+
 .navbar-brand {
     font-size: 180%; 
 }
 
 #radioBtn .notActive {
-    color: #3276b1;
+    color: #2196f3;
     background-color: #fff;
 }
 
 #radioBtn .active {
-    background-color: #3276b1;
+    background-color: #2196f3;
 }
 
 .entry {
