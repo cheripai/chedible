@@ -41,14 +41,14 @@
                         </div>
                         <div class="media-body">
                             {% if table == "restaurants" %}
-                                <a href="{{ url_for('restaurant_profile', id=d.id) }}">
-                                    <h4 class="media-heading">{{ d.name }}</h4>
-                                </a>
+                                <h4 class="media-heading">
+                                    <a href="{{ url_for('restaurant_profile', id=d.id) }}">{{ d.name }}</a>
+                                </h4>
                                 <p class="text-muted">{{ d.category }}</p>
                             {% elif table == "dishes" %}
-                                <a href="{{ url_for('restaurant_profile', id=d.restaurant_id) }}">
-                                    <h4 class="media-heading">{{ d.name }}</h4>
-                                </a>
+                                <h4 class="media-heading">
+                                    <a href="{{ url_for('restaurant_profile', id=d.restaurant_id) }}">{{ d.name }}</a>
+                                </h4>
                                 <p class="text-muted">{{ Restaurant.query.filter_by(id=d.restaurant_id).first().name }}</p>
                                 {% if chedibilitylist[((pagination.page-1) * pagination.per_page + loop.index) - 1] %}
                                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
@@ -56,13 +56,13 @@
                                 {% endif %}
                             {% elif table == "users" %}
                                 {% if d.username %}
-                                    <a href="{{ url_for('user_profile', id=d.id) }}">
-                                        <h4 class="media-heading">{{ d.username }}</h4>
-                                    </a>
+                                    <h4 class="media-heading">
+                                        <a href="{{ url_for('user_profile', id=d.id) }}">{{ d.username }}</a>
+                                    </h4>
                                 {% else %}
-                                    <a href="{{ url_for('user_profile', id=d.id) }}">
-                                        <h4 class="media-heading">{{ d.name }}</h4>
-                                    </a>
+                                    <h4 class="media-heading">
+                                        <a href="{{ url_for('user_profile', id=d.id) }}">{{ d.name }}</a>
+                                    </h4>
                                 {% endif %}
                                 <p class="text-muted">Score: {{ d.score }}</p>
                             {% endif %}
