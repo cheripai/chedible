@@ -101,7 +101,7 @@
                                         <h4>{{ d.name }}</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <p><textarea class="form-control" type="text" placeholder="Comment" id="content{{ d.id }}"></textarea></p>
+                                        <p><textarea class="form-control" type="text" placeholder="Comment" maxlength="{{ MAX_COMMENT_LENGTH }}" id="content{{ d.id }}"></textarea></p>
                                         {% if g.user %}
                                             {% if d.voters[g.user.id] == True %}
                                                 <button class="btn btn-primary active" type="button" id="upvote{{ d.id }}">

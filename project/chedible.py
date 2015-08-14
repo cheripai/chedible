@@ -30,6 +30,7 @@ from urllib.request import urlopen
 
 # Global constants
 MAX_USERNAME_LENGTH = 12
+MAX_COMMENT_LENGTH = 512
 MAX_QUERIES = 100
 PER_PAGE = 5
 CONTENTS = ['beef', 'dairy', 'egg', 'fish',
@@ -264,7 +265,8 @@ def restaurant_profile(id, page):
         dishes=dishes,
         pagination=pagination,
         comments=comments,
-        User=User
+        User=User,
+        MAX_COMMENT_LENGTH=MAX_COMMENT_LENGTH
     )
 
 
@@ -475,6 +477,8 @@ def vote():
 @app.route('/comment')
 def comment():
     content = unquote(request.args.get('content', type=str))
+    if len(content) > MAX_COMMENT_LENGTH:
+        return jsonify(error='Comment exceeds 512 characters')
     id = request.args.get('id', type=int)
     if Dish.query.filter_by(id=id).first() is None or \
             g.user is None or not content:
