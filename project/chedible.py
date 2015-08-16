@@ -24,7 +24,7 @@ from project.forms import EditUserForm
 from project.pagination import Pagination
 from project.schema import Restaurant, Dish, User, Comment
 from time import time
-from urllib.parse import unquote
+from urllib.parse import unquote, quote_plus
 from urllib.request import urlopen
 
 
@@ -67,7 +67,7 @@ def load_search_form():
         if 'location' in session:
             # Sets the location input as the last searched location
             g.search_form.location.data = \
-                session['location']['address_components'][0]['long_name']
+                session['location']['formatted_address']
         else:
             # If no location data available, use San Francisco
             g.search_form.location.data = 'San Francisco'
@@ -121,6 +121,7 @@ def search(table):
     lat = None
     lng = None
     geocode = 'https://maps.googleapis.com/maps/api/geocode/json?address='
+    rev_geocode = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
 
     # Prevent slashes from breaking routing
     query = ''.join(c for c in g.search_form.query.data if c not in ['/'])
@@ -130,10 +131,13 @@ def search(table):
            and g.search_form.location.data == 'Current Location':
             lat = g.search_form.lat.data
             lng = g.search_form.lng.data
+            response = urlopen(rev_geocode + '{},{}'.format(lat, lng))
+            obj = json.loads(response.read().decode('utf-8'))
+            if obj['status'] == 'OK':
+                session['location'] = obj['results'][0]
         else:
-            location = ''.join(
-                c for c in g.search_form.location.data if c.isalnum()
-            )
+            location = quote_plus(g.search_form.location.data)
+            print(location)
             response = urlopen(geocode + location)
             obj = json.loads(response.read().decode('utf-8'))
             if obj['status'] == 'OK':
