@@ -137,7 +137,6 @@ def search(table):
                 session['location'] = obj['results'][0]
         else:
             location = quote_plus(g.search_form.location.data)
-            print(location)
             response = urlopen(geocode + location)
             obj = json.loads(response.read().decode('utf-8'))
             if obj['status'] == 'OK':
