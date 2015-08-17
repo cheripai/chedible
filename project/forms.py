@@ -142,12 +142,6 @@ class SearchForm(Form):
             )
         ]
     )
-    lat = StringField(
-        'Latitude',
-    )
-    lng = StringField(
-        'Longitude',
-    )
 
 
 class EditUserForm(Form):
