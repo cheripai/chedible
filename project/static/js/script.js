@@ -121,9 +121,12 @@ $('#locationButton').on('click', function(event){
         }
         var geoSuccess = function(position) {
             startPos = position;
-            document.getElementById('lat').value = startPos.coords.latitude;
-            document.getElementById('lng').value = startPos.coords.longitude;
-            document.getElementById('locationInput').value = 'Current Location';
+            var rev_geocode = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
+            $.getJSON(rev_geocode + startPos.coords.latitude + ',' + startPos.coords.longitude, 
+                function(data) {
+                    current_address = data.results[0].formatted_address;
+                    document.getElementById('locationInput').value = current_address;
+                });
         };
         var geoError = function(position) {
             console.log('Error occurred. Error code: ' + error.code);

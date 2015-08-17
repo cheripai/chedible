@@ -121,39 +121,29 @@ def search(table):
     lat = None
     lng = None
     geocode = 'https://maps.googleapis.com/maps/api/geocode/json?address='
-    rev_geocode = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
 
     # Prevent slashes from breaking routing
     query = ''.join(c for c in g.search_form.query.data if c not in ['/'])
 
     if g.search_form.validate_on_submit():
-        if g.search_form.lat.data and g.search_form.lng.data \
-           and g.search_form.location.data == 'Current Location':
-            lat = g.search_form.lat.data
-            lng = g.search_form.lng.data
-            response = urlopen(rev_geocode + '{},{}'.format(lat, lng))
-            obj = json.loads(response.read().decode('utf-8'))
-            if obj['status'] == 'OK':
-                session['location'] = obj['results'][0]
+        location = quote_plus(g.search_form.location.data)
+        response = urlopen(geocode + location)
+        obj = json.loads(response.read().decode('utf-8'))
+        if obj['status'] == 'OK':
+            lat = obj['results'][0]['geometry']['location']['lat']
+            lng = obj['results'][0]['geometry']['location']['lng']
+            session['location'] = obj['results'][0]
         else:
-            location = quote_plus(g.search_form.location.data)
-            response = urlopen(geocode + location)
-            obj = json.loads(response.read().decode('utf-8'))
-            if obj['status'] == 'OK':
-                lat = obj['results'][0]['geometry']['location']['lat']
-                lng = obj['results'][0]['geometry']['location']['lng']
-                session['location'] = obj['results'][0]
-            else:
-                return render_template(
-                    'search.html',
-                    query=query,
-                    message='Error: Could not find location {}'.format(
-                        g.search_form.location.data
-                    ),
-                    lat='0',
-                    lng='0',
-                    table=table
-                )
+            return render_template(
+                'search.html',
+                query=query,
+                message='Error: Could not find location {}'.format(
+                    g.search_form.location.data
+                ),
+                lat='0',
+                lng='0',
+                table=table
+            )
 
         return redirect(url_for(
             'search_results',
