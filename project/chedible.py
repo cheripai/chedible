@@ -123,7 +123,7 @@ def search(table):
     geocode = 'https://maps.googleapis.com/maps/api/geocode/json?address='
 
     # Prevent slashes from breaking routing
-    query = ''.join(c for c in g.search_form.query.data if c not in ['/'])
+    query = g.search_form.query.data.replace('/', '')
 
     if g.search_form.validate_on_submit():
         location = quote_plus(g.search_form.location.data)
