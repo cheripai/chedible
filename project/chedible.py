@@ -33,6 +33,12 @@ MAX_USERNAME_LENGTH = 12
 MAX_COMMENT_LENGTH = 512
 MAX_QUERIES = 100
 PER_PAGE = 5
+ADD_RESTAURANT_SCORE = 10
+ADD_DISH_SCORE = 10
+EDIT_RESTAURANT_SCORE = 5
+EDIT_DISH_SCORE = 5
+ADD_COMMENT_SCORE = 2
+
 CONTENTS = ['beef', 'dairy', 'egg', 'fish',
             'gluten', 'meat', 'nut', 'pork',
             'poultry', 'shellfish', 'soy', 'wheat']
@@ -223,6 +229,9 @@ def add_restaurant():
             )
             new_restaurant.last_editor = session['user_id']
             db.session.add(new_restaurant)
+            # Update user score
+            user = User.query.filter_by(id=session['user_id']).first()
+            user.score += ADD_RESTAURANT_SCORE
             db.session.commit()
             flash('Thank you for your addition!')
             return redirect(
@@ -280,6 +289,9 @@ def add_dish(id):
             )
             new_dish.last_editor = session['user_id']
             db.session.add(new_dish)
+            # Update user score
+            user = User.query.filter_by(id=session['user_id']).first()
+            user.score += ADD_DISH_SCORE
             db.session.commit()
             flash('Thank you for your addition!')
             return redirect(url_for('restaurant_profile', id=id))
@@ -300,6 +312,9 @@ def edit_restaurant(id):
             restaurant.update({'last_editor': session['user_id']})
             r = Restaurant.query.get(id)
             r.editors.append(User.query.get(session['user_id']))
+            # Update user score
+            user = User.query.filter_by(id=session['user_id']).first()
+            user.score += EDIT_RESTAURANT_SCORE
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=id))
@@ -335,6 +350,9 @@ def edit_dish(restaurant_id, dish_id):
             dish.update({'last_editor': session['user_id']})
             d = Dish.query.get(dish_id)
             d.editors.append(User.query.get(session['user_id']))
+            # Update user score
+            user = User.query.filter_by(id=session['user_id']).first()
+            user.score += EDIT_DISH_SCORE
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=restaurant_id))
@@ -478,6 +496,9 @@ def comment():
         abort(404)
     new_comment = Comment(g.user.id, id, content)
     db.session.add(new_comment)
+    # Update user score
+    user = User.query.filter_by(id=session['user_id']).first()
+    user.score += ADD_COMMENT_SCORE
     db.session.commit()
     date = new_comment.date.strftime("%B %d, %Y")
     return jsonify(date=date)
