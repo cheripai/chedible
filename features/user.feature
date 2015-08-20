@@ -37,3 +37,13 @@ Scenario: log out when not logged in
     When we log out
     Then we should see the text "You need to be logged in to do that!"
     And we should see the text "Login"
+
+
+Scenario: User score is increased after user performs actions
+    Given chedible is set up
+    When we log in
+    And we add "test1" to "restaurants" 
+    And we add dish "test_dish1" to restaurant "test1"
+    And we visit "/comment?content=Test&id=1"
+    Then we should see "Test" as the "content" of "comments" "1"
+    Then we should not see "0" as the "score" of "users" "3"

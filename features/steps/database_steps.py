@@ -166,3 +166,19 @@ def db_check_value(context, value, column, table, id):
     elif table == "comments":
         entry = rowtodict(Comment.query.filter_by(id=id).first())
         assert str(entry[column]) == value
+
+
+@then(u'we should not see "{value}" as the "{column}" of "{table}" "{id}"')
+def db_check_value(context, value, column, table, id):
+    if table == "restaurants":
+        entry = rowtodict(Restaurant.query.filter_by(id=id).first())
+        assert str(entry[column]) != value
+    elif table == "dishes":
+        entry = rowtodict(Dish.query.filter_by(id=id).first())
+        assert str(entry[column]) != value
+    elif table == "users":
+        entry = rowtodict(User.query.filter_by(id=id).first())
+        assert str(entry[column]) != value
+    elif table == "comments":
+        entry = rowtodict(Comment.query.filter_by(id=id).first())
+        assert str(entry[column]) != value
