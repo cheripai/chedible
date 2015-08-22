@@ -88,6 +88,10 @@ div.horizontal {
     text-align: center;
 }
 
+.map {
+    border-radius: 6px !important;
+}
+
 /* Used for navbar search */
 
 @media(max-width:767px) {
