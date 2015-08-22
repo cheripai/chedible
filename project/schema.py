@@ -205,6 +205,7 @@ class User(db.Model):
         secondary=dishes_users
     )
     last_edited = db.Column(db.Integer, nullable=False)
+    last_activity = db.Column(db.Integer, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False)
     is_banned = db.Column(db.Boolean, nullable=False)
     search_vector = db.Column(
@@ -232,6 +233,7 @@ class User(db.Model):
         self.email = email
         self.score = 0
         self.last_edited = int(time())
+        self.last_activity = int(time())
         self.is_admin = False
         self.is_banned = False
         self.about = "I love chedible!"
