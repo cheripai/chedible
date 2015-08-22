@@ -232,6 +232,7 @@ def add_restaurant():
             # Update user score
             user = User.query.filter_by(id=session['user_id']).first()
             user.score += ADD_RESTAURANT_SCORE
+            user.last_activity = int(time())
             db.session.commit()
             flash('Thank you for your addition!')
             return redirect(
@@ -292,6 +293,7 @@ def add_dish(id):
             # Update user score
             user = User.query.filter_by(id=session['user_id']).first()
             user.score += ADD_DISH_SCORE
+            user.last_activity = int(time())
             db.session.commit()
             flash('Thank you for your addition!')
             return redirect(url_for('restaurant_profile', id=id))
@@ -315,6 +317,7 @@ def edit_restaurant(id):
             # Update user score
             user = User.query.filter_by(id=session['user_id']).first()
             user.score += EDIT_RESTAURANT_SCORE
+            user.last_activity = int(time())
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=id))
@@ -353,6 +356,7 @@ def edit_dish(restaurant_id, dish_id):
             # Update user score
             user = User.query.filter_by(id=session['user_id']).first()
             user.score += EDIT_DISH_SCORE
+            user.last_activity = int(time())
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=restaurant_id))
@@ -422,6 +426,7 @@ def edit_user(id):
                 elif entry.id != 'csrf_token':
                     user.update({entry.id: form[entry.id].data})
                 user.update({'last_edited': int(time())})
+                user.last_activity = int(time())
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('user_profile', id=id))
@@ -499,6 +504,7 @@ def comment():
     # Update user score
     user = User.query.filter_by(id=session['user_id']).first()
     user.score += ADD_COMMENT_SCORE
+    user.last_activity = int(time())
     db.session.commit()
     date = new_comment.date.strftime("%B %d, %Y")
     return jsonify(date=date)
