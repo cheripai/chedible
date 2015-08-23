@@ -22,6 +22,22 @@ TEST_DATABASE = 'test.db'
 SECRET_KEY = '48e02fc39bae1a191a44277af6b97b1fed08929ee1dc133e733c43e18c496742'
 WTF_CSRF_ENABLED = True    # cross-site request forgery prevention
 
+# Constants
+MAX_USERNAME_LENGTH = 12
+MAX_COMMENT_LENGTH = 512
+MAX_QUERIES = 100
+PER_PAGE = 5
+ADD_RESTAURANT_SCORE = 10
+ADD_DISH_SCORE = 10
+EDIT_RESTAURANT_SCORE = 5
+EDIT_DISH_SCORE = 5
+ADD_COMMENT_SCORE = 2
+DEFAULT_CITY = 'San Francisco'
+CONTENTS = ['beef', 'dairy', 'egg', 'fish',
+            'gluten', 'meat', 'nut', 'pork',
+            'poultry', 'shellfish', 'soy', 'wheat']
+
+
 # sets locale for pricing
 # may need to modify for internationalization
 setlocale(LC_ALL, '')
