@@ -19,6 +19,7 @@ from functools import wraps
 import json
 from locale import currency
 from project import app, db
+import project._config as c
 from project.forms import AddRestaurantForm, AddDishForm, SearchForm
 from project.forms import EditUserForm
 from project.pagination import Pagination
@@ -26,22 +27,6 @@ from project.schema import Restaurant, Dish, User, Comment
 from time import time
 from urllib.parse import unquote, quote_plus
 from urllib.request import urlopen
-
-
-# Global constants
-MAX_USERNAME_LENGTH = 12
-MAX_COMMENT_LENGTH = 512
-MAX_QUERIES = 100
-PER_PAGE = 5
-ADD_RESTAURANT_SCORE = 10
-ADD_DISH_SCORE = 10
-EDIT_RESTAURANT_SCORE = 5
-EDIT_DISH_SCORE = 5
-ADD_COMMENT_SCORE = 2
-
-CONTENTS = ['beef', 'dairy', 'egg', 'fish',
-            'gluten', 'meat', 'nut', 'pork',
-            'poultry', 'shellfish', 'soy', 'wheat']
 
 
 # This function runs before each request
@@ -53,12 +38,12 @@ def load_user():
         if g.user.is_banned:
             logout()
         first, last = g.user.name.split()
-        if len(g.user.name) > MAX_USERNAME_LENGTH:
+        if len(g.user.name) > c.MAX_USERNAME_LENGTH:
             g.user.name = first
-        if len(g.user.name) > MAX_USERNAME_LENGTH:
+        if len(g.user.name) > c.MAX_USERNAME_LENGTH:
             charlist = []
             charlist[:0] = first
-            while len(charlist) > MAX_USERNAME_LENGTH - 3:
+            while len(charlist) > c.MAX_USERNAME_LENGTH - 3:
                 del charlist[-1]
             g.user.name = ''.join(charlist) + '...'
     else:
@@ -76,7 +61,7 @@ def load_search_form():
                 session['location']['formatted_address']
         else:
             # If no location data available, use San Francisco
-            g.search_form.location.data = 'San Francisco'
+            g.search_form.location.data = c.DEFAULT_CITY
 
 
 @app.errorhandler(404)
@@ -181,21 +166,21 @@ def search_results(table, query, coords, page):
         )
 
     if table == "dishes":
-        data = Dish.query.search(new_query, sort=True).limit(MAX_QUERIES)
+        data = Dish.query.search(new_query, sort=True).limit(c.MAX_QUERIES)
         for dish in data:
             chedibilitylist.append(is_chedible(dish, g.user))
     elif table == "restaurants":
-        data = Restaurant.query.search(new_query, sort=True).limit(MAX_QUERIES)
+        data = Restaurant.query.search(new_query, sort=True).limit(c.MAX_QUERIES)
     elif table == "users":
-        data = User.query.search(new_query, sort=True).limit(MAX_QUERIES)
+        data = User.query.search(new_query, sort=True).limit(c.MAX_QUERIES)
     else:
         abort(404)
 
     if data.first() is not None:
         message = ""
 
-    pagination = Pagination(page, PER_PAGE, data.count())
-    data = split_data(data, page, PER_PAGE, data.count())
+    pagination = Pagination(page, c.PER_PAGE, data.count())
+    data = split_data(data, page, c.PER_PAGE, data.count())
 
     if not data and page != 1:
         abort(404)
@@ -231,7 +216,7 @@ def add_restaurant():
             db.session.add(new_restaurant)
             # Update user score
             user = User.query.filter_by(id=session['user_id']).first()
-            user.score += ADD_RESTAURANT_SCORE
+            user.score += c.ADD_RESTAURANT_SCORE
             user.last_activity = int(time())
             db.session.commit()
             flash('Thank you for your addition!')
@@ -256,8 +241,8 @@ def restaurant_profile(id, page):
         Comment.query.filter_by(dish_id=d.id).order_by(Comment.id.desc())
         for d in dishes
     ]
-    pagination = Pagination(page, PER_PAGE, dishes.count())
-    dishes = split_data(dishes, page, PER_PAGE, dishes.count())
+    pagination = Pagination(page, c.PER_PAGE, dishes.count())
+    dishes = split_data(dishes, page, c.PER_PAGE, dishes.count())
     if not dishes and page != 1:
         abort(404)
 
@@ -269,7 +254,7 @@ def restaurant_profile(id, page):
         pagination=pagination,
         comments=comments,
         User=User,
-        MAX_COMMENT_LENGTH=MAX_COMMENT_LENGTH
+        MAX_COMMENT_LENGTH=c.MAX_COMMENT_LENGTH
     )
 
 
@@ -292,7 +277,7 @@ def add_dish(id):
             db.session.add(new_dish)
             # Update user score
             user = User.query.filter_by(id=session['user_id']).first()
-            user.score += ADD_DISH_SCORE
+            user.score += c.ADD_DISH_SCORE
             user.last_activity = int(time())
             db.session.commit()
             flash('Thank you for your addition!')
@@ -316,7 +301,7 @@ def edit_restaurant(id):
             r.editors.append(User.query.get(session['user_id']))
             # Update user score
             user = User.query.filter_by(id=session['user_id']).first()
-            user.score += EDIT_RESTAURANT_SCORE
+            user.score += c.EDIT_RESTAURANT_SCORE
             user.last_activity = int(time())
             db.session.commit()
             flash('Thank you for your update!')
@@ -342,7 +327,7 @@ def edit_dish(restaurant_id, dish_id):
         if form.validate_on_submit():
             dish = Dish.query.filter_by(id=dish_id)
             for entry in form:
-                if entry.id in CONTENTS:
+                if entry.id in c.CONTENTS:
                     dish.update({entry.id: stb(form[entry.id].data)})
                 elif entry.id == 'price' and form[entry.id].data:
                     dish.update({entry.id: currency(float(form[entry.id].data),
@@ -355,7 +340,7 @@ def edit_dish(restaurant_id, dish_id):
             d.editors.append(User.query.get(session['user_id']))
             # Update user score
             user = User.query.filter_by(id=session['user_id']).first()
-            user.score += EDIT_DISH_SCORE
+            user.score += c.EDIT_DISH_SCORE
             user.last_activity = int(time())
             db.session.commit()
             flash('Thank you for your update!')
@@ -396,7 +381,7 @@ def user_profile(id):
     month_day_year = User.query.filter_by(id=id).first().\
         date.strftime("%B %d, %Y")
 
-    user_opts = [(entry, user_dict[entry]) for entry in CONTENTS]
+    user_opts = [(entry, user_dict[entry]) for entry in c.CONTENTS]
 
     return render_template(
         'user_profile.html',
@@ -421,7 +406,7 @@ def edit_user(id):
         if form.validate_on_submit():
             user = User.query.filter_by(id=id)
             for entry in form:
-                if entry.id in CONTENTS:
+                if entry.id in c.CONTENTS:
                     user.update({entry.id: stb(form[entry.id].data)})
                 elif entry.id != 'csrf_token':
                     user.update({entry.id: form[entry.id].data})
@@ -493,7 +478,7 @@ def vote():
 @app.route('/comment')
 def comment():
     content = unquote(request.args.get('content', type=str))
-    if len(content) > MAX_COMMENT_LENGTH:
+    if len(content) > c.MAX_COMMENT_LENGTH:
         return jsonify(error='Comment exceeds 512 characters')
     id = request.args.get('id', type=int)
     if Dish.query.filter_by(id=id).first() is None or \
@@ -503,7 +488,7 @@ def comment():
     db.session.add(new_comment)
     # Update user score
     user = User.query.filter_by(id=session['user_id']).first()
-    user.score += ADD_COMMENT_SCORE
+    user.score += c.ADD_COMMENT_SCORE
     user.last_activity = int(time())
     db.session.commit()
     date = new_comment.date.strftime("%B %d, %Y")
@@ -552,7 +537,7 @@ def is_chedible(dish, user):
         return None
     dish = rowtodict(dish)
     user = rowtodict(user)
-    for entry in CONTENTS:
+    for entry in c.CONTENTS:
         if (dish[entry] and not user[entry]) or \
            (dish[entry] is None and not user[entry]):
             return False
