@@ -269,3 +269,23 @@ class Comment(db.Model):
 
     def __repr__(self):
         return '<Comment {}>'.format(self.id)
+
+
+class Location(db.Model):
+
+    __tablename__ = "locations"
+
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, nullable=False)
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
+    lat = db.Column(db.Float, nullable=False)
+    lng = db.Column(db.Float, nullable=False)
+
+    def __init__(self, restaurant_id, lat, lng):
+        self.date = datetime.utcnow()
+        self.restaurant_id = restaurant_id
+        self.lat = lat
+        self.lng = lng
+
+    def __repr__(self):
+        return '<Location {}>'.format(self.id)
