@@ -273,7 +273,7 @@ def add_dish(id):
                 session['user_id']
             )
             if post_interval_exists():
-                return render_template('dish_form.html', form=form)
+                return render_template('dish_form.html', form=form, id=id)
             new_dish.last_editor = session['user_id']
             db.session.add(new_dish)
             update_score(c.ADD_DISH_SCORE)
@@ -290,7 +290,7 @@ def edit_restaurant(id):
     if request.method == 'POST':
         if form.validate_on_submit():
             if post_interval_exists():
-                return render_template('restaurant_form.html', form=form)
+                return render_template('restaurant_form.html', form=form, id=id)
             restaurant = Restaurant.query.filter_by(id=id)
             for entry in form:
                 if entry.id != "csrf_token":
@@ -323,7 +323,7 @@ def edit_dish(restaurant_id, dish_id):
     if request.method == 'POST':
         if form.validate_on_submit():
             if post_interval_exists():
-                return render_template('dish_form.html', form=form)
+                return render_template('dish_form.html', form=form, id=restaurant_id, dish_id=dish_id)
             dish = Dish.query.filter_by(id=dish_id)
             for entry in form:
                 if entry.id in c.CONTENTS:
