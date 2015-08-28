@@ -60,7 +60,7 @@ def load_search_form():
             g.search_form.location.data = \
                 session['location']['formatted_address']
         else:
-            # If no location data available, use San Francisco
+            # If no location data available, use default city
             g.search_form.location.data = c.DEFAULT_CITY
 
 
@@ -108,7 +108,7 @@ def test_login(id):
 # If a query exists, routes user to search results page
 @app.route('/search/<table>', methods=['POST'])
 def search(table):
-    # We need to add filtering based on preferences
+    # FIXME: add filtering based on preferences
     lat = None
     lng = None
     geocode = 'https://maps.googleapis.com/maps/api/geocode/json?address='
@@ -212,17 +212,11 @@ def add_restaurant():
                 form.tags.data,
                 session['user_id']
             )
-            if int(time()) - g.user.last_activity < c.MIN_POST_INTERVAL:
-                time_remaining = c.MIN_POST_INTERVAL - (int(time()) - g.user.last_activity)
-                message = 'Please wait {} seconds before posting again'.format(time_remaining)
-                flash(message)
+            if post_interval_exists():
                 return render_template('restaurant_form.html', form=form)
             new_restaurant.last_editor = session['user_id']
             db.session.add(new_restaurant)
-            # Update user score
-            user = User.query.filter_by(id=session['user_id']).first()
-            user.score += c.ADD_RESTAURANT_SCORE
-            user.last_activity = int(time())
+            update_score(c.ADD_RESTAURANT_SCORE)
             db.session.commit()
             flash('Thank you for your addition!')
             return redirect(
@@ -278,12 +272,11 @@ def add_dish(id):
                 stb(form.soy.data), stb(form.wheat.data), id,
                 session['user_id']
             )
+            if post_interval_exists():
+                return render_template('dish_form.html', form=form)
             new_dish.last_editor = session['user_id']
             db.session.add(new_dish)
-            # Update user score
-            user = User.query.filter_by(id=session['user_id']).first()
-            user.score += c.ADD_DISH_SCORE
-            user.last_activity = int(time())
+            update_score(c.ADD_DISH_SCORE)
             db.session.commit()
             flash('Thank you for your addition!')
             return redirect(url_for('restaurant_profile', id=id))
@@ -296,6 +289,8 @@ def edit_restaurant(id):
     form = AddRestaurantForm()
     if request.method == 'POST':
         if form.validate_on_submit():
+            if post_interval_exists():
+                return render_template('restaurant_form.html', form=form)
             restaurant = Restaurant.query.filter_by(id=id)
             for entry in form:
                 if entry.id != "csrf_token":
@@ -304,10 +299,7 @@ def edit_restaurant(id):
             restaurant.update({'last_editor': session['user_id']})
             r = Restaurant.query.get(id)
             r.editors.append(User.query.get(session['user_id']))
-            # Update user score
-            user = User.query.filter_by(id=session['user_id']).first()
-            user.score += c.EDIT_RESTAURANT_SCORE
-            user.last_activity = int(time())
+            update_score(c.EDIT_RESTAURANT_SCORE)
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=id))
@@ -330,6 +322,8 @@ def edit_dish(restaurant_id, dish_id):
     form = AddDishForm()
     if request.method == 'POST':
         if form.validate_on_submit():
+            if post_interval_exists():
+                return render_template('dish_form.html', form=form)
             dish = Dish.query.filter_by(id=dish_id)
             for entry in form:
                 if entry.id in c.CONTENTS:
@@ -343,10 +337,7 @@ def edit_dish(restaurant_id, dish_id):
             dish.update({'last_editor': session['user_id']})
             d = Dish.query.get(dish_id)
             d.editors.append(User.query.get(session['user_id']))
-            # Update user score
-            user = User.query.filter_by(id=session['user_id']).first()
-            user.score += c.EDIT_DISH_SCORE
-            user.last_activity = int(time())
+            update_score(c.EDIT_DISH_SCORE)
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=restaurant_id))
@@ -355,8 +346,7 @@ def edit_dish(restaurant_id, dish_id):
             form=form,
             id=restaurant_id,
             dish_id=dish_id
-        )['beef', 'dairy', 'egg', 'fish', 'gluten', 'meat', 'nut',
-                  'pork', 'poultry', 'shellfish', 'soy', 'wheat']
+        )
     if request.method == 'GET':
         dish = Dish.query.filter_by(id=dish_id).first()
         if dish is None:
@@ -409,14 +399,22 @@ def edit_user(id):
 
     if request.method == 'POST':
         if form.validate_on_submit():
+            if post_interval_exists():
+                return render_template(
+                    'edit_user.html',
+                    form=form,
+                    month_day_year=month_day_year,
+                    user=user
+                )
             user = User.query.filter_by(id=id)
             for entry in form:
                 if entry.id in c.CONTENTS:
                     user.update({entry.id: stb(form[entry.id].data)})
                 elif entry.id != 'csrf_token':
                     user.update({entry.id: form[entry.id].data})
-                user.update({'last_edited': int(time())})
-                user.last_activity = int(time())
+            user.update({'last_edited': int(time())})
+            # FIXME: This doesn't work
+            user.update({'last_activity': int(time())})
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('user_profile', id=id))
@@ -491,10 +489,7 @@ def comment():
         abort(404)
     new_comment = Comment(g.user.id, id, content)
     db.session.add(new_comment)
-    # Update user score
-    user = User.query.filter_by(id=session['user_id']).first()
-    user.score += c.ADD_COMMENT_SCORE
-    user.last_activity = int(time())
+    update_score(c.ADD_COMMENT_SCORE)
     db.session.commit()
     date = new_comment.date.strftime("%B %d, %Y")
     return jsonify(date=date)
@@ -547,3 +542,22 @@ def is_chedible(dish, user):
            (dish[entry] is None and not user[entry]):
             return False
     return True
+
+
+def update_score(amt):
+    user = User.query.filter_by(id=session['user_id']).first()
+    user.score += amt
+    # Updating the user's score also updates their last activity
+    user.last_activity = int(time())
+
+
+def post_interval_exists():
+    # Allows test cases to post without waiting for interval
+    if app.config['TESTING']:
+        return False
+    if int(time()) - g.user.last_activity < c.MIN_POST_INTERVAL:
+        time_remaining = c.MIN_POST_INTERVAL - (int(time()) - g.user.last_activity)
+        message = 'Please wait {} seconds before posting again'.format(time_remaining)
+        flash(message)
+        return True
+    return False
