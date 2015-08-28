@@ -212,6 +212,11 @@ def add_restaurant():
                 form.tags.data,
                 session['user_id']
             )
+            if int(time()) - g.user.last_activity < c.MIN_POST_INTERVAL:
+                time_remaining = c.MIN_POST_INTERVAL - (int(time()) - g.user.last_activity)
+                message = 'Please wait {} seconds before posting again'.format(time_remaining)
+                flash(message)
+                return render_template('restaurant_form.html', form=form)
             new_restaurant.last_editor = session['user_id']
             db.session.add(new_restaurant)
             # Update user score
