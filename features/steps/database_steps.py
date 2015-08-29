@@ -18,6 +18,7 @@ import parse
 
 from project.chedible import rowtodict
 from project.schema import Restaurant, Dish, User, Comment
+from time import time
 
 
 @when(u'we add "{text}" to "{table}"')
@@ -111,7 +112,7 @@ def db_dish_attributes_all(context, dish, boolean, food_attrs):
         boolean = None
 
     entry = context.db.session.query(Dish).filter_by(name=dish).first()
-    
+
     entry.beef = boolean
     entry.dairy = boolean
     entry.egg= boolean
@@ -124,7 +125,7 @@ def db_dish_attributes_all(context, dish, boolean, food_attrs):
     entry.shellfish = boolean
     entry.soy = boolean
     entry.wheat = boolean
-        
+
     context.db.session.commit()
 
 
@@ -154,6 +155,8 @@ def db_delete_check(context, text, table):
 
 @then(u'we should see "{value}" as the "{column}" of "{table}" "{id}"')
 def db_check_value(context, value, column, table, id):
+    if value == "time":
+        value = str(int(time()))
     if table == "restaurants":
         entry = rowtodict(Restaurant.query.filter_by(id=id).first())
         assert str(entry[column]) == value

@@ -47,3 +47,10 @@ Scenario: User score is increased after user performs actions
     And we visit "/comment?content=Test&id=1"
     Then we should see "Test" as the "content" of "comments" "1"
     Then we should not see "0" as the "score" of "users" "3"
+
+
+Scenario: User activity is updated after user after user posts
+    Given chedible is set up
+    When we log in
+    And we visit "/comment?content=Test&id=1"
+    Then we should see "time" as the "last_activity" of "users" "3"
