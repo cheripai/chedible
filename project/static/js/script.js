@@ -176,6 +176,11 @@ $("[id^=post]").click(function(){
         content: encoded_content,
         id: index
     }, function(data) {
+        if(data.error) {
+            $('#error-msg'+index).removeAttr('hidden');
+            $('#error-msg'+index).text(data.error);
+            return;
+        }
         $('#hidden-content'+index).text(content);
         $('#hidden-comment'+index).removeAttr('hidden');
         $('#content'+index).val('');

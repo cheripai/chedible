@@ -148,6 +148,7 @@
                                                 <button type="button" class="btn btn-primary pull-right"><i class="fa fa-share"></i> Post</button>
                                             </a>
                                         {% endif %}
+                                        &nbsp<span id="error-msg{{ d.id }}" style="font-weight: bold" hidden></span>
                                         <hr class="featurette-divider"></hr>
                                         <ul class="media-list">
                                             <span id="hidden-comment{{ d.id }}" hidden>{{ comment(g.user, "", "", d.id, 1) }}</span>
