@@ -17,6 +17,7 @@ from behave import *
 from flask import g
 import parse
 
+from project import app
 from project.schema import Restaurant, Dish, User
 import project.chedible as chedible
 
@@ -90,9 +91,19 @@ def is_chedible_eval(context, user, dish):
 
 @then('is_chedible should evaluate to False given user "{user}" and "{dish}"')
 def is_chedible_eval(context, user, dish):
-    
+
     user_result = context.db.session.query(User).filter_by(name=user).first()
     dish_result = context.db.session.query(Dish).filter_by(name=dish).first()
 
     chedibility = chedible.is_chedible(dish_result, user_result)
     assert not chedibility
+
+
+@when(u'we disable testing')
+def disable_testing(context):
+    app.config['TESTING'] = False
+
+
+@when(u'we enable testing')
+def enable_testing(context):
+    app.config['TESTING'] = True

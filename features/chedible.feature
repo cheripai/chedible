@@ -238,10 +238,20 @@ Scenario: comment cannot exceed 512 characters
     Then we should see the text "Comment exceeds 512 characters"
 
 
+Scenario: Comment route returns error when posting twice within post interval
+    Given chedible is set up
+    When we log in
+    When we disable testing
+    And we visit "/comment?content=test&id=1"
+    And we visit "/comment?content=test&id=1"
+    Then we should see the text "error"
+
+
 Scenario: we check the chediblity of a dish that contains nothing for a user that will eat anything
     Given chedible is set up
     When we log in
-    When we add "ched test" to "users"
+    And we add "ched test" to "users"
+    And we enable testing
     And we set all of user "ched test" preferences to "True" except for "none"
     And we add dish "test_dish5" to restaurant "test2"
     And we set dish "test_dish5" so contains is "False" for attribute/s "everything"
