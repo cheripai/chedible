@@ -36,14 +36,16 @@
                         {% endif %}
                         <h2>
                             {{ restaurant.name }}
-                            <small><small>
-                                {% if g.user %}
-                                    <a href="{{ url_for('edit_restaurant', id=restaurant.id) }}">Edit</a> /
-                                    <a href="{{ url_for('add_dish', id=restaurant.id) }}">Add a dish</a>
-                                {% else %}
-                                    <a href="#mustlogin" data-toggle="modal">Add a dish</a>
-                                {% endif %}
-                            </small></small>
+                            <span style="display: inline-block">
+                                <small><small>
+                                    {% if g.user %}
+                                        <a href="{{ url_for('edit_restaurant', id=restaurant.id) }}">Edit</a> /
+                                        <a href="{{ url_for('add_dish', id=restaurant.id) }}">Add a dish</a>
+                                    {% else %}
+                                        <a href="#mustlogin" data-toggle="modal">Add a dish</a>
+                                    {% endif %}
+                                </small></small>
+                            </span>
                         </h2>
                     </div>
                 </div>   
