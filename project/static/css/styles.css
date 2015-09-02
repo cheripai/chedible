@@ -46,6 +46,7 @@ textarea {
 
 #map {
     margin-bottom: 20px !important;
+    border-radius: 6px !important;
 }
 
 .panel-body {
@@ -66,7 +67,6 @@ textarea {
 }
 
 /* Horizontal scrolling field */
-
 div.horizontal {
     width: 100%;
     height: 250px;
@@ -88,12 +88,7 @@ div.horizontal {
     text-align: center;
 }
 
-.map {
-    border-radius: 6px !important;
-}
-
 /* Used for navbar search */
-
 @media(max-width:767px) {
     .navbar .navbar-form {
         width: 400px;
@@ -123,11 +118,23 @@ div.horizontal {
 #indexCarousel .nav a small {
     display: block;
 }
+
 #indexCarousel .nav {
 	background: #eee;
 }
+
 #indexCarousel .nav a {
     border-radius: 0px;
+}
+
+.carousel-inner {
+    border-top-left-radius: 6px !important;
+    border-top-right-radius: 6px !important;
+}
+
+.nav-pills {
+    border-bottom-left-radius: 6px !important;
+    border-bottom-right-radius: 6px !important;
 }
 
 /* Float two tables side by side */
