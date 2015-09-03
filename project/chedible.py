@@ -152,6 +152,16 @@ def search_results(table, query, coords, page):
     message = "No entries found"
     lat, lng = coords.split(',')
     chedibilitylist = []
+    places = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
+    types = 'bakery|bar|cafe|food|grocery_or_supermarket|meal_delivery|meal_takeaway|restaurant'
+
+    response = urlopen(
+        places + 'location={},{}&radius={}&types={}&key={}'.format(
+            lat, lng, 3000, types, c.GOOGLE_API_KEY
+        )
+    )
+    obj = json.loads(response.read().decode('utf-8'))
+    print(obj)
 
     # removes special characters from search to prevent errors
     new_query = ''.join(c for c in query if c.isalnum() or c == ' ')

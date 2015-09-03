@@ -20,6 +20,7 @@ from locale import LC_ALL, setlocale
 DATABASE = 'data.db'
 TEST_DATABASE = 'test.db'
 SECRET_KEY = '48e02fc39bae1a191a44277af6b97b1fed08929ee1dc133e733c43e18c496742'
+GOOGLE_API_KEY = 'AIzaSyD9-IrWluRI0eKZUAaSGD876n6tGkEiSqY'
 WTF_CSRF_ENABLED = True    # cross-site request forgery prevention
 
 # Constants
