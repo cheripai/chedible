@@ -153,18 +153,9 @@ def search_results(table, query, coords, page):
     lat, lng = coords.split(',')
     chedibilitylist = []
     places = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
-    types = 'bakery|bar|cafe|food|grocery_or_supermarket|meal_delivery|meal_takeaway|restaurant'
+    types = 'bakery|bar|cafe|food|meal_delivery|meal_takeaway|restaurant'
 
-    response = urlopen(
-        places + 'location={},{}&radius={}&types={}&key={}'.format(
-            lat, lng, 3000, types, c.GOOGLE_API_KEY
-        )
-    )
-    obj = json.loads(response.read().decode('utf-8'))
-    print(obj)
-
-    # removes special characters from search to prevent errors
-    new_query = ''.join(c for c in query if c.isalnum() or c == ' ')
+    new_query = quote_plus(query)
     if not new_query:
         return render_template(
             'search.html',
@@ -174,6 +165,15 @@ def search_results(table, query, coords, page):
             lng=lng,
             table=table
         )
+
+    response = urlopen(
+        places + 'location={},{}&radius={}&types={}&name={}&key={}'.format(
+            lat, lng, 10000, types, new_query, c.GOOGLE_API_KEY
+        )
+    )
+    obj = json.loads(response.read().decode('utf-8'))
+    for nearby_restaurant in obj['results']:
+        print(nearby_restaurant['name'])
 
     if table == "dishes":
         data = Dish.query.search(new_query, sort=True).limit(c.MAX_QUERIES)
