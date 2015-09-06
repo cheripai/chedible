@@ -17,6 +17,14 @@ $('.table_select a').on('click', function(){
 })
 
 
+// Sets value for distance based on radio switcher
+$('.distance_select a').on('click', function(){
+    var sel = $(this).data('title');
+    var tog = $(this).data('toggle');
+    $('#distance').val(sel);
+})
+
+
 /* For changing value of voting system */
 $("[id^=upvote]").click(function(){
     var index = parseInt($(this).attr('id').replace('upvote', ''), 10);
