@@ -18,10 +18,10 @@ $('.table_select a').on('click', function(){
 
 
 // Sets value for distance based on radio switcher
-$('.distance_select a').on('click', function(){
+$('.radius_select a').on('click', function(){
     var sel = $(this).data('title');
     var tog = $(this).data('toggle');
-    $('#distance').val(sel);
+    $('#'+tog).val(sel);
 })
 
 

@@ -118,6 +118,7 @@ def search(table):
 
     if g.search_form.validate_on_submit():
         location = quote_plus(g.search_form.location.data)
+        radius = g.search_form.radius.data
         response = urlopen(geocode + location)
         obj = json.loads(response.read().decode('utf-8'))
         if obj['status'] == 'OK':
@@ -140,15 +141,16 @@ def search(table):
             'search_results',
             table=table,
             query=query,
-            coords='{},{}'.format(lat, lng)
+            coords='{},{}'.format(lat, lng),
+            radius=radius
         ))
     else:
         return redirect(request.referrer)
 
 
-@app.route('/search_results/<table>/<query>/<coords>', defaults={'page': 1})
-@app.route('/search_results/<table>/<query>/<coords>/<int:page>')
-def search_results(table, query, coords, page):
+@app.route('/search_results/<table>/<query>/<coords>/<radius>', defaults={'page': 1})
+@app.route('/search_results/<table>/<query>/<coords>/<radius>/<int:page>')
+def search_results(table, query, coords, radius, page):
     message = "No entries found"
     lat, lng = coords.split(',')
     chedibilitylist = []
@@ -168,7 +170,7 @@ def search_results(table, query, coords, page):
 
     response = urlopen(
         places + 'location={},{}&radius={}&types={}&name={}&key={}'.format(
-            lat, lng, 10000, types, new_query, c.GOOGLE_API_KEY
+            lat, lng, radius, types, new_query, c.GOOGLE_API_KEY
         )
     )
     obj = json.loads(response.read().decode('utf-8'))

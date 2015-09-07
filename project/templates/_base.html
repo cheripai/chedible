@@ -1,4 +1,5 @@
 {#    Copyright 2015 Dat Do
+print(radius)
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -113,11 +114,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label><br>Distance:</label>
-                                        <div id="radioBtn" class="btn-group distance_select">
-                                            <a class="btn btn-primary btn-sm active" data-toggle="distance" data-title="2">2 miles</a>
-                                            <a class="btn btn-primary btn-sm notActive" data-toggle="distance" data-title="5">5 miles</a>
-                                            <a class="btn btn-primary btn-sm notActive" data-toggle="distance" data-title="8">8 miles</a>
-                                            <input id="distance" type="text" hidden>
+                                        <div id="radioBtn" class="btn-group radius_select">
+                                            <a class="btn btn-primary btn-sm active" data-toggle="radius" data-title="3220">2 miles</a>
+                                            <a class="btn btn-primary btn-sm notActive" data-toggle="radius" data-title="8050">5 miles</a>
+                                            <a class="btn btn-primary btn-sm notActive" data-toggle="radius" data-title="12870">8 miles</a>
+                                            {{ g.search_form.radius(id="radius", type="text", value="3220", hidden="true") }}
                                         </div>
                                     </div>
                                 </div>

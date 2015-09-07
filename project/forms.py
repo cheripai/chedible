@@ -142,6 +142,9 @@ class SearchForm(Form):
             )
         ]
     )
+    radius = StringField(
+        'Radius'
+    )
 
 
 class EditUserForm(Form):
