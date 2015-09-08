@@ -165,7 +165,8 @@ def search_results(table, query, coords, radius, page):
             query=query,
             lat=lat,
             lng=lng,
-            table=table
+            table=table,
+            radius=radius
         )
 
     response = urlopen(
@@ -206,6 +207,7 @@ def search_results(table, query, coords, radius, page):
         lat=lat,
         lng=lng,
         table=table,
+        radius=radius,
         pagination=pagination,
         Restaurant=Restaurant
     )
