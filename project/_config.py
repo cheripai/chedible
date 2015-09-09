@@ -34,7 +34,7 @@ EDIT_RESTAURANT_SCORE = 5
 EDIT_DISH_SCORE = 5
 ADD_COMMENT_SCORE = 2
 MIN_POST_INTERVAL = 15
-DEFAULT_CITY = 'San Francisco'
+DEFAULT_CITY = 'San Francisco, CA, USA'
 CONTENTS = ['beef', 'dairy', 'egg', 'fish',
             'gluten', 'meat', 'nut', 'pork',
             'poultry', 'shellfish', 'soy', 'wheat']
