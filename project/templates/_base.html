@@ -86,58 +86,60 @@ print(radius)
                                             {% endif %}
                                         </div>
                                     </div>
-                                    <label><br>Location:</label>
-                                    <div class="input-group">
-                                        {% if loc_name %}
-                                            {{ g.search_form.location(
-                                                value=loc_name,
-                                                class="form-control",
-                                                type="text",
-                                                placeholder="City or Zip Code",
-                                                autocomplete="off",
-                                                id="locationInput"
-                                            ) }}
-                                        {% else %}
-                                            {{ g.search_form.location(
-                                                class="form-control",
-                                                type="text",
-                                                placeholder="City or Zip Code",
-                                                autocomplete="off",
-                                                id="locationInput"
-                                            ) }}
-                                        {% endif %}
-                                        <div class="input-group-btn">
-                                            <button id="locationButton" class="btn btn-default" type="button">
-                                                <i class="glyphicon glyphicon-screenshot"></i>
-                                            </button>
+                                    <div id="location_div">
+                                        <label><br>Location:</label>
+                                        <div class="input-group">
+                                            {% if loc_name %}
+                                                {{ g.search_form.location(
+                                                    value=loc_name,
+                                                    class="form-control",
+                                                    type="text",
+                                                    placeholder="City or Zip Code",
+                                                    autocomplete="off",
+                                                    id="locationInput"
+                                                ) }}
+                                            {% else %}
+                                                {{ g.search_form.location(
+                                                    class="form-control",
+                                                    type="text",
+                                                    placeholder="City or Zip Code",
+                                                    autocomplete="off",
+                                                    id="locationInput"
+                                                ) }}
+                                            {% endif %}
+                                            <div class="input-group-btn">
+                                                <button id="locationButton" class="btn btn-default" type="button">
+                                                    <i class="glyphicon glyphicon-screenshot"></i>
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label><br>Distance:</label>
-                                        <div id="radioBtn" class="btn-group radius_select">
-                                            {% if radius %}
-                                                {% if radius == "8050" %}
-                                                    <a class="btn btn-primary btn-sm notActive" data-toggle="radius" data-title="3220">2 miles</a>
-                                                    <a class="btn btn-primary btn-sm active" data-toggle="radius" data-title="8050">5 miles</a>
-                                                    <a class="btn btn-primary btn-sm notActive" data-toggle="radius" data-title="12870">8 miles</a>
-                                                    {{ g.search_form.radius(id="radius", type="text", value=radius, hidden="true") }}
-                                                {% elif radius == "12870" %}
-                                                    <a class="btn btn-primary btn-sm notActive" data-toggle="radius" data-title="3220">2 miles</a>
-                                                    <a class="btn btn-primary btn-sm notActive" data-toggle="radius" data-title="8050">5 miles</a>
-                                                    <a class="btn btn-primary btn-sm active" data-toggle="radius" data-title="12870">8 miles</a>
-                                                    {{ g.search_form.radius(id="radius", type="text", value=radius, hidden="true") }}
+                                        <div class="form-group">
+                                            <label><br>Distance:</label>
+                                            <div id="radioBtn" class="btn-group radius_select">
+                                                {% if radius %}
+                                                    {% if radius == "8050" %}
+                                                        <a class="btn btn-primary btn-sm notActive" data-toggle="radius" data-title="3220">2 miles</a>
+                                                        <a class="btn btn-primary btn-sm active" data-toggle="radius" data-title="8050">5 miles</a>
+                                                        <a class="btn btn-primary btn-sm notActive" data-toggle="radius" data-title="12870">8 miles</a>
+                                                        {{ g.search_form.radius(id="radius", type="text", value=radius, hidden="true") }}
+                                                    {% elif radius == "12870" %}
+                                                        <a class="btn btn-primary btn-sm notActive" data-toggle="radius" data-title="3220">2 miles</a>
+                                                        <a class="btn btn-primary btn-sm notActive" data-toggle="radius" data-title="8050">5 miles</a>
+                                                        <a class="btn btn-primary btn-sm active" data-toggle="radius" data-title="12870">8 miles</a>
+                                                        {{ g.search_form.radius(id="radius", type="text", value=radius, hidden="true") }}
+                                                    {% else %}
+                                                        <a class="btn btn-primary btn-sm active" data-toggle="radius" data-title="3220">2 miles</a>
+                                                        <a class="btn btn-primary btn-sm notActive" data-toggle="radius" data-title="8050">5 miles</a>
+                                                        <a class="btn btn-primary btn-sm notActive" data-toggle="radius" data-title="12870">8 miles</a>
+                                                        {{ g.search_form.radius(id="radius", type="text", value="3220", hidden="true") }}
+                                                    {% endif %}
                                                 {% else %}
                                                     <a class="btn btn-primary btn-sm active" data-toggle="radius" data-title="3220">2 miles</a>
                                                     <a class="btn btn-primary btn-sm notActive" data-toggle="radius" data-title="8050">5 miles</a>
                                                     <a class="btn btn-primary btn-sm notActive" data-toggle="radius" data-title="12870">8 miles</a>
                                                     {{ g.search_form.radius(id="radius", type="text", value="3220", hidden="true") }}
                                                 {% endif %}
-                                            {% else %}
-                                                <a class="btn btn-primary btn-sm active" data-toggle="radius" data-title="3220">2 miles</a>
-                                                <a class="btn btn-primary btn-sm notActive" data-toggle="radius" data-title="8050">5 miles</a>
-                                                <a class="btn btn-primary btn-sm notActive" data-toggle="radius" data-title="12870">8 miles</a>
-                                                {{ g.search_form.radius(id="radius", type="text", value="3220", hidden="true") }}
-                                            {% endif %}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

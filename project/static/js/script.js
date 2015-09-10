@@ -13,6 +13,14 @@ $('#radioBtn a').on('click', function(){
 $('.table_select a').on('click', function(){
     var sel = $(this).data('title');
     var tog = $(this).data('toggle');
+    if(sel == 'users')
+    {
+        $('#location_div').hide();
+    }
+    if(sel != 'users')
+    {
+        $('#location_div').show();
+    }
     $('#'+tog).prop('action', '/search/'+sel);
 })
 
