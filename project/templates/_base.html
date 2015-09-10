@@ -86,7 +86,11 @@ print(radius)
                                             {% endif %}
                                         </div>
                                     </div>
-                                    <div id="location_div">
+                                    {% if table == 'users' %}
+                                        <div id="location_div" hidden>
+                                    {% else %}
+                                        <div id="location_div">
+                                    {% endif %}
                                         <label><br>Location:</label>
                                         <div class="input-group">
                                             {% if loc_name %}
