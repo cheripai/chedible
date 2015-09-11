@@ -169,14 +169,15 @@ def search_results(table, query, coords, radius, page):
             radius=radius
         )
 
-    response = urlopen(
-        places + 'location={},{}&radius={}&types={}&name={}&key={}'.format(
-            lat, lng, radius, types, new_query, c.GOOGLE_API_KEY
+    if table != 'users':
+        response = urlopen(
+            places + 'location={},{}&radius={}&types={}&name={}&key={}'.format(
+                lat, lng, radius, types, new_query, c.GOOGLE_API_KEY
+            )
         )
-    )
-    obj = json.loads(response.read().decode('utf-8'))
-    for nearby_restaurant in obj['results']:
-        print(nearby_restaurant['name'])
+        obj = json.loads(response.read().decode('utf-8'))
+        for nearby_restaurant in obj['results']:
+            print(nearby_restaurant['name'])
 
     if table == "dishes":
         data = Dish.query.search(new_query, sort=True).limit(c.MAX_QUERIES)
