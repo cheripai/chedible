@@ -175,18 +175,21 @@ def search_results(table, query, coords, radius, page):
                 lat, lng, radius, types, new_query, c.GOOGLE_API_KEY
             )
         )
-        obj = json.loads(response.read().decode('utf-8'))
-        for nearby_restaurant in obj['results']:
-            print(nearby_restaurant['name'])
+        places_json = json.loads(response.read().decode('utf-8'))
+        places_names = [x['name'] for x in places_json['results']]
+        print(places_names)
 
     if table == "dishes":
-        data = Dish.query.search(new_query, sort=True).limit(c.MAX_QUERIES)
+        data = Dish.query.search(query, sort=True).limit(c.MAX_QUERIES)
         for dish in data:
             chedibilitylist.append(is_chedible(dish, g.user))
     elif table == "restaurants":
-        data = Restaurant.query.search(new_query, sort=True).limit(c.MAX_QUERIES)
+        # data = Restaurant.query.search(query, sort=True).limit(c.MAX_QUERIES)
+        data = Restaurant.query.filter(Restaurant.name.like('%'+query+'%'))
+        places_data = Restaurant.query.filter(Restaurant.name.in_(places_names))
+        data = data.union(places_data)
     elif table == "users":
-        data = User.query.search(new_query, sort=True).limit(c.MAX_QUERIES)
+        data = User.query.search(query, sort=True).limit(c.MAX_QUERIES)
     else:
         abort(404)
 
