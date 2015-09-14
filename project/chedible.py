@@ -185,9 +185,16 @@ def search_results(table, query, coords, radius, page):
             chedibilitylist.append(is_chedible(dish, g.user))
     elif table == "restaurants":
         # data = Restaurant.query.search(query, sort=True).limit(c.MAX_QUERIES)
-        data = Restaurant.query.filter(Restaurant.name.like('%'+query+'%'))
-        places_data = Restaurant.query.filter(Restaurant.name.in_(places_names))
-        data = data.union(places_data)
+        data = Restaurant.query.filter(Restaurant.name.ilike('%'+query+'%'))
+        data = data.union(
+            Restaurant.query.filter(Restaurant.tags.ilike('%'+query+'%'))
+        )
+        data = data.union(
+            Restaurant.query.filter(Restaurant.category.ilike('%'+query+'%'))
+        )
+        data = data.union(
+            Restaurant.query.filter(Restaurant.name.in_(places_names))
+        )
     elif table == "users":
         data = User.query.search(query, sort=True).limit(c.MAX_QUERIES)
     else:
