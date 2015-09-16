@@ -16,6 +16,7 @@
 from flask import render_template, abort, redirect, url_for, request, flash
 from flask import session, g, jsonify
 from functools import wraps
+from geopy.geocoders import GoogleV3
 import json
 from locale import currency
 from project import app, db
@@ -55,10 +56,9 @@ def load_search_form():
     g.search_form = SearchForm()
 
     if not g.search_form.location.data:
-        if 'location' in session:
+        if 'address' in session:
             # Sets the location input as the last searched location
-            g.search_form.location.data = \
-                session['location']['formatted_address']
+            g.search_form.location.data = session['address']
         else:
             # If no location data available, use default city
             g.search_form.location.data = c.DEFAULT_CITY
@@ -109,22 +109,24 @@ def test_login(id):
 @app.route('/search/<table>', methods=['POST'])
 def search(table):
     # FIXME: add filtering based on preferences
-    lat = None
-    lng = None
-    geocode = 'https://maps.googleapis.com/maps/api/geocode/json?address='
+    # Set geolocator to use Google Geoencoding API
+    geolocator = GoogleV3()
 
     # Prevent slashes from breaking routing
     query = g.search_form.query.data.replace('/', '')
 
     if g.search_form.validate_on_submit():
-        location = quote_plus(g.search_form.location.data)
+        location = geolocator.geocode(g.search_form.location.data)
         radius = g.search_form.radius.data
-        response = urlopen(geocode + location)
-        obj = json.loads(response.read().decode('utf-8'))
-        if obj['status'] == 'OK':
-            lat = obj['results'][0]['geometry']['location']['lat']
-            lng = obj['results'][0]['geometry']['location']['lng']
-            session['location'] = obj['results'][0]
+        if location:
+            session['address'] = location.address
+            return redirect(url_for(
+                'search_results',
+                table=table,
+                query=query,
+                coords='{},{}'.format(location.latitude, location.longitude),
+                radius=radius
+            ))
         else:
             return render_template(
                 'search.html',
@@ -136,14 +138,6 @@ def search(table):
                 lng='0',
                 table=table
             )
-
-        return redirect(url_for(
-            'search_results',
-            table=table,
-            query=query,
-            coords='{},{}'.format(lat, lng),
-            radius=radius
-        ))
     else:
         return redirect(request.referrer)
 

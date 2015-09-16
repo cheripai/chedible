@@ -12,6 +12,7 @@ WTForms==2.0.2
 Werkzeug==0.10.4
 behave==1.2.5
 decorator==4.0.2
+geopy==1.11.0
 itsdangerous==0.24
 parse==1.6.6
 parse-type==0.3.4
