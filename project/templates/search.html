@@ -21,7 +21,7 @@
     <div class="container">
         <div class="col-xs-12">
             {% if table != "users" %}
-                {{ googlemap("map", lat=lat, lng=lng, markers=[(lat, lng)], style="height:300px;width:100%;margin:0;") }}
+                {{ googlemap("map", lat=lat, lng=lng, markers=places_coords, style="height:300px;width:100%;margin:0;") }}
             {% endif %}
         </div>
         <legend>Entries matching "{{ query }}": </legend>
