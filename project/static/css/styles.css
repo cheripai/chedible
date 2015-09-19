@@ -45,8 +45,10 @@ textarea {
 }
 
 #map {
-    margin-bottom: 20px !important;
     border-radius: 6px !important;
+    height: 360px !important;
+    width: 100% !important;
+    margin-bottom: 20px !important;
 }
 
 .panel-body {
