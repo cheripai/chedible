@@ -165,7 +165,7 @@ def search_results(table, query, coords, radius, page):
 
     if table != 'users':
         response = urlopen(
-            places + 'location={},{}&radius={}&types={}&name={}&key={}'.format(
+            places + 'location={},{}&radius={}&types={}&keyword={}&key={}'.format(
                 lat, lng, radius, types, new_query, c.GOOGLE_API_KEY
             )
         )
