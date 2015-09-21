@@ -171,6 +171,7 @@ def search_results(table, query, coords, radius, page):
         )
         places_json = json.loads(response.read().decode('utf-8'))
         places_names = [place['name'] for place in places_json['results']]
+        print(places_json)
 
     if table == "dishes":
         data = Dish.query.search(query, sort=True).limit(c.MAX_QUERIES)
@@ -215,10 +216,13 @@ def search_results(table, query, coords, radius, page):
         pagination=pagination,
         Restaurant=Restaurant,
         places_coords=[
-            (place['geometry']['location']['lat'], place['geometry']['location']['lng']) 
+            (place['geometry']['location']['lat'],
+             place['geometry']['location']['lng'])
             for place in places_json['results']
-        ]
-
+        ],
+        places_info=[
+            '<h6>{}</h6><p>{}</p>'.format(place['name'], place['vicinity'])
+            for place in places_json['results']]
     )
 
 

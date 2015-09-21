@@ -28,7 +28,14 @@
                 {% else %}
                     {% set zoom = 13 %}
                 {% endif %}
-                {{ googlemap("map", lat=lat, lng=lng, markers=places_coords, zoom=zoom) }}
+                {{ googlemap(
+                    "map", 
+                    lat=lat, 
+                    lng=lng, 
+                    markers=places_coords,
+                    infobox=places_info,
+                    zoom=zoom
+                ) }}
             {% endif %}
         </div>
         <legend>Entries matching "{{ query }}": </legend>
