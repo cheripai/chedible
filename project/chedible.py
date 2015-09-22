@@ -203,6 +203,28 @@ def search_results(table, query, coords, radius, page):
     if not data and page != 1:
         abort(404)
 
+    places_coords = []
+    places_info = []
+    for place in places_json['results']:
+        places_coords.append(
+            (place['geometry']['location']['lat'],
+             place['geometry']['location']['lng'])
+        )
+        if 'opening_hours' in place \
+        and 'open_now' in place['opening_hours'] \
+        and place['opening_hours']['open_now']:
+            places_info.append(
+                '<h6>{}</h6><p>{}<br>Open</p>'.format(
+                    place['name'], place['vicinity']
+                )
+            )
+        else:
+            places_info.append(
+                '<h6>{}</h6><p>{}<br>Closed</p>'.format(
+                    place['name'], place['vicinity']
+            )
+        )
+
     return render_template(
         'search.html',
         message=message,
@@ -215,14 +237,8 @@ def search_results(table, query, coords, radius, page):
         radius=radius,
         pagination=pagination,
         Restaurant=Restaurant,
-        places_coords=[
-            (place['geometry']['location']['lat'],
-             place['geometry']['location']['lng'])
-            for place in places_json['results']
-        ],
-        places_info=[
-            '<h6>{}</h6><p>{}</p>'.format(place['name'], place['vicinity'])
-            for place in places_json['results']]
+        places_coords=places_coords,
+        places_info=places_info
     )
 
 
