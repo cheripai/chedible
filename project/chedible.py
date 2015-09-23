@@ -147,7 +147,7 @@ def search(table):
 def search_results(table, query, coords, radius, page):
     message = "No entries found"
     lat, lng = coords.split(',')
-    chedibilitylist = []
+    chedibilitylist, places_coords, places_info = [], [], []
     places = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
     types = 'bakery|bar|cafe|food|meal_delivery|meal_takeaway|restaurant'
 
@@ -171,7 +171,8 @@ def search_results(table, query, coords, radius, page):
         )
         places_json = json.loads(response.read().decode('utf-8'))
         places_names = [place['name'] for place in places_json['results']]
-        print(places_json)
+        places_coords, places_info = get_places_data(places_json)
+        print(json.dumps(places_json, indent=4))
 
     if table == "dishes":
         data = Dish.query.search(query, sort=True).limit(c.MAX_QUERIES)
@@ -202,28 +203,6 @@ def search_results(table, query, coords, radius, page):
 
     if not data and page != 1:
         abort(404)
-
-    places_coords = []
-    places_info = []
-    for place in places_json['results']:
-        places_coords.append(
-            (place['geometry']['location']['lat'],
-             place['geometry']['location']['lng'])
-        )
-        if 'opening_hours' in place \
-        and 'open_now' in place['opening_hours'] \
-        and place['opening_hours']['open_now']:
-            places_info.append(
-                '<h6>{}</h6><p>{}<br>Open</p>'.format(
-                    place['name'], place['vicinity']
-                )
-            )
-        else:
-            places_info.append(
-                '<h6>{}</h6><p>{}<br>Closed</p>'.format(
-                    place['name'], place['vicinity']
-            )
-        )
 
     return render_template(
         'search.html',
@@ -607,3 +586,34 @@ def post_interval_exists():
         flash(message)
         return True
     return False
+
+
+def get_places_data(places_json):
+    places_coords = []
+    places_info = []
+    info_box = '<h6>{}</h6><p>{}<br>{}</p>'
+    for place in places_json['results']:
+        places_coords.append(
+            (place['geometry']['location']['lat'],
+             place['geometry']['location']['lng'])
+        )
+        if 'opening_hours' in place and 'open_now' in place['opening_hours']:
+            if place['opening_hours']['open_now']:
+                places_info.append(
+                    info_box.format(
+                        place['name'], place['vicinity'], 'Open'
+                    )
+                )
+            else:
+                places_info.append(
+                    info_box.format(
+                        place['name'], place['vicinity'], 'Closed'
+                    )
+                )
+        else:
+            places_info.append(
+                info_box.format(
+                    place['name'], place['vicinity'], ''
+                )
+            )
+    return places_coords, places_info
