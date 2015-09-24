@@ -601,13 +601,13 @@ def get_places_data(places_json):
             if place['opening_hours']['open_now']:
                 places_info.append(
                     info_box.format(
-                        place['name'], place['vicinity'], 'Open'
+                        place['name'], place['vicinity'], '<span class=\'text-success\'>Open</span>'
                     )
                 )
             else:
                 places_info.append(
                     info_box.format(
-                        place['name'], place['vicinity'], 'Closed'
+                        place['name'], place['vicinity'], '<span class=\'text-danger\'>Closed</span>'
                     )
                 )
         else:
