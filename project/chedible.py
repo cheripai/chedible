@@ -172,7 +172,6 @@ def search_results(table, query, coords, radius, page):
         places_json = json.loads(response.read().decode('utf-8'))
         places_names = [place['name'] for place in places_json['results']]
         places_coords, places_info = get_places_data(places_json)
-        print(json.dumps(places_json, indent=4))
 
     if table == "dishes":
         data = Dish.query.search(query, sort=True).limit(c.MAX_QUERIES)
@@ -588,32 +587,27 @@ def post_interval_exists():
     return False
 
 
+# Constructs list of coordinates and infoboxes from JSON data
+# returned from Google Places. Used to populate search map
 def get_places_data(places_json):
     places_coords = []
     places_info = []
-    info_box = '<h6>{}</h6><p>{}<br>{}</p>'
     for place in places_json['results']:
+        info_box = '<h6>{}</h6><p>{}<br>{}<br>{}</p>'
+        open_status = ''
+        rating = ''
         places_coords.append(
             (place['geometry']['location']['lat'],
              place['geometry']['location']['lng'])
         )
         if 'opening_hours' in place and 'open_now' in place['opening_hours']:
             if place['opening_hours']['open_now']:
-                places_info.append(
-                    info_box.format(
-                        place['name'], place['vicinity'], '<span class=\'text-success\'>Open</span>'
-                    )
-                )
+                open_status = '<span class=\'text-success\'>Open</span>'
             else:
-                places_info.append(
-                    info_box.format(
-                        place['name'], place['vicinity'], '<span class=\'text-danger\'>Closed</span>'
-                    )
-                )
-        else:
-            places_info.append(
-                info_box.format(
-                    place['name'], place['vicinity'], ''
-                )
-            )
+                open_status = '<span class=\'text-danger\'>Closed</span>'
+        if 'rating' in place:
+            rating = 'Rating: {}'.format(place['rating'])
+        places_info.append(
+            info_box.format(place['name'], place['vicinity'], rating, open_status)
+        )
     return places_coords, places_info
