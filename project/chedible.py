@@ -593,7 +593,7 @@ def get_places_data(places_json):
     places_coords = []
     places_info = []
     for place in places_json['results']:
-        info_box = '<h6>{}</h6><p>{}<br>{}<br>{}</p>'
+        info_box = '<h6>{}</h6><p>{}{}{}</p>'
         open_status = ''
         rating = ''
         places_coords.append(
@@ -602,12 +602,26 @@ def get_places_data(places_json):
         )
         if 'opening_hours' in place and 'open_now' in place['opening_hours']:
             if place['opening_hours']['open_now']:
-                open_status = '<span class=\'text-success\'>Open</span>'
+                open_status = '<br><span class=\'text-success\'>Open</span>'
             else:
-                open_status = '<span class=\'text-danger\'>Closed</span>'
+                open_status = '<br><span class=\'text-danger\'>Closed</span>'
         if 'rating' in place:
-            rating = 'Rating: {}'.format(place['rating'])
+            rating = '<br>Rating: {}'.format(generate_stars(place['rating']))
         places_info.append(
             info_box.format(place['name'], place['vicinity'], rating, open_status)
         )
     return places_coords, places_info
+
+
+# Creates string of stars based on float input
+def generate_stars(rating):
+    stars = ''
+    if rating >= 0 and rating <= 5:
+        for i in range(int(rating)):
+            stars += '<i class=\'fa fa-star\'></i>'
+        dec = rating - int(rating)
+        if dec >= 0.33 and dec < 0.66:
+            stars += '<i class=\'fa fa-star-half-o\'></i>'
+        elif dec >= 0.66:
+            stars += '<i class=\'fa fa-star\'></i>'
+    return stars
