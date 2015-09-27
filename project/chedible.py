@@ -592,6 +592,7 @@ def post_interval_exists():
 def get_places_data(places_json):
     places_coords = []
     places_info = []
+    marker = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
     for place in places_json['results']:
         info_box = '<h6>{}</h6><p>{}{}{}</p>'
         open_status = ''
@@ -610,6 +611,7 @@ def get_places_data(places_json):
         places_info.append(
             info_box.format(place['name'], place['vicinity'], rating, open_status)
         )
+    places_coords = {marker: places_coords}
     return places_coords, places_info
 
 
