@@ -13,9 +13,13 @@ $('#radioBtn a').on('click', function(){
 $('.table_select a').on('click', function(){
     var sel = $(this).data('title');
     var tog = $(this).data('toggle');
-    if(sel == 'users')
+    if(sel == 'restaurants')
     {
-        $('#location_div').hide();
+        $('#query').val('Restaurants');
+    }
+    if(sel != 'restaurants')
+    {
+        $('#query').val('');
     }
     if(sel != 'users')
     {
