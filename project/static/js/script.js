@@ -13,11 +13,12 @@ $('#radioBtn a').on('click', function(){
 $('.table_select a').on('click', function(){
     var sel = $(this).data('title');
     var tog = $(this).data('toggle');
-    if(sel == 'restaurants')
+    var queryValue = $('#query').val().toLowerCase();
+    if(sel == 'restaurants' && queryValue == '')
     {
         $('#query').val('Restaurants');
     }
-    if(sel != 'restaurants')
+    if(sel != 'restaurants' && queryValue == 'restaurants')
     {
         $('#query').val('');
     }
