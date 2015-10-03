@@ -278,6 +278,11 @@ def restaurant_profile(id, page):
     )
 
 
+@app.route('/restaurant/<id>/add_location')
+def add_location(id):
+    return render_template('restaurant_location.html', id=id)
+
+
 @app.route('/restaurant/<id>/add', methods=('GET', 'POST'))
 @login_required
 def add_dish(id):
