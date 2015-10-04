@@ -120,6 +120,7 @@ def search(table):
         radius = g.search_form.radius.data
         if location:
             session['address'] = location.address
+            session['coords'] = (location.latitude, location.longitude)
             return redirect(url_for(
                 'search_results',
                 table=table,
@@ -278,9 +279,16 @@ def restaurant_profile(id, page):
     )
 
 
-@app.route('/restaurant/<id>/add_location')
-def add_location(id):
-    return render_template('restaurant_location.html', id=id)
+@app.route('/restaurant/<id>/<coords>/add_location')
+def add_location(id, coords):
+    restaurant = Restaurant.query.filter_by(id=id).first()
+    lat, lng = coords.split(',')
+    return render_template(
+        'restaurant_location.html',
+        restaurant=restaurant,
+        lat=lat,
+        lng=lng
+    )
 
 
 @app.route('/restaurant/<id>/add', methods=('GET', 'POST'))
