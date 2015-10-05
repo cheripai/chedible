@@ -267,6 +267,11 @@ def restaurant_profile(id, page):
     if not dishes and page != 1:
         abort(404)
 
+    if 'coords' in session:
+        lat, lng = session['coords']
+    else:
+        lat, lng = (0, 0)
+
     return render_template(
         'restaurant_profile.html',
         message=message,
@@ -275,6 +280,8 @@ def restaurant_profile(id, page):
         pagination=pagination,
         comments=comments,
         User=User,
+        lat=lat,
+        lng=lng,
         MAX_COMMENT_LENGTH=c.MAX_COMMENT_LENGTH
     )
 

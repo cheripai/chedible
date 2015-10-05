@@ -23,7 +23,7 @@
     </script>
     <div class="container">
         <div class="col-xs-12">
-            {{ googlemap("map", lat=37.775, lng=-122.418, markers=[(37.7795, -122.4192)], style="height:300px;width:100%;margin:0;") }}
+            {{ googlemap("map", lat=lat, lng=lng, markers=[], style="height:300px;width:100%;margin:0;") }}
         </div>
         <div class="col-sm-7">
             <div class="page-header">
@@ -41,7 +41,7 @@
                                     {% if g.user %}
                                         <a href="{{ url_for('edit_restaurant', id=restaurant.id) }}">Edit</a> /
                                         <a href="{{ url_for('add_dish', id=restaurant.id) }}">Add a dish</a> /
-                                        <a href="{{ url_for('add_location', id=restaurant.id, coords='0,0') }}">Add a location</a>
+                                        <a href="{{ url_for('add_location', id=restaurant.id, coords='{},{}'.format(lat, lng)) }}">Add a location</a>
                                     {% else %}
                                         <a href="#mustlogin" data-toggle="modal">Add a dish</a>
                                     {% endif %}
