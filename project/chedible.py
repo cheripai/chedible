@@ -149,8 +149,6 @@ def search_results(table, query, coords, radius, page):
     message = "No entries found"
     lat, lng = coords.split(',')
     chedibilitylist, places_coords, places_info = [], [], []
-    places = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
-    types = 'bakery|bar|cafe|food|meal_delivery|meal_takeaway|restaurant'
 
     new_query = quote_plus(query)
     if not new_query:
@@ -165,11 +163,7 @@ def search_results(table, query, coords, radius, page):
         )
 
     if table != 'users':
-        response = urlopen(
-            places + 'location={},{}&radius={}&types={}&keyword={}&key={}'.format(
-                lat, lng, radius, types, new_query, c.GOOGLE_API_KEY
-            )
-        )
+        response = query_places_api(new_query, lat, lng, radius)
         places_json = json.loads(response.read().decode('utf-8'))
         places_names = [place['name'] for place in places_json['results']]
         places_coords, places_info = get_places_data(places_json)
@@ -647,3 +641,14 @@ def generate_stars(rating):
         elif dec >= 0.66:
             stars += '<i class=\'fa fa-star\'></i>'
     return stars
+
+
+def query_places_api(query, lat, lng, radius):
+    places = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
+    types = 'bakery|bar|cafe|food|meal_delivery|meal_takeaway|restaurant'
+
+    return urlopen(
+        places + 'location={},{}&radius={}&types={}&keyword={}&key={}'.format(
+            lat, lng, radius, types, query, c.GOOGLE_API_KEY
+        )
+    )
