@@ -18,7 +18,7 @@
 
 {% block content %}
     <div class="container">
-        {{ googlemap("map", lat=lat, lng=lng, markers=[], style="height:300px;width:100%;margin:0;") }}
+        {{ googlemap("map", lat=lat, lng=lng, markers=places_coords, infobox=places_info, style="height:300px;width:100%;margin:0;") }}
         <legend>Add a location</legend>
         <div class="col-md-8">
         </div>

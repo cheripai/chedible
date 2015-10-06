@@ -149,8 +149,8 @@ def search_results(table, query, coords, radius, page):
     message = "No entries found"
     lat, lng = coords.split(',')
     chedibilitylist, places_coords, places_info = [], [], []
-
     new_query = quote_plus(query)
+
     if not new_query:
         return render_template(
             'search.html',
@@ -163,8 +163,7 @@ def search_results(table, query, coords, radius, page):
         )
 
     if table != 'users':
-        response = query_places_api(new_query, lat, lng, radius)
-        places_json = json.loads(response.read().decode('utf-8'))
+        places_json = query_places_api(new_query, lat, lng, radius)
         places_names = [place['name'] for place in places_json['results']]
         places_coords, places_info = get_places_data(places_json)
 
@@ -284,11 +283,18 @@ def restaurant_profile(id, page):
 def add_location(id, coords):
     restaurant = Restaurant.query.filter_by(id=id).first()
     lat, lng = coords.split(',')
+
+    # FIXME: Adjust radius value from constant
+    places_json = query_places_api(restaurant.name, lat, lng, 2800)
+    places_coords, places_info = get_places_data(places_json)
+
     return render_template(
         'restaurant_location.html',
         restaurant=restaurant,
         lat=lat,
-        lng=lng
+        lng=lng,
+        places_coords=places_coords,
+        places_info=places_info
     )
 
 
@@ -647,8 +653,9 @@ def query_places_api(query, lat, lng, radius):
     places = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
     types = 'bakery|bar|cafe|food|meal_delivery|meal_takeaway|restaurant'
 
-    return urlopen(
+    response = urlopen(
         places + 'location={},{}&radius={}&types={}&keyword={}&key={}'.format(
             lat, lng, radius, types, query, c.GOOGLE_API_KEY
         )
     )
+    return json.loads(response.read().decode('utf-8'))
