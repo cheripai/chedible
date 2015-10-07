@@ -17,17 +17,16 @@ from flask import render_template, abort, redirect, url_for, request, flash
 from flask import session, g, jsonify
 from functools import wraps
 from geopy.geocoders import GoogleV3
-import json
 from locale import currency
 from project import app, db
 import project._config as c
 from project.forms import AddRestaurantForm, AddDishForm, SearchForm
 from project.forms import EditUserForm
+from project.google_places import Places
 from project.pagination import Pagination
 from project.schema import Restaurant, Dish, User, Comment
 from time import time
 from urllib.parse import unquote, quote_plus
-from urllib.request import urlopen
 
 
 # This function runs before each request
@@ -163,9 +162,9 @@ def search_results(table, query, coords, radius, page):
         )
 
     if table != 'users':
-        places_json = query_places_api(new_query, lat, lng, radius)
-        places_names = [place['name'] for place in places_json['results']]
-        places_coords, places_info = get_places_data(places_json)
+        places = Places(new_query, lat, lng, radius)
+        places_names = places.get_names()
+        places_coords, places_info = places.get_places_data()
 
     if table == "dishes":
         data = Dish.query.search(query, sort=True).limit(c.MAX_QUERIES)
@@ -285,8 +284,8 @@ def add_location(id, coords):
     lat, lng = coords.split(',')
 
     # FIXME: Adjust radius value from constant
-    places_json = query_places_api(restaurant.name, lat, lng, 2800)
-    places_coords, places_info = get_places_data(places_json)
+    places = Places(restaurant.name, lat, lng, 2800)
+    places_coords, places_info = places.get_places_data()
 
     return render_template(
         'restaurant_location.html',
@@ -605,57 +604,3 @@ def post_interval_exists():
         flash(message)
         return True
     return False
-
-
-# Constructs list of coordinates and infoboxes from JSON data
-# returned from Google Places. Used to populate search map
-def get_places_data(places_json):
-    places_coords = []
-    places_info = []
-    marker = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-    for place in places_json['results']:
-        info_box = '<h6>{}</h6><p>{}{}{}</p>'
-        open_status = ''
-        rating = ''
-        places_coords.append(
-            (place['geometry']['location']['lat'],
-             place['geometry']['location']['lng'])
-        )
-        if 'opening_hours' in place and 'open_now' in place['opening_hours']:
-            if place['opening_hours']['open_now']:
-                open_status = '<br><span class=\'text-success\'>Open</span>'
-            else:
-                open_status = '<br><span class=\'text-danger\'>Closed</span>'
-        if 'rating' in place:
-            rating = '<br>Rating: {}'.format(generate_stars(place['rating']))
-        places_info.append(
-            info_box.format(place['name'], place['vicinity'], rating, open_status)
-        )
-    places_coords = {marker: places_coords}
-    return places_coords, places_info
-
-
-# Creates string of stars based on float input
-def generate_stars(rating):
-    stars = ''
-    if rating >= 0 and rating <= 5:
-        for i in range(int(rating)):
-            stars += '<i class=\'fa fa-star\'></i>'
-        dec = rating - int(rating)
-        if dec >= 0.33 and dec < 0.66:
-            stars += '<i class=\'fa fa-star-half-o\'></i>'
-        elif dec >= 0.66:
-            stars += '<i class=\'fa fa-star\'></i>'
-    return stars
-
-
-def query_places_api(query, lat, lng, radius):
-    places = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
-    types = 'bakery|bar|cafe|food|meal_delivery|meal_takeaway|restaurant'
-
-    response = urlopen(
-        places + 'location={},{}&radius={}&types={}&keyword={}&key={}'.format(
-            lat, lng, radius, types, query, c.GOOGLE_API_KEY
-        )
-    )
-    return json.loads(response.read().decode('utf-8'))
