@@ -285,7 +285,7 @@ def add_location(id, coords):
     lat, lng = coords.split(',')
 
     # FIXME: Adjust radius value from constant
-    places = Places(restaurant.name, lat, lng, 2800)
+    places = Places(restaurant.name, lat, lng, 3220)
     places_coords = places.get_coords()
     places_info = places.get_info_boxes()
 
