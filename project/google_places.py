@@ -33,20 +33,26 @@ class Places(object):
         )
         self.data = json.loads(response.read().decode('utf-8'))
 
-    # Constructs list of coordinates and infoboxes from JSON data
-    # returned from Google Places. Used to populate search map
-    def get_places_data(self):
-        places_coords = []
-        places_info = []
+    # Constructs list of coordinates from query
+    def get_coords(self):
+        coords = []
         marker = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+        for place in self.data['results']:
+            coords.append(
+                (place['geometry']['location']['lat'],
+                 place['geometry']['location']['lng'])
+            )
+        coords = {marker: coords}
+        return coords
+
+
+    # Constructs list of info boxes to be displayed above map markers
+    def get_info_boxes(self):
+        info = []
         for place in self.data['results']:
             info_box = '<h6>{}</h6><p>{}{}{}</p>'
             open_status = ''
             rating = ''
-            places_coords.append(
-                (place['geometry']['location']['lat'],
-                 place['geometry']['location']['lng'])
-            )
             if 'opening_hours' in place and 'open_now' in place['opening_hours']:
                 if place['opening_hours']['open_now']:
                     open_status = '<br><span class=\'text-success\'>Open</span>'
@@ -54,13 +60,13 @@ class Places(object):
                     open_status = '<br><span class=\'text-danger\'>Closed</span>'
             if 'rating' in place:
                 rating = '<br>Rating: {}'.format(self.generate_stars(place['rating']))
-            places_info.append(
+            info.append(
                 info_box.format(place['name'], place['vicinity'], rating, open_status)
             )
-        places_coords = {marker: places_coords}
-        return places_coords, places_info
+        return info
 
 
+    # Constructs list of names from query
     def get_names(self):
         return [place['name'] for place in self.data['results']]
 

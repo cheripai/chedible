@@ -164,7 +164,8 @@ def search_results(table, query, coords, radius, page):
     if table != 'users':
         places = Places(new_query, lat, lng, radius)
         places_names = places.get_names()
-        places_coords, places_info = places.get_places_data()
+        places_coords = places.get_coords()
+        places_info = places.get_info_boxes()
 
     if table == "dishes":
         data = Dish.query.search(query, sort=True).limit(c.MAX_QUERIES)
@@ -285,7 +286,8 @@ def add_location(id, coords):
 
     # FIXME: Adjust radius value from constant
     places = Places(restaurant.name, lat, lng, 2800)
-    places_coords, places_info = places.get_places_data()
+    places_coords = places.get_coords()
+    places_info = places.get_info_boxes()
 
     return render_template(
         'restaurant_location.html',
