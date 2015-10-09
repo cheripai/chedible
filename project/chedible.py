@@ -287,7 +287,7 @@ def add_location(id, coords):
     # FIXME: Adjust radius value from constant
     places = Places(restaurant.name, lat, lng, 3220)
     places_coords = places.get_coords()
-    places_info = places.get_info_boxes()
+    places_info = places.get_add_location_boxes()
 
     return render_template(
         'restaurant_location.html',

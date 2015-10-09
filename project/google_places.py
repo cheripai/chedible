@@ -22,6 +22,7 @@ class Places(object):
 
     data = ''
 
+
     def __init__(self, query, lat, lng, radius):
         places = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
         types = 'bakery|bar|cafe|food|meal_delivery|meal_takeaway|restaurant'
@@ -32,6 +33,7 @@ class Places(object):
             )
         )
         self.data = json.loads(response.read().decode('utf-8'))
+
 
     # Constructs list of coordinates from query
     def get_coords(self):
@@ -48,7 +50,7 @@ class Places(object):
 
     # Constructs list of info boxes to be displayed above map markers
     def get_info_boxes(self):
-        info = []
+        boxes = []
         for place in self.data['results']:
             info_box = '<h6>{}</h6><p>{}{}{}</p>'
             open_status = ''
@@ -60,10 +62,21 @@ class Places(object):
                     open_status = '<br><span class=\'text-danger\'>Closed</span>'
             if 'rating' in place:
                 rating = '<br>Rating: {}'.format(self.generate_stars(place['rating']))
-            info.append(
+            boxes.append(
                 info_box.format(place['name'], place['vicinity'], rating, open_status)
             )
-        return info
+        return boxes
+
+
+    def get_add_location_boxes(self):
+        boxes = []
+        for place in self.data['results']:
+            info_box = '<h6>{}</h6><p>{}</p><p><button class=\'btn btn-primary\'>Add</button>&nbsp<button class=\'btn btn-default\'>Report</button></p>'
+            boxes.append(
+                info_box.format(place['name'], place['vicinity'])
+            )
+        return boxes
+        
 
 
     # Constructs list of names from query
