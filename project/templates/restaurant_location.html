@@ -18,9 +18,18 @@
 
 {% block content %}
     <div class="container">
-        {{ googlemap("map", lat=lat, lng=lng, markers=places_coords, infobox=places_info, style="height:300px;width:100%;margin:0;") }}
         <legend>Add a location</legend>
         <div class="col-md-8">
+            {{ googlemap("map", lat=lat, lng=lng, markers=places_coords, infobox=places_info, style="width:100%;margin:0;") }}
+            <div class="col-md-8">
+                <label class="control-label">Search another location:</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="City or Zip Code">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button">Search</button>
+                    </span>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-1">
