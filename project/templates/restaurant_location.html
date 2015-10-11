@@ -20,15 +20,33 @@
     <div class="container">
         <legend>Add a location</legend>
         <div class="col-md-8">
-            {{ googlemap("map", lat=lat, lng=lng, markers=places_coords, infobox=places_info, style="width:100%;margin:0;") }}
+            {{ googlemap("map", lat=lat, lng=lng, zoom=12, markers=places_coords, infobox=places_info, style="width:100%;margin:0;") }}
             <div class="col-md-8">
-                <label class="control-label">Search another location:</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="City or Zip Code">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button">Search</button>
-                    </span>
-                </div>
+                {% if form.errors %}
+                    <ul class="errors">
+                        {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                            {% for error in field_errors %}
+                                <li class="text-danger">{{ form[field_name].label }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <form class="form-horizontal" method="post" action="{{ url_for('add_location', id=restaurant.id, coords='{},{}'.format(lat, lng)) }}">
+                    {{ form.csrf_token }}
+                    <label class="control-label">Search another location:</label>
+                    <div class="input-group">
+                        {{ form.location(
+                            value=loc_name,
+                            class="form-control",
+                            type="text",
+                            placeholder="City or Zip Code",
+                            autocomplete="off"
+                        ) }}
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </span>
+                    </div>
+                </form>
             </div>
         </div>
 

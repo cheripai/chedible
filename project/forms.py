@@ -182,3 +182,15 @@ class EditUserForm(Form):
     shellfish = StringField('Shellfish')
     soy = StringField('Soy')
     wheat = StringField('Wheat')
+
+
+class AddLocationForm(Form):
+    location = StringField(
+        'Location',
+        validators=[
+            Length(
+                max=64,
+                message="Must be less than 64 characters"
+            )
+        ]
+    )

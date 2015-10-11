@@ -21,7 +21,7 @@ from locale import currency
 from project import app, db
 import project._config as c
 from project.forms import AddRestaurantForm, AddDishForm, SearchForm
-from project.forms import EditUserForm
+from project.forms import EditUserForm, AddLocationForm
 from project.google_places import Places
 from project.pagination import Pagination
 from project.schema import Restaurant, Dish, User, Comment
@@ -279,8 +279,17 @@ def restaurant_profile(id, page):
     )
 
 
-@app.route('/restaurant/<id>/<coords>/add_location')
+@app.route('/restaurant/<id>/<coords>/add_location', methods=('GET', 'POST'))
 def add_location(id, coords):
+    form = AddLocationForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            geolocator = GoogleV3()
+            location = geolocator.geocode(form.location.data)
+            if location:
+                coords = '{},{}'.format(location.latitude, location.longitude)
+            else:
+                flash('Not a valid location')
     restaurant = Restaurant.query.filter_by(id=id).first()
     lat, lng = coords.split(',')
 
@@ -291,11 +300,12 @@ def add_location(id, coords):
 
     return render_template(
         'restaurant_location.html',
+        form=form,
         restaurant=restaurant,
         lat=lat,
         lng=lng,
         places_coords=places_coords,
-        places_info=places_info
+        places_info=places_info,
     )
 
 
