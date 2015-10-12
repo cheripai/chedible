@@ -15,6 +15,7 @@
 
 import json
 import project._config as c
+from project.schema import Location
 from urllib.request import urlopen
 
 
@@ -71,7 +72,10 @@ class Places(object):
     def get_add_location_boxes(self):
         boxes = []
         for place in self.data['results']:
-            info_box = '<h6>{}</h6><p>{}</p><p><button class=\'btn btn-primary\'>Add</button>&nbsp<button class=\'btn btn-default\'>Report</button></p>'
+            if Location.query.filter_by(google_id=place['id']).first():
+                info_box = '<h6>{}</h6><p>{}</p><p><button class=\'btn btn-default\'>Flag Inaccurate</button></p>'
+            else:
+                info_box = '<h6>{}</h6><p>{}</p><p><button class=\'btn btn-primary\'>Add</button>'
             boxes.append(
                 info_box.format(place['name'], place['vicinity'])
             )
