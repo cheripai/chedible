@@ -280,6 +280,7 @@ def restaurant_profile(id, page):
 
 
 @app.route('/restaurant/<id>/<coords>/add_location', methods=('GET', 'POST'))
+@login_required
 def add_location(id, coords):
     form = AddLocationForm()
     if request.method == 'POST':
