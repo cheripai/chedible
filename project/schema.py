@@ -278,12 +278,14 @@ class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date, nullable=False)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
+    google_id = db.Column(db.String, nullable=False)
     lat = db.Column(db.Float, nullable=False)
     lng = db.Column(db.Float, nullable=False)
 
-    def __init__(self, restaurant_id, lat, lng):
+    def __init__(self, restaurant_id, google_id, lat, lng):
         self.date = datetime.utcnow()
         self.restaurant_id = restaurant_id
+        self.google_id = google_id
         self.lat = lat
         self.lng = lng
 
