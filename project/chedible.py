@@ -24,7 +24,7 @@ from project.forms import AddRestaurantForm, AddDishForm, SearchForm
 from project.forms import EditUserForm, AddLocationForm
 from project.google_places import Places
 from project.pagination import Pagination
-from project.schema import Restaurant, Dish, User, Comment
+from project.schema import Restaurant, Dish, User, Comment, Location
 from time import time
 from urllib.parse import unquote, quote_plus
 
@@ -281,7 +281,7 @@ def restaurant_profile(id, page):
 
 @app.route('/restaurant/<id>/<coords>/add_location', methods=('GET', 'POST'))
 @login_required
-def add_location(id, coords):
+def add_location_page(id, coords):
     form = AddLocationForm()
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -308,6 +308,18 @@ def add_location(id, coords):
         places_coords=places_coords,
         places_info=places_info,
     )
+
+
+@app.route('/restaurant/<id>/add_location')
+@login_required
+def add_location(id):
+    google_id = unquote(request.args.get('google_id', type=str))
+    lat = unquote(request.args.get('lat', type=float))
+    lng = unquote(request.args.get('lng', type=float))
+    new_location = Location(id, google_id, lat, lng)
+    db.session.add(new_location)
+    db.session.commit()
+    return jsonify('OK')
 
 
 @app.route('/restaurant/<id>/add', methods=('GET', 'POST'))

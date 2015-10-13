@@ -31,7 +31,7 @@
                         {% endfor %}
                     </ul>
                 {% endif %}
-                <form class="form-horizontal" method="post" action="{{ url_for('add_location', id=restaurant.id, coords='{},{}'.format(lat, lng)) }}">
+                <form class="form-horizontal" method="post" action="{{ url_for('add_location_page', id=restaurant.id, coords='{},{}'.format(lat, lng)) }}">
                     {{ form.csrf_token }}
                     <label class="control-label">Search another location:</label>
                     <div class="input-group">
