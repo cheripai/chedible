@@ -73,7 +73,8 @@ class Places(object):
         boxes = []
         index = 0
         for place in self.data['results']:
-            info_box = '<h6>{}</h6><p>{}</p><p></p><span hidden><span id=\'google_id{}\'>{}</span><span id=\'lat{}\'>{}</span><span id=\'lng{}\'>{}</span></span>'
+            info_box = '<h6>{}</h6><p>{}</p><span hidden>\
+                <span id=\'google_id{}\'>{}</span><span id=\'lat{}\'>{}</span><span id=\'lng{}\'>{}</span></span>'
             if Location.query.filter_by(google_id=place['id']).first():
                 info_box += '<button class=\'btn btn-default\'>Flag Inaccurate</button>'
             else:
