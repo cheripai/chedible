@@ -1,16 +1,22 @@
 #chedible
 
-###License
-Copyright 2015 Dat Do
+#### Requirements
+1. Python 3 
+1. [virtualenv](https://virtualenv.pypa.io/en/latest/installation.html) 
+3. [virtualenvwrapper](https://virtualenvwrapper.readthedocs.org/en/latest/) (*recommended*)
+4. [PostgreSQL](https://github.com/CheriPai/chedible/blob/master/docs/install_postgres.md)
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
 
-http://www.apache.org/licenses/LICENSE-2.0
+#### Setup
+1. ```mkvirtualenv --python=path/to/python3 chedible```
+1. ```pip install -r requirements.txt```
+1. ```createdb data.db && createdb test.db```
+1. ```python db_create.py```
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+
+#### To run
+1. ```python run.py```
+
+
+#### To test
+1. ```behave```
