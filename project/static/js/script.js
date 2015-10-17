@@ -221,12 +221,11 @@ $("[id^=post]").click(function(){
 addLocation = function(google_id, lat, lng) {
     // This retrieves the restaurant_id from the URL
     var restaurant_id = window.location.pathname.replace(/\/\s*$/,'').split('/')[2];
-    alert(google_id);
-    $.getJSON($SCRIPT_ROOT + '/restaurant/'+restaurant_id+'/add_location', {
-        google_id: google_id,
-        lat: lat,
-        lng: lng 
-    }, function(data) {
-        alert(data);
-    });
+    // $.getJSON($SCRIPT_ROOT + '/restaurant/'+restaurant_id+'/add_location', {
+    //     google_id: google_id,
+    //     lat: lat,
+    //     lng: lng 
+    // }, function(data) {
+    //     alert(data);
+    // });
 };
