@@ -218,12 +218,15 @@ $("[id^=post]").click(function(){
 });
 
 
-$("[id^=add_location]").click(function(){
-    var index = parseInt($(this).attr('id').replace('add_location', ''), 10);
-    $.getJSON($SCRIPT_ROOT + '/restaurant/'+index+'/add_location', {
-        google_id: '',
-        lat: 0.0,
-        lng: 0.0
+addLocation = function(google_id, lat, lng) {
+    // This retrieves the restaurant_id from the URL
+    var restaurant_id = window.location.pathname.replace(/\/\s*$/,'').split('/')[2];
+    alert(google_id);
+    $.getJSON($SCRIPT_ROOT + '/restaurant/'+restaurant_id+'/add_location', {
+        google_id: google_id,
+        lat: lat,
+        lng: lng 
     }, function(data) {
+        alert(data);
     });
-});
+};
