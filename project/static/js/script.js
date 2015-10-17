@@ -1,3 +1,8 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
 // Animates and sets value for buttons on add dish form
 $('#radioBtn a').on('click', function(){
     var sel = $(this).data('title');
@@ -209,5 +214,16 @@ $("[id^=post]").click(function(){
         $('#content'+index).attr('placeholder', 'Submitted!');
         $('#post'+index).attr('disabled', true);
         $('#hidden-date'+index).text(data.date);
+    });
+});
+
+
+$("[id^=add_location]").click(function(){
+    var index = parseInt($(this).attr('id').replace('add_location', ''), 10);
+    $.getJSON($SCRIPT_ROOT + '/restaurant/'+index+'/add_location', {
+        google_id: '',
+        lat: 0.0,
+        lng: 0.0
+    }, function(data) {
     });
 });
