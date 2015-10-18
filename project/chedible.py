@@ -303,13 +303,17 @@ def add_location_page(id, coords):
 @app.route('/restaurant/<id>/add_location')
 @login_required
 def add_location(id):
-    google_id = unquote(request.args.get('google_id', type=str))
-    lat = unquote(request.args.get('lat', type=float))
-    lng = unquote(request.args.get('lng', type=float))
+    args = request.args
+    if 'google_id' in args and 'lat' in args and 'lng' in args:
+        google_id = unquote(args.get('google_id', type=str))
+        lat = unquote(args.get('lat', type=float))
+        lng = unquote(args.get('lng', type=float))
+    else:
+        return jsonify(status='error')
     new_location = Location(id, google_id, lat, lng)
     db.session.add(new_location)
     db.session.commit()
-    return jsonify('OK')
+    return jsonify(status='success')
 
 
 @app.route('/restaurant/<id>/add', methods=('GET', 'POST'))
@@ -535,6 +539,8 @@ def vote():
 
 @app.route('/comment')
 def comment():
+    if not 'content' in request.args and not 'id' in request.args:
+        return jsonify(error='Missing data')
     content = unquote(request.args.get('content', type=str))
     if len(content) > c.MAX_COMMENT_LENGTH:
         return jsonify(error='Comment exceeds 512 characters')
