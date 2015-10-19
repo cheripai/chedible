@@ -237,6 +237,13 @@ Scenario: Comment route returns error when posting twice within post interval
     Then we should see the text "error"
 
 
+Scenario: Comment route returns error when not sending any data
+    Given chedible is set up
+    When we log in
+    When we visit "/comment"
+    Then we should see the text "error"
+
+
 Scenario: we check the chediblity of a dish that contains nothing for a user that will eat anything
     Given chedible is set up
     When we log in
