@@ -21,7 +21,7 @@ $('.table_select a').on('click', function(){
     var queryValue = $('#query').val().toLowerCase();
     if(sel == 'restaurants' && queryValue == '')
     {
-        $('#query').val('Restaurants');
+        $('#query').val('');
     }
     if(sel != 'restaurants' && queryValue == 'restaurants')
     {
