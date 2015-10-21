@@ -278,3 +278,17 @@ Scenario: we check the chediblity of a dish that might contain everything for a 
     When we add dish "test_dish8" to restaurant "test2"
     And we set dish "test_dish8" so contains is "None" for attribute/s "everything"
     Then is_chedible should evaluate to False given user "ched test3" and "test_dish8"
+
+
+Scenario: Add location route returns error when not sending any data
+    Given chedible is set up
+    When we log in
+    And we visit "/restaurant/1/add_location"
+    Then we should see the text "error"
+
+
+Scenario: We can add a location to a restaurant
+    Given chedible is set up
+    When we log in
+    And we visit "/restaurant/1/add_location?google_id=test&lat=0&lng=0"
+    Then we should see the text "success"
