@@ -306,3 +306,10 @@ Scenario: Add location route returns error when not sending latitude or longitud
     When we log in
     And we visit "/restaurant/1/add_location?google_id=test"
     Then we should see the text "error"
+
+
+Scenario: Add location route returns error when latitude and longitude is not a double
+    Given chedible is set up
+    When we log in
+    And we visit "/restaurant/1/add_location?google_id=test&lat=test&lng=test"
+    Then we should see the text "error"

@@ -308,6 +308,8 @@ def add_location(id):
         google_id = unquote(args.get('google_id', type=str))
         lat = args.get('lat', type=float)
         lng = args.get('lng', type=float)
+        if not google_id or lat == None or lng == None:
+            return jsonify(status='error')
     else:
         return jsonify(status='error')
     new_location = Location(id, google_id, lat, lng)
