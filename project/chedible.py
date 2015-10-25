@@ -547,6 +547,8 @@ def comment():
     if len(content) > c.MAX_COMMENT_LENGTH:
         return jsonify(error='Comment exceeds 512 characters')
     id = request.args.get('id', type=int)
+    if id is None:
+        return jsonify(error='Invalid id')
     if Dish.query.filter_by(id=id).first() is None or \
             g.user is None or not content:
         abort(404)

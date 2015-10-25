@@ -217,7 +217,7 @@ Scenario: comment must contain id
     Given chedible is set up
     When we log in
     And we visit "/comment?content=test&id="
-    Then we should see the text "404"
+    Then we should see the text "error"
 
 
 Scenario: comment cannot exceed 512 characters
@@ -241,6 +241,13 @@ Scenario: Comment route returns error when not sending any data
     Given chedible is set up
     When we log in
     When we visit "/comment"
+    Then we should see the text "error"
+
+
+Scenario: Comment route returns error when id is not an integer
+    Given chedible is set up
+    When we log in
+    When we visit "/comment?content=test&id=test"
     Then we should see the text "error"
 
 
