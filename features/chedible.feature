@@ -192,6 +192,13 @@ Scenario: we can comment on a dish
     Then we should see "Test" as the "content" of "comments" "1"
 
 
+Scenario: vote id must be of type int
+    Given chedible is set up
+    When we log in
+    And we visit "/comment?content=test&id=test"
+    Then we should see the text "error"
+
+
 Scenario: we can comment using escaped reserved characters on a dish
     Given chedible is set up
     When we log in
