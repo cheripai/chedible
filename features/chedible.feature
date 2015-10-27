@@ -185,6 +185,13 @@ Scenario: we cannot vote when not logged in
     Then we should see the text "404"
 
 
+Scenario: type of vote must be correct
+    Given chedible is set up
+    When we log in
+    And we visit "/vote?vote=test&id=4"
+    Then we should see the text "error"
+
+
 Scenario: we can comment on a dish
     Given chedible is set up
     When we log in
