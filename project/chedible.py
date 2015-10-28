@@ -534,6 +534,8 @@ def vote():
     elif v == 'downvote' and voters[g.user.id] is True:
         dish.update({'score': dish.first().score-2})
         voters[g.user.id] = False
+    else:
+        return jsonify(error='Invalid type of vote')
     dish.update({'voters': voters})
     db.session.commit()
     return jsonify(result=dish.first().score)
