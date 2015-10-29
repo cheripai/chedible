@@ -192,6 +192,13 @@ Scenario: type of vote must be correct
     Then we should see the text "error"
 
 
+Scenario: dish id must exist
+    Given chedible is set up
+    When we log in
+    And we visit "/vote?vote=upvote&id=1234"
+    Then we should see the text "error"
+
+
 Scenario: we can comment on a dish
     Given chedible is set up
     When we log in

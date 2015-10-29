@@ -505,9 +505,9 @@ def vote():
     if not v or id is None:
         abort(404)
     dish = Dish.query.filter_by(id=id)
-    voters = dish.first().voters
     if dish.first() is None or g.user is None:
         abort(404)
+    voters = dish.first().voters
     if g.user.id not in voters:
         voters[g.user.id] = None
     # Case 1: User upvotes an unvoted dish
