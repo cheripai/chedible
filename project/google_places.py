@@ -66,7 +66,13 @@ class Places(object):
             if Location.query.filter_by(google_id=place['id']).first():
                 info_box += '<button class=\'btn btn-default\'>Flag Inaccurate</button>'
             else:
-                info_box += '<button class=\'btn btn-primary\' onclick=\'addLocation(&quot;{}&quot;, {}, {})\'>Add</button>'.format(place['id'], place['geometry']['location']['lat'], place['geometry']['location']['lng'])
+                info_box += '<button class=\'btn btn-primary\'\
+                    onclick=\'addLocation(&quot;{}&quot;, {}, {}, &quot;{}&quot;)\'>Add</button>'.format(
+                        place['id'],
+                        place['geometry']['location']['lat'],
+                        place['geometry']['location']['lng'],
+                        place['vicinity']
+                    )
             boxes.append(
                 info_box.format(
                     place['name'],

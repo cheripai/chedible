@@ -304,15 +304,16 @@ def add_location_page(id, coords):
 @login_required
 def add_location(id):
     args = request.args
-    if 'google_id' in args and 'lat' in args and 'lng' in args:
+    if 'google_id' in args and 'lat' in args and 'lng' in args and 'address' in args:
         google_id = unquote(args.get('google_id', type=str))
         lat = args.get('lat', type=float)
         lng = args.get('lng', type=float)
-        if not google_id or lat == None or lng == None:
+        address = args.get('address', type=str)
+        if not google_id or lat == None or lng == None or not address:
             return jsonify(status='error')
     else:
         return jsonify(status='error')
-    new_location = Location(id, google_id, lat, lng)
+    new_location = Location(id, google_id, lat, lng, address)
     db.session.add(new_location)
     db.session.commit()
     return jsonify(status='success')
