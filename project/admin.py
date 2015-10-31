@@ -75,8 +75,18 @@ class CommentView(ModelView):
         super(CommentView, self).__init__(Comment, session, **kwargs)
 
 
+class LocationView(ModelView):
+
+    can_create = False
+    column_list = ('id', 'date', 'restaurant_id', 'google_id', 'lat', 'lng', 'address')
+
+    def __init__(self, session, **kwargs):
+        super(LocationView, self).__init__(Location, session, **kwargs)
+
+
 admin = Admin(app, name='Admin', index_view=AdminHomeView())
 admin.add_view(RestaurantView(db.session, name='Restaurants', category='Database'))
 admin.add_view(DishView(db.session, name='Dishes', category='Database'))
 admin.add_view(UserView(db.session, name='Users', category='Database'))
 admin.add_view(CommentView(db.session, name='Comments', category='Database'))
+admin.add_view(LocationView(db.session, name='Locations', category='Database'))

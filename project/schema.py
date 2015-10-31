@@ -271,13 +271,15 @@ class Location(db.Model):
     google_id = db.Column(db.String, nullable=False)
     lat = db.Column(db.Float, nullable=False)
     lng = db.Column(db.Float, nullable=False)
+    address = db.Column(db.String, nullable=False)
 
-    def __init__(self, restaurant_id, google_id, lat, lng):
+    def __init__(self, restaurant_id, google_id, lat, lng, address):
         self.date = datetime.utcnow()
         self.restaurant_id = restaurant_id
         self.google_id = google_id
         self.lat = lat
         self.lng = lng
+        self.address = address
 
     def __repr__(self):
         return '<Location {}>'.format(self.id)
