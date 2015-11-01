@@ -67,7 +67,7 @@ class Places(object):
                 info_box += '<p><button class=\'btn btn-danger\'>Flag Inaccurate</button></p>'
             else:
                 info_box += '<p><button class=\'btn btn-primary\'onclick=\
-                    \'addLocation(&quot;{}&quot;, {}, {}, &quot;{}&quot;)\'>\
+                    \'addLocation(this, &quot;{}&quot;, {}, {}, &quot;{}&quot;)\'>\
                     Add</button></p>'.format(
                         place['id'],
                         place['geometry']['location']['lat'],
