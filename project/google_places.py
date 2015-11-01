@@ -62,23 +62,19 @@ class Places(object):
     def get_add_location_boxes(self):
         boxes = []
         for place in self.data['results']:
-            info_box = '<h6>{}</h6><p>{}</p>'
+            info_box = '<h6>{}</h6><p>{}</p>'.format(place['name'], place['vicinity'])
             if Location.query.filter_by(google_id=place['id']).first():
-                info_box += '<button class=\'btn btn-default\'>Flag Inaccurate</button>'
+                info_box += '<p><button class=\'btn btn-danger\'>Flag Inaccurate</button></p>'
             else:
-                info_box += '<button class=\'btn btn-primary\'\
-                    onclick=\'addLocation(&quot;{}&quot;, {}, {}, &quot;{}&quot;)\'>Add</button>'.format(
+                info_box += '<p><button class=\'btn btn-primary\'onclick=\
+                    \'addLocation(&quot;{}&quot;, {}, {}, &quot;{}&quot;)\'>\
+                    Add</button></p>'.format(
                         place['id'],
                         place['geometry']['location']['lat'],
                         place['geometry']['location']['lng'],
                         place['vicinity']
                     )
-            boxes.append(
-                info_box.format(
-                    place['name'],
-                    place['vicinity']
-                )
-            )
+            boxes.append(info_box)
         return boxes
         
 
