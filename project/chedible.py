@@ -235,6 +235,7 @@ def add_restaurant():
 def restaurant_profile(id, page):
     message = "No entries found"
     restaurant = Restaurant.query.filter_by(id=id).first()
+    coords = [(loc.lat, loc.lng) for loc in restaurant.locations]
     if restaurant is None:
         abort(404)
     dishes = Dish.query.filter_by(restaurant_id=id).\
@@ -265,6 +266,7 @@ def restaurant_profile(id, page):
         User=User,
         lat=lat,
         lng=lng,
+        coords=coords,
         MAX_COMMENT_LENGTH=c.MAX_COMMENT_LENGTH
     )
 

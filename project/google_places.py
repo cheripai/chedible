@@ -7,7 +7,7 @@ import json
 import project._config as c
 from project.schema import Location
 from urllib.request import urlopen
-
+from urllib.parse import quote_plus
 
 class Places(object):
 
@@ -18,6 +18,7 @@ class Places(object):
         places = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
         types = 'bakery|bar|cafe|food|meal_delivery|meal_takeaway|restaurant'
 
+        query = quote_plus(query)
         response = urlopen(
             places + 'location={},{}&radius={}&types={}&keyword={}&key={}'.format(
                 lat, lng, radius, types, query, c.GOOGLE_API_KEY

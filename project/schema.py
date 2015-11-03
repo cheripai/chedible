@@ -56,13 +56,16 @@ class Restaurant(db.Model):
         backref='restaurant',
         secondary=restaurants_users
     )
+    locations = db.relationship(
+        'Location',
+        backref='restaurant'
+    )
     last_edited = db.Column(db.Integer, nullable=False)
     last_editor = db.Column(db.Integer)
     search_vector = db.Column(
         TSVectorType('name', 'category', 'tags',
                      weights={'name': 'A', 'category': 'C', 'tags': 'B'})
     )
-    # FIXME: should there be location? and how to reference multiple locations
 
     def __init__(self, name, category, image, tags, user_id):
         self.name = name
