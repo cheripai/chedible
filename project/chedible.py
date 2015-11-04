@@ -234,10 +234,12 @@ def add_restaurant():
 @app.route('/restaurant/<id>/<int:page>')
 def restaurant_profile(id, page):
     message = "No entries found"
+
     restaurant = Restaurant.query.filter_by(id=id).first()
     coords = [(loc.lat, loc.lng) for loc in restaurant.locations]
     if restaurant is None:
         abort(404)
+
     dishes = Dish.query.filter_by(restaurant_id=id).\
         order_by(Dish.score.desc()).order_by(Dish.last_edited.desc())
     if dishes.first() is not None:
@@ -246,15 +248,21 @@ def restaurant_profile(id, page):
         Comment.query.filter_by(dish_id=d.id).order_by(Comment.id.desc())
         for d in dishes
     ]
+
     pagination = Pagination(page, c.PER_PAGE, dishes.count())
     dishes = split_data(dishes, page, c.PER_PAGE, dishes.count())
     if not dishes and page != 1:
         abort(404)
 
+
     if 'coords' in session:
         lat, lng = session['coords']
+        # FIXME: Adjust radius value from constant
     else:
         lat, lng = (0, 0)
+
+    places = Places(restaurant.name, lat, lng, 3220)
+    places_info = places.get_info_boxes()
 
     return render_template(
         'restaurant_profile.html',
@@ -267,6 +275,7 @@ def restaurant_profile(id, page):
         lat=lat,
         lng=lng,
         coords=coords,
+        places_info=places_info,
         MAX_COMMENT_LENGTH=c.MAX_COMMENT_LENGTH
     )
 
