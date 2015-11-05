@@ -236,14 +236,16 @@ def restaurant_profile(id, page):
     message = "No entries found"
 
     restaurant = Restaurant.query.filter_by(id=id).first()
-    coords = [(loc.lat, loc.lng) for loc in restaurant.locations]
     if restaurant is None:
         abort(404)
+
+    coords = [(loc.lat, loc.lng) for loc in restaurant.locations]
 
     dishes = Dish.query.filter_by(restaurant_id=id).\
         order_by(Dish.score.desc()).order_by(Dish.last_edited.desc())
     if dishes.first() is not None:
         message = ""
+
     comments = [
         Comment.query.filter_by(dish_id=d.id).order_by(Comment.id.desc())
         for d in dishes
@@ -254,15 +256,15 @@ def restaurant_profile(id, page):
     if not dishes and page != 1:
         abort(404)
 
-
     if 'coords' in session:
         lat, lng = session['coords']
-        # FIXME: Adjust radius value from constant
     else:
         lat, lng = (0, 0)
 
+    # FIXME: Adjust radius value from constant
     places = Places(restaurant.name, lat, lng, 3220)
     places_info = places.get_info_boxes()
+    print(places_info)
 
     return render_template(
         'restaurant_profile.html',
