@@ -219,8 +219,6 @@ $("[id^=post]").click(function(){
 
 
 addLocation = function(button, google_id, lat, lng, address) {
-    button.disabled = true;
-    button.innerHTML = 'Added';
     // This retrieves the restaurant_id from the URL
     var restaurant_id = window.location.pathname.replace(/\/\s*$/,'').split('/')[2];
     $.getJSON(window.location.origin + '/restaurant/'+restaurant_id+'/add_location', {
@@ -229,5 +227,7 @@ addLocation = function(button, google_id, lat, lng, address) {
         lng: lng,
         address: address
     }, function(data) {
+        button.disabled = true;
+        button.innerHTML = 'Added';
     });
 };
