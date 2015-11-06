@@ -264,7 +264,6 @@ def restaurant_profile(id, page):
     # FIXME: Adjust radius value from constant
     places = Places(restaurant.name, lat, lng, 3220)
     places_info = places.get_info_boxes()
-    print(places_info)
 
     return render_template(
         'restaurant_profile.html',
