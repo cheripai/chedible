@@ -18,8 +18,7 @@ Scenario: log in when not logged in
 Scenario: log out when logged in 
     Given chedible is set up
     When we log out
-    Then we should not see the text "test"
-    And we should see the text "Login"
+    Then we should see the text "Login"
 
 
 Scenario: log out when not logged in
