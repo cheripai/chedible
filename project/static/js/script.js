@@ -231,3 +231,8 @@ addLocation = function(button, google_id, lat, lng, address) {
         button.innerHTML = 'Added';
     });
 };
+
+
+flagLocation = function(google_id) {
+    // Increment flag field in db
+}

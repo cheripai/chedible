@@ -65,7 +65,10 @@ class Places(object):
         for place in self.data['results']:
             info_box = '<h6>{}</h6><p>{}</p>'.format(place['name'], place['vicinity'])
             if Location.query.filter_by(google_id=place['id']).first():
-                info_box += '<p><button class=\'btn btn-danger\'>Flag Inaccurate</button></p>'
+                info_box += '<p><button class=\'btn btn-danger\'onclick=\
+                \'flagLocation(&quot;{}&quot;)\'>Flag Inaccurate</button></p>'.format(
+                    place['id']
+                )
             else:
                 info_box += '<p><button class=\'btn btn-primary\'onclick=\
                     \'addLocation(this, &quot;{}&quot;, {}, {}, &quot;{}&quot;)\'>\
