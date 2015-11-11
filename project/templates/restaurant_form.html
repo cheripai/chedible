@@ -32,13 +32,13 @@
                 <div class="form-row">
                     <div class="form-group required">
                         <label class="control-label">{{ form.name.label }}:</label>
-                        {{ form.name(placeholder="Name", class="form-control", type="text") }}
+                        {{ form.name(placeholder="Name", class="form-control", type="text", required="") }}
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label class="control-label">{{ form.category.label }}:</label>
-                        {{ form.category(placeholder="American, Vegetarian, etc.", class="form-control", type="text") }}
+                        {{ form.category(placeholder="American, Vegetarian, etc.", class="form-control", type="text", required="") }}
                     </div>
                 </div>
                 <div class="form-row">

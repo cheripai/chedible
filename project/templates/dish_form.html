@@ -24,15 +24,15 @@
                 </ul>
             {% endif %}
             {% if dish_id %}
-                <form class="form-horizontal" method="post" action="{{ url_for('edit_dish', restaurant_id=id, dish_id=dish_id) }}">
+                <form class="form-horizontal" id="dish_form" method="post" action="{{ url_for('edit_dish', restaurant_id=id, dish_id=dish_id) }}">
             {% else %}
-                <form class="form-horizontal" method="post" action="{{ url_for('add_dish', id=id) }}">
+                <form class="form-horizontal" id="dish_form" method="post" action="{{ url_for('add_dish', id=id) }}">
             {% endif %}
                 {{ form.csrf_token }}
                 <div class="form-row">
                     <div class="form-group required">
                         <label class="control-label">{{ form.name.label }}:</label>
-                        {{ form.name(placeholder="Name", class="form-control", type="text") }}
+                        {{ form.name(placeholder="Name", class="form-control", type="text", required="") }}
                     </div>
                 </div>
                 <div class="form-row">
