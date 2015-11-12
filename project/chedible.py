@@ -275,6 +275,7 @@ def restaurant_profile(id, page):
         User=User,
         lat=lat,
         lng=lng,
+        contents=c.CONTENTS,
         coords=coords,
         places_info=places_info,
         MAX_COMMENT_LENGTH=c.MAX_COMMENT_LENGTH
@@ -341,7 +342,8 @@ def add_dish(id):
                 form.name.data, form.price.data, form.image.data,
                 stb(form.beef.data), stb(form.dairy.data), stb(form.egg.data),
                 stb(form.fish.data), stb(form.gluten.data),
-                stb(form.meat.data), stb(form.nut.data), stb(form.pork.data),
+                stb(form.meat.data), stb(form.nut.data),
+                stb(form.organic.data), stb(form.pork.data),
                 stb(form.poultry.data), stb(form.shellfish.data),
                 stb(form.soy.data), stb(form.wheat.data), id,
                 session['user_id']

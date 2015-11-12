@@ -43,7 +43,7 @@ def add_restaurant_using_add_restaurant_page(context, text, tags):
 @when(u'we add dish "{dish}" to restaurant "{restaurant}"')
 def add_dish_using_add_dish_page(context, dish, restaurant):
     restaurant_id = context.db.session.query(Restaurant).filter_by(name=restaurant).first().id
-    context.page = context.client.post('/restaurant/{}/add'.format(restaurant_id), data=dict(name=dish, price='0.00', image='', beef=True, dairy=True, egg=True, fish=True, gluten=True, meat=True, nut=True, pork=True, poultry=True, shellfish=True, soy=True, wheat=True), follow_redirects=True)
+    context.page = context.client.post('/restaurant/{}/add'.format(restaurant_id), data=dict(name=dish, price='0.00', image='', beef=True, dairy=True, egg=True, fish=True, gluten=True, meat=True, nut=True, organic=True, pork=True, poultry=True, shellfish=True, soy=True, wheat=True), follow_redirects=True)
 
 
 @when(u'we edit restaurant "{old_name}" to "{new_name}"')
@@ -56,7 +56,7 @@ def edit_restaurant_using_edit_restaurant_page(context, old_name, new_name):
 def edit_dish_using_edit_dish_page(context, old_name, restaurant, new_name):
     restaurant_id = context.db.session.query(Restaurant).filter_by(name=restaurant).first().id
     dish_id = context.db.session.query(Dish).filter_by(name=old_name).first().id
-    context.page = context.client.post('/restaurant/{}/{}/edit'.format(restaurant_id, dish_id), data=dict(name=new_name, price='0.00', image='', beef=True, dairy=True, egg=True, fish=True, gluten=True, meat=True, nut=True, pork=True, poultry=True, shellfish=True, soy=True, wheat=True), follow_redirects=True)
+    context.page = context.client.post('/restaurant/{}/{}/edit'.format(restaurant_id, dish_id), data=dict(name=new_name, price='0.00', image='', beef=True, dairy=True, egg=True, fish=True, gluten=True, meat=True, nut=True, organic=True, pork=True, poultry=True, shellfish=True, soy=True, wheat=True), follow_redirects=True)
 
 
 @then(u'we should see the text "{text}"')

@@ -103,6 +103,7 @@ class Dish(db.Model):
     gluten = db.Column(db.Boolean, nullable=True)
     meat = db.Column(db.Boolean, nullable=True)
     nut = db.Column(db.Boolean, nullable=True)
+    organic = db.Column(db.Boolean, nullable=True)
     pork = db.Column(db.Boolean, nullable=True)
     poultry = db.Column(db.Boolean, nullable=True)
     shellfish = db.Column(db.Boolean, nullable=True)
@@ -122,7 +123,7 @@ class Dish(db.Model):
     search_vector = db.Column(TSVectorType('name'))
 
     def __init__(self, name, price, image, beef, dairy, egg,
-                 fish, gluten, meat, nut, pork, poultry, shellfish,
+                 fish, gluten, meat, nut, organic, pork, poultry, shellfish,
                  soy, wheat, restaurant_id, user_id):
         self.name = name
         self.date = datetime.utcnow()
@@ -138,6 +139,7 @@ class Dish(db.Model):
         self.gluten = gluten
         self.meat = meat
         self.nut = nut
+        self.organic = organic
         self.pork = pork
         self.poultry = poultry
         self.shellfish = shellfish
@@ -178,6 +180,7 @@ class User(db.Model):
     gluten = db.Column(db.Boolean, nullable=True)
     meat = db.Column(db.Boolean, nullable=True)
     nut = db.Column(db.Boolean, nullable=True)
+    organic = db.Column(db.Boolean, nullable=True)
     pork = db.Column(db.Boolean, nullable=True)
     poultry = db.Column(db.Boolean, nullable=True)
     shellfish = db.Column(db.Boolean, nullable=True)
@@ -218,6 +221,7 @@ class User(db.Model):
         self.gluten = None
         self.meat = None
         self.nut = None
+        self.organic = None
         self.pork = None
         self.poultry = None
         self.shellfish = None
