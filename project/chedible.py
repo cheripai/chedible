@@ -499,7 +499,10 @@ def edit_user(id):
         user_dict = rowtodict(user)
         for entry in form:
             if entry.id == "username":
-                form.username.data = user.username
+                if user.username:
+                    form.username.data = user.username
+                else:
+                    form.username.data = user.name
             elif entry.id == "about":
                 form.about.data = user.about
             elif entry.id != "csrf_token":
