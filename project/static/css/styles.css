@@ -27,6 +27,10 @@ body {
     padding-top: 110px;
 }
 
+#footer {
+    padding-top: 20px;
+}
+
 #login-menu {
     text-align: center;
 }

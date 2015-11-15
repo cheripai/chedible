@@ -151,34 +151,21 @@
                         {% if g.user %}
                             <li><a href="{{ url_for('add_restaurant') }}">Contribute</a></li>
                         {% endif %}
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Social Media <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a target="_blank" href="#">Facebook</a></li>
-                                <li><a target="_blank" href="#">Instagram</a></li>
-                                <li><a target="_blank" href="http://chedible.tumblr.com/">Tumblr</a></li>
-                                <li><a target="_blank" href="https://twitter.com/chedible">Twitter</a></li>
-                                <li><a target="_blank" href="#">Google+</a></li>
-                            </ul>
-                        </li>
-                        <!-- <li><a href="#contact" data-toggle="modal">Contact</a></li> -->
                         <li>
-                        {% if g.user %}
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
-                            {{ g.user.name }} 
-                            <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ url_for('user_profile', id=g.user.id) }}">
-                                    Profile &nbsp <img class="img-circle" src="{{ g.user.image }}" height="30" width="30"/>
-                                </a></li>
-                                <li><a href="{{ url_for('logout') }}">Log out</a></li>
-                            </ul>
-                        {% else %}
-                            <li><a href="#login" data-toggle="modal">Login</a></li>
-                        {% endif %}
+                            {% if g.user %}
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
+                                {{ g.user.name }} 
+                                <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ url_for('user_profile', id=g.user.id) }}">
+                                        Profile &nbsp <img class="img-circle" src="{{ g.user.image }}" height="30" width="30"/>
+                                    </a></li>
+                                    <li><a href="{{ url_for('logout') }}">Log out</a></li>
+                                </ul>
+                            {% else %}
+                                <li><a href="#login" data-toggle="modal">Login</a></li>
+                            {% endif %}
                         </li>
                     </ul>
                 </div>
@@ -186,45 +173,6 @@
         </div>
 
 
-        <div class="modal fade" id="contact" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form class="form-horizontal">
-                        <div class="modal-header">
-                            <h4>Contact Us</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="contact-name" class="col-lg-2 control-label">
-                                    Name:
-                                </label>
-                                <div class="col-lg-10">
-                                    <input type="text" class="form-control" id="contact-name" placeholder="Full Name">
-                                </div>
-                                <label for="contact-email" class="col-lg-2 control-label">
-                                    Email:
-                                </label>
-                                <div class="col-lg-10">
-                                    <input type="email" class="form-control" id="contact-email" placeholder="you@example.com">
-                                </div>
-                                <label for="contact-message" class="col-lg-2 control-label">
-                                    Message:
-                                </label>
-                                <div class="col-lg-10">
-                                    <textarea class="form-control" rows=6></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <a class="btn btn-default" data-dismiss="modal">Close</a>
-                            <button class="btn btn-primary" type="submit">Send</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        
         <div class="modal fade" id="login" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -306,6 +254,19 @@
                     <div style="font-weight: bold">{{ message }}</div>
                 {% endfor %}
             </center></div>
+        </div>
+
+        <div class="container text-center" id="footer">
+            <hr />
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="nav nav-pills nav-justified">
+                        <li><a href="#">Siftly LLC</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Social Media</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <script src="http://code.jquery.com/jquery-latest.min.js"></script>
