@@ -153,3 +153,28 @@ table.righttable {
     width:45%;
     float:right;
 }
+
+.drop-up {
+    top: auto;
+    bottom: 100% !important;
+}
+
+#fb-icon {
+    color: #3b5998;
+}
+
+#gp-icon {
+    color: #dd4b39;
+}
+
+#gh-icon {
+    color: black;
+}
+
+#tmblr-icon {
+    color: #32506d;
+}
+
+#twttr-icon {
+    color: #00aced;
+}
