@@ -583,6 +583,11 @@ def comment():
     return jsonify(date=date)
 
 
+@app.route('/terms')
+def terms():
+    return render_template('terms.html')
+
+
 # Convert string value from HTML form to boolean value
 def stb(s):
     if s == 'True':
