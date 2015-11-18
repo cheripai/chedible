@@ -31,6 +31,10 @@ $('.table_select a').on('click', function(){
     {
         $('#location_div').show();
     }
+    else
+    {
+        $('#location_div').hide();
+    }
     $('#'+tog).prop('action', '/search/'+sel);
 })
 
