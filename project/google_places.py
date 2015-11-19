@@ -44,18 +44,18 @@ class Places(object):
     def get_info_boxes(self):
         boxes = []
         for place in self.data['results']:
-            info_box = '<h6>{}</h6><p>{}{}{}</p>'
+            info_box = '<h6>{} {}</h6><p>{}{}</p>'
             open_status = ''
             rating = ''
             if 'opening_hours' in place and 'open_now' in place['opening_hours']:
                 if place['opening_hours']['open_now']:
-                    open_status = '<br><span class=\'text-success\'>Open</span>'
+                    open_status = '<small class=\'text-success\'>Open</small>'
                 else:
-                    open_status = '<br><span class=\'text-danger\'>Closed</span>'
+                    open_status = '<small class=\'text-danger\'>Closed</small>'
             if 'rating' in place:
                 rating = '<br>Rating: {}'.format(self.generate_stars(place['rating']))
             boxes.append(
-                info_box.format(place['name'], place['vicinity'], rating, open_status)
+                info_box.format(place['name'], open_status, place['vicinity'], rating)
             )
         return boxes
 
