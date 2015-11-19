@@ -61,17 +61,18 @@
                                         <label>Filter by:</label>
                                         <div id="radioBtn" class="btn-group table_select">
                                             {% if table == 'users' %}
-                                                <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="restaurants">Restaurants</a>
-                                                <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="dishes">Dishes</a>
-                                                <a class="btn btn-primary btn-sm active" data-toggle="search_table" data-title="users">Users</a>
+                                                <a class="btn btn-decrease-padding btn-primary btn-sm notActive" data-toggle="search_table" data-title="restaurants">Restaurants</a>
+                                                <a class="btn btn-decrease-padding btn-primary btn-sm notActive" data-toggle="search_table" data-title="dishes">Dishes</a>
+                                                <a class="btn btn-decrease-padding btn-primary btn-sm active" data-toggle="search_table" data-title="users">Users</a>
                                             {% elif table == 'dishes' %}
-                                                <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="restaurants">Restaurants</a>
-                                                <a class="btn btn-primary btn-sm active" data-toggle="search_table" data-title="dishes">Dishes</a>
-                                                <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="users">Users</a>
+                                                <a class="btn btn-decrease-padding btn-primary btn-sm notActive" data-toggle="search_table" data-title="restaurants">Restaurants</a>
+                                                <a class="btn btn-decrease-padding btn-primary btn-sm active" data-toggle="search_table" data-title="dishes">Dishes</a>
+                                                <a class="btn btn-decrease-padding btn-primary btn-sm notActive" data-toggle="search_table" data-title="users">Users</a>
+
                                             {% else %}
-                                                <a class="btn btn-primary btn-sm active" data-toggle="search_table" data-title="restaurants">Restaurants</a>
-                                                <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="dishes">Dishes</a>
-                                                <a class="btn btn-primary btn-sm notActive" data-toggle="search_table" data-title="users">Users</a>
+                                                <a class="btn btn-decrease-padding btn-primary btn-sm active" data-toggle="search_table" data-title="restaurants">Restaurants</a>
+                                                <a class="btn btn-decrease-padding btn-primary btn-sm notActive" data-toggle="search_table" data-title="dishes">Dishes</a>
+                                                <a class="btn btn-decrease-padding btn-primary btn-sm notActive" data-toggle="search_table" data-title="users">Users</a>
                                             {% endif %}
                                         </div>
                                     </div>
