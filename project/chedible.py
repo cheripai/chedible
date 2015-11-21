@@ -256,10 +256,12 @@ def restaurant_profile(id, page):
     if not dishes and page != 1:
         abort(404)
 
-    if 'coords' in session:
-        lat, lng = session['coords']
-    else:
-        lat, lng = (0, 0)
+    # Sets default location to San Francisco
+    if 'coords' not in session:
+        session['coords'] = (37.7749295, -122.4194155)
+
+    lat, lng = session['coords']
+        
 
     # FIXME: Adjust radius value from constant
     places = Places(restaurant.name, lat, lng, 3220)
