@@ -8,6 +8,7 @@ from flask import session, g, jsonify
 from functools import wraps
 from geopy.geocoders import GoogleV3
 from locale import currency
+from profanity import profanity
 from project import app, db
 import project._config as c
 from project.forms import AddRestaurantForm, AddDishForm, SearchForm
@@ -565,7 +566,7 @@ def vote():
 def comment():
     if not 'content' in request.args and not 'id' in request.args:
         return jsonify(error='Missing data')
-    content = unquote(request.args.get('content', type=str))
+    content = profanity.censor(unquote(request.args.get('content', type=str)))
     if len(content) > c.MAX_COMMENT_LENGTH:
         return jsonify(error='Comment exceeds 512 characters')
     id = request.args.get('id', type=int)
