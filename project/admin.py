@@ -39,7 +39,7 @@ class ModelView(ModelView):
 class RestaurantView(ModelView):
 
     can_create = False
-    column_list = ('id', 'name', 'category', 'image', 'dishes', 'tags', 'editors', 'last_editor', 'last_edited')
+    column_list = ('id', 'name', 'category', 'image', 'dishes', 'tags', 'locations', 'editors', 'last_editor', 'last_edited')
 
     def __init__(self, session, **kwargs):
         super(RestaurantView, self).__init__(Restaurant, session, **kwargs)
