@@ -46,6 +46,8 @@ class Places(object):
         for place in self.data['results']:
             info_box = '<h6>{} {}</h6><p>{}{}</p>'
             open_status = ''
+            address = '<a target=\'_blank\' href=\'http://maps.google.com/?q={}\'>{}</a>'.\
+                format(place['vicinity'], place['vicinity'])
             rating = ''
             if 'opening_hours' in place and 'open_now' in place['opening_hours']:
                 if place['opening_hours']['open_now']:
@@ -55,7 +57,7 @@ class Places(object):
             if 'rating' in place:
                 rating = '<br>Rating: {}'.format(self.generate_stars(place['rating']))
             boxes.append(
-                info_box.format(place['name'], open_status, place['vicinity'], rating)
+                info_box.format(place['name'], open_status, address, rating)
             )
         return boxes
 

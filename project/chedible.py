@@ -8,6 +8,7 @@ from flask import session, g, jsonify
 from functools import wraps
 from geopy.geocoders import GoogleV3
 from locale import currency
+from profanity import profanity
 from project import app, db
 import project._config as c
 from project.forms import AddRestaurantForm, AddDishForm, SearchForm
@@ -256,10 +257,12 @@ def restaurant_profile(id, page):
     if not dishes and page != 1:
         abort(404)
 
-    if 'coords' in session:
-        lat, lng = session['coords']
-    else:
-        lat, lng = (0, 0)
+    # Sets default location to San Francisco
+    if 'coords' not in session:
+        session['coords'] = (37.7749295, -122.4194155)
+
+    lat, lng = session['coords']
+        
 
     # FIXME: Adjust radius value from constant
     places = Places(restaurant.name, lat, lng, 3220)
@@ -563,7 +566,7 @@ def vote():
 def comment():
     if not 'content' in request.args and not 'id' in request.args:
         return jsonify(error='Missing data')
-    content = unquote(request.args.get('content', type=str))
+    content = profanity.censor(unquote(request.args.get('content', type=str)))
     if len(content) > c.MAX_COMMENT_LENGTH:
         return jsonify(error='Comment exceeds 512 characters')
     id = request.args.get('id', type=int)
