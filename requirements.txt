@@ -12,14 +12,14 @@ MarkupSafe==0.23
 parse==1.6.6
 parse-type==0.3.4
 psycopg2==2.6.1
-pyparsing==2.0.5
+pyparsing==2.0.6
 rauth==0.7.2
 requests==2.8.1
 six==1.10.0
 SQLAlchemy==1.0.9
 SQLAlchemy-Searchable==0.9.3
-SQLAlchemy-Utils==0.31.2
+SQLAlchemy-Utils==0.31.3
 validators==0.9
-Werkzeug==0.10.4
+Werkzeug==0.11.2
 wheel==0.26.0
 WTForms==2.0.2
