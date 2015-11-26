@@ -15,21 +15,20 @@
                     <br>
                     <img src="{{ (user.image) }}" class="img-circle" alt="{{ (user.name) }}" width = "200" height="200">
 
-                    <h1>
+                    <h2>
                         
                         {% if user.username != None %}
                             {{ user.username }}
                         {% else %}
-                            {{ user.name }} 
+                            {{ user.name }}
                         {% endif %}
-                        
 
 
                         {% if user.id == g.user.id %}
                         <small><small><small><a href="{{ url_for('edit_user', id=user.id) }}">Edit</a></small></small></small>
                         {% endif %}
 
-                    </h1>
+                    </h2>
 
                     <div>
                         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Joined on {{ month_day_year }}
@@ -98,9 +97,9 @@
                 </div>
 
             
-        <h2 class="page-header col-md-9">
+        <h3 class="page-header col-md-9">
             Restaurants
-        </h2>
+        </h3>
 
         <div class="horizontal">
             <div class="table">
@@ -124,9 +123,9 @@
             </div>
         </div>
 
-        <h2 class="page-header col-md-9">
+        <h3 class="page-header col-md-9">
             Dishes
-        </h2>
+        </h3>
 
         <div class="horizontal">
             <div class="table">
