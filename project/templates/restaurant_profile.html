@@ -27,7 +27,7 @@
                         <h2>
                             {{ restaurant.name }}
                             <span style="display: inline-block">
-                                <small><small>
+                                <h6>
                                     {% if g.user %}
                                         <a href="{{ url_for('edit_restaurant', id=restaurant.id) }}">Edit</a> /
                                         <a href="{{ url_for('add_dish', id=restaurant.id) }}">Add a dish</a> /
@@ -35,7 +35,7 @@
                                     {% else %}
                                         <a href="#mustlogin" data-toggle="modal">Add a dish</a>
                                     {% endif %}
-                                </small></small>
+                                </h6>
                             </span>
                         </h2>
                     </div>
@@ -56,7 +56,7 @@
                             <div class="col-md-6">
                                 <h4 class="media-heading">
                                     <a href="#dish_profile{{ d.id }}" data-toggle="modal">{{ d.name }}</a>
-                                    {% if g.user %} <small><small><a href="{{ url_for('edit_dish', restaurant_id=restaurant.id, dish_id=d.id) }}">Edit</a></small></small>{% endif %}
+                                    {% if g.user %} <small><small><small><a href="{{ url_for('edit_dish', restaurant_id=restaurant.id, dish_id=d.id) }}">Edit</a></small></small></small>{% endif %}
                                 </h4>
                                 <p class="text-muted">{{ d.price }}</p>
                             </div>
