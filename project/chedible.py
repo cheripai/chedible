@@ -494,6 +494,7 @@ def edit_user(id):
             user.update({'last_edited': int(time())})
             # FIXME: This doesn't work
             user.update({'last_activity': int(time())})
+            user.update({'about': profanity.censor(form['about'].data)})
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('user_profile', id=id))
