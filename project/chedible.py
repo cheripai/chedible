@@ -7,6 +7,7 @@ from flask import render_template, abort, redirect, url_for, request, flash
 from flask import session, g, jsonify
 from functools import wraps
 from geopy.geocoders import GoogleV3
+import json
 from locale import currency
 from profanity import profanity
 from project import app, db
@@ -17,6 +18,7 @@ from project.google_places import Places
 from project.pagination import Pagination
 from project.schema import Restaurant, Dish, User, Comment, Location
 from time import time
+from urllib.request import urlopen
 from urllib.parse import unquote, quote_plus
 
 
@@ -658,3 +660,15 @@ def post_interval_exists():
         flash(message)
         return True
     return False
+
+
+def coords_to_city(lat, lng):
+    places = 'http://api.geonames.org/findNearbyPlaceNameJSON?lat={}&lng={}&username={}'
+    response = urlopen(places.format(
+        lat, lng, c.GEONAMES_USERNAME
+    ))
+    data = json.loads(response.read().decode('utf-8'))
+    if data and data['geonames']:
+        return data['geonames'][0]['toponymName']
+    else:
+        return ''
