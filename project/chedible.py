@@ -140,6 +140,7 @@ def search(table):
 def search_results(table, query, coords, radius, page):
     message = "No entries found"
     lat, lng = coords.split(',')
+    city_name = coords_to_city(lat, lng)
     chedibilitylist, places_coords, places_info = [], [], []
     new_query = quote_plus(query)
 
@@ -203,7 +204,8 @@ def search_results(table, query, coords, radius, page):
         pagination=pagination,
         Restaurant=Restaurant,
         places_coords=places_coords,
-        places_info=places_info
+        places_info=places_info,
+        city_name=city_name
     )
 
 
