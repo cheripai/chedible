@@ -665,12 +665,12 @@ def post_interval_exists():
 
 
 def coords_to_city(lat, lng):
-    places = 'http://api.geonames.org/findNearbyPlaceNameJSON?lat={}&lng={}&username={}'
-    response = urlopen(places.format(
+    openstreetmap = 'https://nominatim.openstreetmap.org/reverse?format=json&lat={}&lon={}'
+    response = urlopen(openstreetmap.format(
         lat, lng, c.GEONAMES_USERNAME
     ))
     data = json.loads(response.read().decode('utf-8'))
-    if data and data['geonames']:
-        return data['geonames'][0]['toponymName']
+    if data['address']:
+        return data['address']['city']
     else:
         return ''
