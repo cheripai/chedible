@@ -667,10 +667,10 @@ def post_interval_exists():
 def coords_to_city(lat, lng):
     openstreetmap = 'https://nominatim.openstreetmap.org/reverse?format=json&lat={}&lon={}'
     response = urlopen(openstreetmap.format(
-        lat, lng, c.GEONAMES_USERNAME
+        lat, lng
     ))
     data = json.loads(response.read().decode('utf-8'))
-    if data['address']:
+    if data and 'address' in data and 'city' in data['address']:
         return data['address']['city']
     else:
         return ''
