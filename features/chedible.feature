@@ -348,3 +348,10 @@ Scenario: Add location route returns error when not sending address
     When we log in
     And we visit "/restaurant/1/add_location?google_id=test&lat=0&lng=0&address="
     Then we should see the text "error"
+
+
+Scenario: Coords to city function returns the correct value
+    Given chedible is set up
+    When we log in
+    And we visit "/search_results/restaurants/test/37.7749295,-122.4194155/3220"
+    Then we should see the text "SF"
