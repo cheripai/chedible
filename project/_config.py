@@ -25,6 +25,7 @@ EDIT_DISH_SCORE = 5
 ADD_COMMENT_SCORE = 2
 MIN_POST_INTERVAL = 15
 DEFAULT_CITY = 'San Francisco, CA, USA'
+DEFAULT_COORDS = (37.7749295, -122.4194155)
 CONTENTS = ['beef', 'dairy', 'egg', 'fish',
             'gluten', 'meat', 'nut', 'organic', 'pork',
             'poultry', 'shellfish', 'soy', 'wheat']

@@ -263,7 +263,7 @@ def restaurant_profile(id, page):
 
     # Sets default location to San Francisco
     if 'coords' not in session:
-        session['coords'] = (37.7749295, -122.4194155)
+        session['coords'] = c.DEFAULT_COORDS
 
     lat, lng = session['coords']
         
