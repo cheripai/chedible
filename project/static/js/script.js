@@ -19,21 +19,20 @@ $('.table_select a').on('click', function(){
     var sel = $(this).data('title');
     var tog = $(this).data('toggle');
     var queryValue = $('#query').val().toLowerCase();
-    if(sel == 'restaurants' && queryValue == '')
-    {
-        $('#query').val('');
-    }
-    if(sel != 'restaurants' && queryValue == 'restaurants')
-    {
-        $('#query').val('');
-    }
-    if(sel != 'users')
+    if(sel == 'restaurants')
     {
         $('#location_div').show();
+        $('#all_restaurants_div').show();
+    }
+    else if(sel == 'dishes')
+    {
+        $('#location_div').show();
+        $('#all_restaurants_div').hide();
     }
     else
     {
         $('#location_div').hide();
+        $('#all_restaurants_div').hide();
     }
     $('#'+tog).prop('action', '/search/'+sel);
 })
