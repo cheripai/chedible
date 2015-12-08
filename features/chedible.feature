@@ -16,15 +16,13 @@ Scenario: search for non-existing restaurant
     Given chedible is set up
     When we search "restaurants" for "test"
     Then we should see the text "No entries found"
-    Then we should see the text "<input autocomplete="off" class="form-control" id="query" name="query" placeholder="Search" type="text" value="test">"
 
 
 Scenario: search for existing restaurant
     Given chedible is set up
-    When we add "test" to "restaurants" 
-    And we search "restaurants" for "test"
-    Then we should see the text "test"
-    Then we should see the text "<input autocomplete="off" class="form-control" id="query" name="query" placeholder="Search" type="text" value="test">"
+    When we add "test_unique_string" to "restaurants" 
+    And we search "restaurants" for "test_unique_string"
+    Then we should see the text "test_unique_string"
 
 
 Scenario: search non-existing table
