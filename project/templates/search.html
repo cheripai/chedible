@@ -34,7 +34,16 @@
             <legend>Entries matching "{{ query }}"</legend>
         {% endif %}
         <div class="col-sm-7">
-            <p>{{ message }}</p>
+            {% if message == "No entries found" %}
+                {% if table == "restaurants" %}
+                    <p>
+                        {{ message }}<br>
+                        <a href="/add">Add it to chedible?</a>
+                    </p>
+                {% else %}
+                    <p>{{ message }}</p>
+                {% endif %}
+            {% endif %}
             <div class="media">
                 {% for d in data %}
                     <div class="entry">
