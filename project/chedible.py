@@ -267,9 +267,7 @@ def restaurant_profile(id, page):
 
     lat, lng = session['coords']
         
-
-    # FIXME: Adjust radius value from constant
-    places = Places(restaurant.name, lat, lng, 3220)
+    places = Places(restaurant.name, lat, lng, c.DEFAULT_RADIUS)
     places_info = places.get_info_boxes()
 
     return render_template(
@@ -304,8 +302,7 @@ def add_location_page(id, coords):
     restaurant = Restaurant.query.filter_by(id=id).first()
     lat, lng = coords.split(',')
 
-    # FIXME: Adjust radius value from constant
-    places = Places(restaurant.name, lat, lng, 3220)
+    places = Places(restaurant.name, lat, lng, c.DEFAULT_RADIUS)
     places_coords = places.get_coords()
     places_info = places.get_add_location_boxes()
 
