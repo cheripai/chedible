@@ -112,7 +112,7 @@ def search(table):
         radius = g.search_form.radius.data
         search_all = g.search_form.searchAll.data
         if search_all:
-            query='restaurants'
+            query='Restaurants'
         if location:
             session['address'] = location.address
             session['coords'] = (location.latitude, location.longitude)

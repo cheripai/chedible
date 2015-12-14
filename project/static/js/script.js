@@ -234,3 +234,29 @@ addLocation = function(button, google_id, lat, lng, address) {
         button.innerHTML = 'Added';
     });
 };
+
+
+// Places the text 'restaurant' in the query when searchAll is clicked
+// Disables query so that user cannot change the value
+$("#searchAll").click(function() {
+    var searchAll = $("#searchAll");
+    var query = $("#query");
+    if(searchAll.is(':checked')) {
+        query.val("Restaurants");
+        query.prop("disabled", true);
+    } else {
+        query.prop("disabled", false);
+        if(query.val().toLowerCase() == "restaurants") {
+            query.val("");
+        }
+    }
+});
+
+
+// Resets query to enabled when form is submitted
+// This allows the value of query to be sent
+$(function ($) {        
+    $('#search_table').bind('submit', function () {
+        $("#query").prop('disabled', false);
+    });
+});
