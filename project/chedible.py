@@ -110,6 +110,9 @@ def search(table):
     if g.search_form.validate_on_submit():
         location = geolocator.geocode(g.search_form.location.data)
         radius = g.search_form.radius.data
+        search_all = g.search_form.searchAll.data
+        if search_all:
+            query='restaurants'
         if location:
             session['address'] = location.address
             session['coords'] = (location.latitude, location.longitude)
