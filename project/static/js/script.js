@@ -6,9 +6,13 @@
 // Animates and sets value for buttons on add dish form
 $('#radioBtn a').on('click', function(){
     var sel = $(this).data('title');
+    // Holds the name of the target input
     var tog = $(this).data('toggle');
+
+    // Sets the value of the hidden, target input to the active value (data-title)
     $('#'+tog).prop('value', sel);
-    
+
+    // Animates toggle so that the currently selected toggle is blue and the others are gray
     $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
     $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
 })
