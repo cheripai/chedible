@@ -128,8 +128,8 @@ class SearchForm(Form):
         'Location',
         validators=[
             Length(
-                max=64,
-                message="Must be less than 64 characters"
+                max=128,
+                message="Must be less than 128 characters"
             )
         ]
     )

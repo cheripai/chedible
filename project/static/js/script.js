@@ -52,10 +52,11 @@ $('.radius_select a').on('click', function(){
 
 /* For changing value of voting system */
 $("[id^=upvote]").click(function(){
-    var index = parseInt($(this).attr('id').replace('upvote', ''), 10);
+    // Gets id of dish clicked
+    var dish_id = parseInt($(this).attr('id').replace('upvote', ''), 10);
     $.getJSON($SCRIPT_ROOT + '/vote', {
         vote: 'upvote',
-        id: index
+        id: dish_id
     }, function(data) {
         var count = $('#count' + index);
         var uparrow = $('#upvote' + index);
@@ -73,10 +74,10 @@ $("[id^=upvote]").click(function(){
 
 
 $("[id^=downvote]").click(function(){
-    var index = parseInt($(this).attr('id').replace('downvote', ''), 10);
+    var dish_id = parseInt($(this).attr('id').replace('downvote', ''), 10);
     $.getJSON($SCRIPT_ROOT + '/vote', {
         vote: 'downvote',
-        id: index
+        id: dish_id
     }, function(data) {
         var count = $('#count' + index);
         var uparrow = $('#upvote' + index);
@@ -126,7 +127,7 @@ $('#search_ddm').on('click', function(event){
     for(var i = 0; i < events.length; i++) {
         if(events[i].selector) {
 
-            //Check if the clicked element matches the event selector
+            // Check if the clicked element matches the event selector
             if($(event.target).is(events[i].selector)) {
                 events[i].handler.call(event.target, event);
             }
@@ -154,10 +155,10 @@ $('#locationButton').on('click', function(event){
         }
         var geoSuccess = function(position) {
             startPos = position;
-            var rev_geocode = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
-            $.getJSON(rev_geocode + startPos.coords.latitude + ',' + startPos.coords.longitude, 
+            var rev_geocode = 'https://nominatim.openstreetmap.org/reverse?format=json&lat='
+            $.getJSON(rev_geocode + startPos.coords.latitude + '&lon=' + startPos.coords.longitude, 
                 function(data) {
-                    current_address = data.results[0].formatted_address;
+                    current_address = data.display_name;
                     document.getElementById('locationInput').value = current_address;
                 });
         };
