@@ -50,7 +50,7 @@ $('.radius_select a').on('click', function(){
 })
 
 
-/* For changing value of voting system */
+// For changing value of voting system
 $("[id^=upvote]").click(function(){
     // Gets id of dish clicked
     var dish_id = parseInt($(this).attr('id').replace('upvote', ''), 10);
@@ -73,6 +73,7 @@ $("[id^=upvote]").click(function(){
 });
 
 
+// For changing value of voting system
 $("[id^=downvote]").click(function(){
     var dish_id = parseInt($(this).attr('id').replace('downvote', ''), 10);
     $.getJSON($SCRIPT_ROOT + '/vote', {
@@ -94,7 +95,7 @@ $("[id^=downvote]").click(function(){
 });
 
 
-/* Animates carousel on index page */
+// Animates carousel on index page
 $(document).ready( function() {
     $('#indexCarousel').carousel({
 		interval:   4000
@@ -120,7 +121,7 @@ $(document).ready( function() {
 });
 
 
-/* Prevents #search_ddm from closing when clicking inside of it */
+// Prevents #search_ddm from closing when clicking inside of it
 $('#search_ddm').on('click', function(event){
     var events = $._data(document, 'events') || {};
     events = events.click || [];
@@ -143,7 +144,7 @@ $('#search_ddm').on('click', function(event){
 });
 
 
-/* Grabs the user's location to find nearby restaurants */
+// Grabs the user's location to find nearby restaurants
 $('#locationButton').on('click', function(event){
     if(navigator.geolocation) {
         var startPos;
@@ -178,7 +179,7 @@ $('#locationButton').on('click', function(event){
 });
 
 
-/* Fixes bug where opening a modal shifts contents of the page */
+// Fixes bug where opening a modal shifts contents of the page
 $(document).ready(function(){
     $(window).load(function(){
         var oldSSB = $.fn.modal.Constructor.prototype.setScrollbar;
@@ -201,7 +202,7 @@ $(document).ready(function(){
 });
 
 
-/* For posting comment to dish modal */
+// For posting comment to dish modal 
 $("[id^=post]").click(function(){
     var index = parseInt($(this).attr('id').replace('post', ''), 10);
     var content = $('#content'+index).val();
@@ -226,6 +227,7 @@ $("[id^=post]").click(function(){
 });
 
 
+// AJAX call to add restaurant location to database
 addLocation = function(button, google_id, lat, lng, address) {
     // This retrieves the restaurant_id from the URL
     var restaurant_id = window.location.pathname.replace(/\/\s*$/,'').split('/')[2];
