@@ -8,7 +8,7 @@
 
 {% block content %}
     <div class="container">
-        <legend>Add a location</legend>
+        <legend>Add a location to <a href="{{ url_for('restaurant_profile', id=restaurant.id) }}">{{ restaurant.name }}</a></legend>
         <div class="col-md-8">
             {{ googlemap("map", lat=lat, lng=lng, zoom=12, markers=places_coords, infobox=places_info, style="width:100%;margin:0;") }}
             <div class="col-md-8">

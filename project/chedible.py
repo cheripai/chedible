@@ -363,7 +363,8 @@ def add_dish(id):
             db.session.commit()
             flash('Thank you for your addition!')
             return redirect(url_for('restaurant_profile', id=id))
-    return render_template('dish_form.html', form=form, id=id)
+    restaurant = Restaurant.query.filter_by(id=id).first()
+    return render_template('dish_form.html', form=form, restaurant=restaurant, id=id)
 
 
 @app.route('/restaurant/<id>/edit', methods=('GET', 'POST'))
@@ -432,6 +433,7 @@ def edit_dish(restaurant_id, dish_id):
         )
     if request.method == 'GET':
         dish = Dish.query.filter_by(id=dish_id).first()
+        restaurant = Restaurant.query.filter_by(id=restaurant_id).first()
         if dish is None:
             abort(404)
         dish = rowtodict(dish)
@@ -445,7 +447,8 @@ def edit_dish(restaurant_id, dish_id):
             'dish_form.html',
             form=form,
             id=restaurant_id,
-            dish_id=dish_id
+            dish_id=dish_id,
+            restaurant=restaurant
         )
 
 

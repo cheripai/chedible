@@ -9,9 +9,9 @@
 {% block content %}
     <div class="container">
         {% if dish_id %}
-            <legend>Edit a dish</legend>
+            <legend>Edit a dish of <a href="{{ url_for('restaurant_profile', id=restaurant.id) }}">{{ restaurant.name }}</a></legend>
         {% else %}
-            <legend>Add a dish</legend>
+            <legend>Add a dish to <a href="{{ url_for('restaurant_profile', id=restaurant.id) }}">{{ restaurant.name }}</a></legend>
         {% endif %}
         <div class="col-md-8">
             {% if form.errors %}
