@@ -85,6 +85,16 @@ $("#searchAll").click(function() {
 });
 
 
+// Keeps searchAll checked across searches
+$(document).ready(function() {
+    var searchAll = $("#searchAll");
+    var query = $("#query");
+    if(query.val().toLowerCase() == "restaurants") {
+        searchAll.prop("checked", true);
+    }
+});
+
+
 // Prevents #search_ddm from closing when clicking inside of it
 $('#search_ddm').on('click', function(event){
     var events = $._data(document, 'events') || {};
