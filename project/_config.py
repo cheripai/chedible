@@ -11,6 +11,8 @@ DATABASE = 'data.db'
 TEST_DATABASE = 'test.db'
 SECRET_KEY = '48e02fc39bae1a191a44277af6b97b1fed08929ee1dc133e733c43e18c496742'
 GOOGLE_API_KEY = 'AIzaSyD9-IrWluRI0eKZUAaSGD876n6tGkEiSqY'
+FACTUAL_KEY = 'iiwXieyaMjMsIjYGOUFEeMDJZGCaInqO02TRjsKk'
+FACTUAL_SECRET = 'B6xI29wWd7lWvHg6gbxEMcrsW16c3Pt5kJQGhSav'
 WTF_CSRF_ENABLED = True    # cross-site request forgery prevention
 
 # Constants
