@@ -40,8 +40,11 @@ class Places(object):
         for place in self.data:
             info_box = '<h6>{} {}</h6><p>{}{}</p>'
             open_status = ''
-            address = '<a target=\'_blank\' href=\'http://maps.google.com/?q={}, {}\'>{}, {}</a>'.\
-                format(place['address'], place['postcode'], place['address'], place['locality'])
+            if 'address' in place and 'postcode' in place and 'locality' in place:
+                address = '<a target=\'_blank\' href=\'http://maps.google.com/?q={}, {}\'>{}, {}</a>'.\
+                    format(place['address'], place['postcode'], place['address'], place['locality'])
+            else:
+                address = ''
             # rating = ''
             # if 'opening_hours' in place and 'open_now' in place['opening_hours']:
             #     if place['opening_hours']['open_now']:
@@ -60,6 +63,7 @@ class Places(object):
 
     def get_add_location_boxes(self):
         boxes = []
+        # FIXME: Implement checking if address / locality exists
         for place in self.data:
             info_box = '<h6>{}</h6><p>{}, {}</p>'.format(place['name'], place['address'], place['locality'])
             if Location.query.filter_by(google_id=place['factual_id']).first():
