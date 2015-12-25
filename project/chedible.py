@@ -14,7 +14,7 @@ from project import app, db
 import project._config as c
 from project.forms import AddRestaurantForm, AddDishForm, SearchForm
 from project.forms import EditUserForm, AddLocationForm
-from project.google_places import Places
+from project.factual_places import Places
 from project.pagination import Pagination
 from project.schema import Restaurant, Dish, User, Comment, Location
 from time import time
