@@ -17,9 +17,12 @@ class Places(object):
     def __init__(self, query, lat, lng, radius):
         factual = Factual(c.FACTUAL_KEY, c.FACTUAL_SECRET)
         places = factual.table('places')
-        self.data = places.search(query).geo(circle(lat, lng, radius)).limit(50).data()
-        # FIXME: If search_all is activated do filter on filter
-        # self.data = places.filters({'category_ids':{'$includes':347}}).geo(circle(lat, lng, radius)).limit(50).data()
+        # Searches for all restaurants
+        if query.lower() == 'restaurants':
+            self.data = places.filters({'category_ids':{'$includes':347}}).geo(circle(lat, lng, radius)).limit(50).data()
+        # Searches according to user's query
+        else:
+            self.data = places.search(query).geo(circle(lat, lng, radius)).limit(50).data()
 
 
     # Constructs list of coordinates from query
