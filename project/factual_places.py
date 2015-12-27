@@ -42,12 +42,11 @@ class Places(object):
         boxes = []
         for place in self.data:
             info_box = '<h6>{} {}</h6><p>{}{}</p>'
+            address = ''
             open_status = ''
             if 'address' in place and 'postcode' in place and 'locality' in place:
                 address = '<a target=\'_blank\' href=\'http://maps.google.com/?q={}, {}\'>{}, {}</a>'.\
                     format(place['address'], place['postcode'], place['address'], place['locality'])
-            else:
-                address = ''
             # rating = ''
             # if 'opening_hours' in place and 'open_now' in place['opening_hours']:
             #     if place['opening_hours']['open_now']:
@@ -66,13 +65,19 @@ class Places(object):
 
     def get_add_location_boxes(self):
         boxes = []
-        # FIXME: Implement checking if address / locality exists
         for place in self.data:
-            info_box = '<h6>{}</h6><p>{}, {}</p>'.format(place['name'], place['address'], place['locality'])
+            address = ''
+            locality = ''
+            if 'address' in place:
+                address = place['address']
+            if 'locality' in place:
+                locality = place['locality']
+
+            info_box = '<h6>{}</h6><p>{}, {}</p>'.format(place['name'], address, locality)
             if Location.query.filter_by(google_id=place['factual_id']).first():
                 info_box += '<p><button class=\'btn btn-danger\'onclick=\
                 \'flagLocation(&quot;{}&quot;)\'>Flag Inaccurate</button></p>'.format(
-                    place['id']
+                    place['factual_id']
                 )
             else:
                 info_box += '<p><button class=\'btn btn-primary\'onclick=\
@@ -81,8 +86,8 @@ class Places(object):
                         place['factual_id'],
                         place['latitude'],
                         place['longitude'],
-                        place['address'],
-                        place['locality']
+                        address,
+                        locality
                     )
             boxes.append(info_box)
         return boxes
