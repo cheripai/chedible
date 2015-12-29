@@ -19,7 +19,7 @@ class Places(object):
         places = factual.table('places')
         # Searches for all restaurants
         if query.lower() == 'restaurants':
-            self.data = places.filters({'category_ids':{'$includes':347}}).geo(circle(lat, lng, radius)).limit(50).data()
+            self.data = places.filters({'category_ids':{'$includes':[312,338]}}).geo(circle(lat, lng, radius)).limit(50).data()
         # Searches according to user's query
         else:
             self.data = places.search(query).geo(circle(lat, lng, radius)).limit(50).data()
