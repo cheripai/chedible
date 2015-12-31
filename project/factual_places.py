@@ -23,8 +23,8 @@ class Places(object):
         # Searches according to user's query
         else:
             self.data = places.search(query).geo(circle(lat, lng, radius)).limit(50).data()
-            from pprint import pprint
-            pprint(self.data)
+        from pprint import pprint
+        pprint(self.data)
 
 
     # Constructs list of coordinates from query
@@ -43,24 +43,19 @@ class Places(object):
     def get_info_boxes(self):
         boxes = []
         for place in self.data:
-            info_box = '<h6>{} {}</h6><p>{}{}</p>'
+            info_box = '<h6>{}<h6><small><p>{}</p><p>{}</p></small>'
             address = ''
             open_status = ''
             if 'address' in place and 'postcode' in place and 'locality' in place:
                 address = '<a target=\'_blank\' href=\'http://maps.google.com/?q={}, {}\'>{}, {}</a>'.\
                     format(place['address'], place['postcode'], place['address'], place['locality'])
             # rating = ''
-            # if 'opening_hours' in place and 'open_now' in place['opening_hours']:
-            #     if place['opening_hours']['open_now']:
-            #         open_status = '<small class=\'text-success\'>Open</small>'
-            #     else:
-            #         open_status = '<small class=\'text-danger\'>Closed</small>'
             # if 'rating' in place:
             #     rating = '<br>Rating: {}'.format(self.generate_stars(place['rating']))
-            open_status = ''
-            rating = ''
+            if 'hours_display' in place:
+                open_status = place['hours_display']
             boxes.append(
-                info_box.format(place['name'], open_status, address, rating)
+                info_box.format(place['name'], open_status, address)
             )
         return boxes
 
