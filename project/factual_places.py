@@ -19,12 +19,11 @@ class Places(object):
         places = factual.table('places')
         # Searches for all restaurants
         if query.lower() == 'restaurants':
-            self.data = places.filters({'category_ids':{'$includes_any':[312,338]}}).geo(circle(lat, lng, radius)).limit(50).data()
+            self.data = places.filters({'category_ids':{'$includes_any':[312,338]}}).\
+                geo(circle(lat, lng, radius)).limit(50).data()
         # Searches according to user's query
         else:
             self.data = places.search(query).geo(circle(lat, lng, radius)).limit(50).data()
-        from pprint import pprint
-        pprint(self.data)
 
 
     # Constructs list of coordinates from query
@@ -43,7 +42,7 @@ class Places(object):
     def get_info_boxes(self):
         boxes = []
         for place in self.data:
-            info_box = '<h6>{}<h6><small><p>{}</p><p>{}</p></small>'
+            info_box = '<h6>{}<h6><small><p>{}</p><p>{}</p><p>{}</p></small>'
             address = ''
             open_status = ''
             if 'address' in place and 'postcode' in place and 'locality' in place:
@@ -54,8 +53,10 @@ class Places(object):
             #     rating = '<br>Rating: {}'.format(self.generate_stars(place['rating']))
             if 'hours_display' in place:
                 open_status = place['hours_display']
+            if 'tel' in place:
+                phone_number = place['tel']
             boxes.append(
-                info_box.format(place['name'], open_status, address)
+                info_box.format(place['name'], open_status, phone_number, address)
             )
         return boxes
 
