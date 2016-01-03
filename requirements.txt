@@ -3,7 +3,7 @@ decorator==4.0.6
 factual-api==1.7.0
 Flask==0.10.1
 Flask-Admin==1.4.0
-Flask-GoogleMaps==0.1.9
+-e git+https://github.com/CheriPai/Flask-GoogleMaps.git@2c09d3797bb8a376de6bed548a4afe5e07191267#egg=Flask_GoogleMaps-master
 Flask-SQLAlchemy==2.1
 Flask-WTF==0.12
 geopy==1.11.0
