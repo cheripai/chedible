@@ -78,7 +78,7 @@ class CommentView(ModelView):
 class LocationView(ModelView):
 
     can_create = False
-    column_list = ('id', 'date', 'restaurant_id', 'google_id', 'lat', 'lng', 'address')
+    column_list = ('id', 'date', 'restaurant_id', 'api_id', 'lat', 'lng', 'address')
 
     def __init__(self, session, **kwargs):
         super(LocationView, self).__init__(Location, session, **kwargs)

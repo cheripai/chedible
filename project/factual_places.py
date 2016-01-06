@@ -80,7 +80,7 @@ class Places(object):
                 locality = place['locality']
 
             info_box = '<h6>{}</h6><p>{}, {}</p>'.format(place['name'], address, locality)
-            if Location.query.filter_by(google_id=place['factual_id']).first():
+            if Location.query.filter_by(api_id=place['factual_id']).first():
                 info_box += '<p><button class=\'btn btn-danger\'onclick=\
                 \'flagLocation(&quot;{}&quot;)\'>Flag Inaccurate</button></p>'.format(
                     place['factual_id']

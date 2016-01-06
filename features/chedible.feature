@@ -309,7 +309,7 @@ Scenario: we check the chediblity of a dish that might contain everything for a 
 Scenario: We can add a location to a restaurant
     Given chedible is set up
     When we log in
-    And we visit "/restaurant/1/add_location?google_id=test&lat=0&lng=0&address=test"
+    And we visit "/restaurant/1/add_location?api_id=test&lat=0&lng=0&address=test"
     Then we should see the text "success"
 
 
@@ -320,7 +320,7 @@ Scenario: Add location route returns error when not sending any data
     Then we should see the text "error"
 
 
-Scenario: Add location route returns error when not sending google_id
+Scenario: Add location route returns error when not sending api_id
     Given chedible is set up
     When we log in
     And we visit "/restaurant/1/add_location?lat=0&lng=0&address=test"
@@ -330,21 +330,21 @@ Scenario: Add location route returns error when not sending google_id
 Scenario: Add location route returns error when not sending latitude or longitude
     Given chedible is set up
     When we log in
-    And we visit "/restaurant/1/add_location?google_id=test&address=test"
+    And we visit "/restaurant/1/add_location?api_id=test&address=test"
     Then we should see the text "error"
 
 
 Scenario: Add location route returns error when latitude and longitude is not a double
     Given chedible is set up
     When we log in
-    And we visit "/restaurant/1/add_location?google_id=test&lat=test&lng=test&address=test"
+    And we visit "/restaurant/1/add_location?api_id=test&lat=test&lng=test&address=test"
     Then we should see the text "error"
 
 
 Scenario: Add location route returns error when not sending address
     Given chedible is set up
     When we log in
-    And we visit "/restaurant/1/add_location?google_id=test&lat=0&lng=0&address="
+    And we visit "/restaurant/1/add_location?api_id=test&lat=0&lng=0&address="
     Then we should see the text "error"
 
 
