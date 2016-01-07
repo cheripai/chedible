@@ -49,7 +49,7 @@ class DishView(ModelView):
 
     can_create = False
     column_list = ('id', 'name', 'price', 'image', 'beef', 'dairy', 'egg',
-                   'fish', 'gluten', 'meat', 'nut', 'organic', 'pork', 'poultry', 'shellfish',
+                   'fish', 'gluten', 'meat', 'nut', 'non_organic', 'pork', 'poultry', 'shellfish',
                    'soy', 'wheat', 'score', 'restaurant_id', 'editors', 'last_editor', 'last_edited')
 
     def __init__(self, session, **kwargs):

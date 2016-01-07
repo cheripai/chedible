@@ -80,7 +80,7 @@ def db_user_preferences_all(context, user, boolean, food):
     entry.gluten = boolean
     entry.meat = boolean
     entry.nut = boolean
-    entry.organic = boolean
+    entry.non_organic = boolean
     entry.pork = boolean
     entry.poultry = boolean
     if food == "shellfish":
@@ -111,7 +111,7 @@ def db_dish_attributes_all(context, dish, boolean, food_attrs):
     entry.gluten = boolean
     entry.meat = boolean
     entry.nut = boolean
-    entry.organic = boolean
+    entry.non_organic = boolean
     entry.pork = boolean
     entry.poultry = boolean
     entry.shellfish = boolean

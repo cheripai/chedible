@@ -350,7 +350,7 @@ def add_dish(id):
                 stb(form.beef.data), stb(form.dairy.data), stb(form.egg.data),
                 stb(form.fish.data), stb(form.gluten.data),
                 stb(form.meat.data), stb(form.nut.data),
-                stb(form.organic.data), stb(form.pork.data),
+                stb(form.non_organic.data), stb(form.pork.data),
                 stb(form.poultry.data), stb(form.shellfish.data),
                 stb(form.soy.data), stb(form.wheat.data), id,
                 session['user_id']
