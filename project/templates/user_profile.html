@@ -63,7 +63,7 @@
                                 {% for o in user_opts %}
                                     <tr>
                                         {% if loop.index % 2 != 0 %}
-                                            <td> {{ o[0].title() }} </td>
+                                            <td> {{ o[0].title().replace('_', '-') }} </td>
                                             {% if o[1] == True %}
                                                 <td class="success"> <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> </td>
                                             {% elif o[1] == False %}
@@ -80,7 +80,7 @@
                                 {% for o in user_opts %}
                                     <tr>
                                         {% if loop.index % 2 == 0 %}
-                                                <td> {{ o[0].title() }} </td>
+                                                <td> {{ o[0].title().replace('_', '-') }} </td>
                                             {% if o[1] == True %}
                                                 <td class="success"> <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> </td>
                                             {% elif o[1] == False %}
