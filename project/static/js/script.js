@@ -198,6 +198,18 @@ $("[id^=upvote]").click(function(){
 });
 
 
+// For reporting inaccurate dishes
+$("[id^=downvote]").click(function(){
+    // Gets id of dish clicked
+    prompt('Why would like to report this dish as inaccurate?');
+    var dish_id = parseInt($(this).attr('id').replace('downvote', ''), 10);
+    $.getJSON($SCRIPT_ROOT + '', {
+        id: dish_id
+    }, function(data) {
+    });
+});
+
+
 // For posting comment to dish modal 
 $("[id^=post]").click(function(){
     var index = parseInt($(this).attr('id').replace('post', ''), 10);
