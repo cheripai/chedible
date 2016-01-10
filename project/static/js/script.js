@@ -201,10 +201,11 @@ $("[id^=upvote]").click(function(){
 // For reporting inaccurate dishes
 $("[id^=downvote]").click(function(){
     // Gets id of dish clicked
-    prompt('Why would like to report this dish as inaccurate?');
+    var reason = prompt('Why would like to report this dish as inaccurate?');
     var dish_id = parseInt($(this).attr('id').replace('downvote', ''), 10);
     $.getJSON($SCRIPT_ROOT + '', {
-        id: dish_id
+        id: dish_id,
+        reason: reason
     }, function(data) {
     });
 });
