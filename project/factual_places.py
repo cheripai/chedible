@@ -24,8 +24,6 @@ class Places(object):
         # Searches according to user's query
         else:
             self.data = places.search(query).geo(circle(lat, lng, radius)).limit(50).data()
-        from pprint import pprint
-        pprint(self.data)
 
 
     # Constructs list of coordinates from query
