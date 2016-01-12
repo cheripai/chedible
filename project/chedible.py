@@ -599,6 +599,15 @@ def terms():
     return render_template('terms.html')
 
 
+@app.route('/report')
+def report():
+    type = request.args.get('type', type=str)
+    id = request.args.get('id', type=int)
+    reason = request.args.get('reason', type=str)
+    # FIXME: Figure out what to do with this data
+    return jsonify(status='success')
+
+
 # Convert string value from HTML form to boolean value
 def stb(s):
     if s == 'True':

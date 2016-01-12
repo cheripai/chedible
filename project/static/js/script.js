@@ -203,8 +203,9 @@ $("[id^=downvote]").click(function(){
     // Gets id of dish clicked
     var reason = prompt('Why would like to report this dish as inaccurate?');
     var dish_id = parseInt($(this).attr('id').replace('downvote', ''), 10);
-    $.getJSON($SCRIPT_ROOT + '', {
+    $.getJSON($SCRIPT_ROOT + '/report', {
         id: dish_id,
+        type: 'dish',
         reason: reason
     }, function(data) {
     });
