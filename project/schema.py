@@ -290,3 +290,25 @@ class Location(db.Model):
 
     def __repr__(self):
         return '<Location {}>'.format(self.id)
+
+
+class Issues(db.Model):
+    
+    __tablename__ = "issues"
+
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)
+    type = db.Column(db.String, nullable=False)
+    type_id = db.Column(db.Integer, nullable=False)
+    content = db.Column(db.String)
+
+    def __init__(self, user_id, type, type_id, content):
+        self.date = datetime.utcnow()
+        self.user_id = user_id
+        self.type = type
+        self.type_id = type_id
+        self.content = content
+
+    def __repr__(self):
+        return '<Issue {}>'.format(self.id)
