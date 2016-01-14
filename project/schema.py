@@ -292,9 +292,9 @@ class Location(db.Model):
         return '<Location {}>'.format(self.id)
 
 
-class Issues(db.Model):
-    
-    __tablename__ = "issues"
+class Issue(db.Model):
+
+    __tablename__ = "issue"
 
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date, nullable=False)

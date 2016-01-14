@@ -16,7 +16,7 @@ from project.forms import AddRestaurantForm, AddDishForm, SearchForm
 from project.forms import EditUserForm, AddLocationForm
 from project.factual_places import Places
 from project.pagination import Pagination
-from project.schema import Restaurant, Dish, User, Comment, Location
+from project.schema import Restaurant, Dish, User, Comment, Location, Issue
 from time import time
 from urllib.request import urlopen
 from urllib.parse import unquote, quote_plus
@@ -604,7 +604,9 @@ def report():
     type = request.args.get('type', type=str)
     id = request.args.get('id', type=int)
     reason = request.args.get('reason', type=str)
-    # FIXME: Figure out what to do with this data
+    new_issue = Issue(session['user_id'], type, id, reason)
+    db.session.add(new_issue)
+    db.session.commit()
     return jsonify(status='success')
 
 
