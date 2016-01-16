@@ -294,7 +294,7 @@ class Location(db.Model):
 
 class Issue(db.Model):
 
-    __tablename__ = "issue"
+    __tablename__ = "issues"
 
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date, nullable=False)

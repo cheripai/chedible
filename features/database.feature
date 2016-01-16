@@ -24,6 +24,12 @@ Scenario: entry is added to Users table
     Then we should see "test" in "users"
 
 
+Scenario: entry is added to Locations table
+    Given chedible is set up
+    When we add "test" to "locations"
+    Then we should see "test" in "locations"
+
+
 Scenario: entry is updated in Restaurants table
     Given chedible is set up
     When we update "test" in "restaurants" with "test_update"
@@ -45,6 +51,13 @@ Scenario: entry is updated in Users table
     And we should not see "test" in "users"
 
 
+Scenario: entry is updated in Locations table
+    Given chedible is set up
+    When we update "test" in "locations" with "test_update"
+    Then we should see "test_update" in "locations"
+    And we should not see "test" in "locations"
+
+
 Scenario: entry is deleted from Restaurants table
     Given chedible is set up
     When we delete "test_update" from "restaurants"
@@ -61,6 +74,12 @@ Scenario: entry is deleted from Users table
     Given chedible is set up
     When we delete "test_update" from "users"
     Then we should not see "test" in "users"
+
+
+Scenario: entry is deleted from Locations table
+    Given chedible is set up
+    When we delete "test_update" from "locations"
+    Then we should not see "test" in "locations"
 
 
  Scenario: entry is added to Comments table

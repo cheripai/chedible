@@ -7,7 +7,7 @@ from behave import *
 import parse
 
 from project.chedible import rowtodict
-from project.schema import Restaurant, Dish, User, Comment
+from project.schema import Restaurant, Dish, User, Comment, Location, Issue
 from time import time
 
 
@@ -22,6 +22,8 @@ def db_add(context, text, table):
         entry = User(text, '', '', '')
     elif table == "comments":
         entry = Comment(None, None, text)
+    elif table == "locations":
+        entry = Location(None, '', 0.0, 0.0, text)
     context.db.session.add(entry)
     context.db.session.commit()
 
@@ -36,6 +38,8 @@ def db_delete(context, text, table):
         entry = context.db.session.query(User).filter_by(name=text)
     elif table == "comments":
         entry = context.db.session.query(Comment).filter_by(content=text)
+    elif table == "locations":
+        entry = context.db.session.query(Location).filter_by(address=text)
     assert entry.first() is not None
     entry.delete()
     context.db.session.commit()
@@ -55,6 +59,9 @@ def db_update(context, text, text_update, table):
     elif table == "comments":
         entry = context.db.session.query(Comment).filter_by(content=text)
         entry.first().content = text_update
+    elif table == "locations":
+        entry = context.db.session.query(Location).filter_by(address=text)
+        entry.first().address = text_update
     context.db.session.commit()
 
 
