@@ -24,10 +24,22 @@ Scenario: entry is added to Users table
     Then we should see "test" in "users"
 
 
+ Scenario: entry is added to Comments table
+     Given chedible is set up
+     When we add "test" to "comments"
+     Then we should see "test" in "comments"
+
+
 Scenario: entry is added to Locations table
     Given chedible is set up
     When we add "test" to "locations"
     Then we should see "test" in "locations"
+
+
+Scenario: entry is added to Issues table
+    Given chedible is set up
+    When we add "test" to "issues"
+    Then we should see "test" in "issues"
 
 
 Scenario: entry is updated in Restaurants table
@@ -51,11 +63,25 @@ Scenario: entry is updated in Users table
     And we should not see "test" in "users"
 
 
+Scenario: entry is updated in Comments table
+    Given chedible is set up
+    When we update "test" in "comments" with "test_update"
+    Then we should see "test_update" in "comments"
+    And we should not see "test" in "comments"
+
+
 Scenario: entry is updated in Locations table
     Given chedible is set up
     When we update "test" in "locations" with "test_update"
     Then we should see "test_update" in "locations"
     And we should not see "test" in "locations"
+
+
+Scenario: entry is updated in Issues table
+    Given chedible is set up
+    When we update "test" in "issues" with "test_update"
+    Then we should see "test_update" in "issues"
+    And we should not see "test" in "issues"
 
 
 Scenario: entry is deleted from Restaurants table
@@ -76,26 +102,19 @@ Scenario: entry is deleted from Users table
     Then we should not see "test" in "users"
 
 
+Scenario: entry is deleted from Comments table
+    Given chedible is set up
+    When we delete "test_update" from "comments"
+    Then we should not see "test_update" in "comments"
+
+
 Scenario: entry is deleted from Locations table
     Given chedible is set up
     When we delete "test_update" from "locations"
     Then we should not see "test" in "locations"
 
 
- Scenario: entry is added to Comments table
-     Given chedible is set up
-     When we add "test" to "comments"
-     Then we should see "test" in "comments"
-
-
-Scenario: entry is updated in Comments table
+Scenario: entry is deleted from Issues table
     Given chedible is set up
-    When we update "test" in "comments" with "test_update"
-    Then we should see "test_update" in "comments"
-    And we should not see "test" in "comments"
-
-
-Scenario: entry is deleted from Comments table
-    Given chedible is set up
-    When we delete "test_update" from "comments"
-    Then we should not see "test_update" in "comments"
+    When we delete "test_update" from "issues"
+    Then we should not see "test" in "issues"

@@ -24,24 +24,9 @@ def db_add(context, text, table):
         entry = Comment(None, None, text)
     elif table == "locations":
         entry = Location(None, '', 0.0, 0.0, text)
+    elif table == "issues":
+        entry = Issue(0, '', 0, text)
     context.db.session.add(entry)
-    context.db.session.commit()
-
-
-@when(u'we delete "{text}" from "{table}"')
-def db_delete(context, text, table):
-    if table == "restaurants":
-        entry = context.db.session.query(Restaurant).filter_by(name=text)
-    elif table == "dishes":
-        entry = context.db.session.query(Dish).filter_by(name=text)
-    elif table == "users":
-        entry = context.db.session.query(User).filter_by(name=text)
-    elif table == "comments":
-        entry = context.db.session.query(Comment).filter_by(content=text)
-    elif table == "locations":
-        entry = context.db.session.query(Location).filter_by(address=text)
-    assert entry.first() is not None
-    entry.delete()
     context.db.session.commit()
 
 
@@ -62,6 +47,28 @@ def db_update(context, text, text_update, table):
     elif table == "locations":
         entry = context.db.session.query(Location).filter_by(address=text)
         entry.first().address = text_update
+    elif table == "issues":
+        entry = context.db.session.query(Issue).filter_by(content=text)
+        entry.first().content = text_update
+    context.db.session.commit()
+
+
+@when(u'we delete "{text}" from "{table}"')
+def db_delete(context, text, table):
+    if table == "restaurants":
+        entry = context.db.session.query(Restaurant).filter_by(name=text)
+    elif table == "dishes":
+        entry = context.db.session.query(Dish).filter_by(name=text)
+    elif table == "users":
+        entry = context.db.session.query(User).filter_by(name=text)
+    elif table == "comments":
+        entry = context.db.session.query(Comment).filter_by(content=text)
+    elif table == "locations":
+        entry = context.db.session.query(Location).filter_by(address=text)
+    elif table == "issues":
+        entry = context.db.session.query(Issue).filter_by(content=text)
+    assert entry.first() is not None
+    entry.delete()
     context.db.session.commit()
 
 
