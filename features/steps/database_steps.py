@@ -145,6 +145,10 @@ def db_add_check(context, text, table):
         assert context.db.session.query(User).filter_by(name=text).first() is not None
     elif table == "comments":
         assert context.db.session.query(Comment).filter_by(content=text).first() is not None
+    elif table == "locations":
+        assert context.db.session.query(Location).filter_by(address=text).first() is not None
+    elif table == "issues":
+        assert context.db.session.query(Issue).filter_by(content=text).first() is not None
 
 
 @then(u'we should not see "{text}" in "{table}"')
@@ -157,6 +161,10 @@ def db_delete_check(context, text, table):
         assert context.db.session.query(User).filter_by(name=text).first() is None
     elif table == "comments":
         assert context.db.session.query(Comment).filter_by(content=text).first() is None
+    elif table == "locations":
+        assert context.db.session.query(Location).filter_by(address=text).first() is None
+    elif table == "issues":
+        assert context.db.session.query(Issue).filter_by(content=text).first() is None
 
 
 @then(u'we should see "{value}" as the "{column}" of "{table}" "{id}"')
