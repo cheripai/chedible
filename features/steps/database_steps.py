@@ -183,6 +183,12 @@ def db_check_value(context, value, column, table, id):
     elif table == "comments":
         entry = rowtodict(Comment.query.filter_by(id=id).first())
         assert str(entry[column]) == value
+    elif table == "locations":
+        entry = rowtodict(Location.query.filter_by(id=id).first())
+        assert str(entry[column]) == value
+    elif table == "issues":
+        entry = rowtodict(Issue.query.filter_by(id=id).first())
+        assert str(entry[column]) == value
 
 
 @then(u'we should not see "{value}" as the "{column}" of "{table}" "{id}"')
@@ -198,4 +204,10 @@ def db_check_value(context, value, column, table, id):
         assert str(entry[column]) != value
     elif table == "comments":
         entry = rowtodict(Comment.query.filter_by(id=id).first())
+        assert str(entry[column]) != value
+    elif table == "locations":
+        entry = rowtodict(Location.query.filter_by(id=id).first())
+        assert str(entry[column]) != value
+    elif table == "issues":
+        entry = rowtodict(Issue.query.filter_by(id=id).first())
         assert str(entry[column]) != value
