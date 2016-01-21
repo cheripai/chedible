@@ -353,3 +353,10 @@ Scenario: Coords to city function returns the correct value
     When we log in
     And we visit "/search_results/restaurants/test/37.7749295,-122.4194155/3220"
     Then we should see the text "SF"
+
+
+Scenario: We can report an issue
+    Given chedible is set up
+    When we log in
+    And we visit "/report?type=dish&id=1&reason=test"
+    Then we should see "test" as the "content" of "issues" "1"
