@@ -601,7 +601,7 @@ def terms():
 
 @app.route('/report')
 def report():
-    type = request.args.get('type', type=str)
+    type = request.args.get('type', type=str).lower()
     id = request.args.get('id', type=int)
     reason = request.args.get('reason', type=str)
     new_issue = Issue(session['user_id'], type, id, reason)
