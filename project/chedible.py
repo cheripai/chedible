@@ -601,8 +601,12 @@ def terms():
 
 @app.route('/report')
 def report():
+    if not 'type' in request.args and not 'id' in request.args:
+        return jsonify(error='Missing data')
     type = request.args.get('type', type=str).lower()
     id = request.args.get('id', type=int)
+    if id is None:
+        return jsonify(error='Invalid id')
     reason = request.args.get('reason', type=str)
     new_issue = Issue(session['user_id'], type, id, reason)
     db.session.add(new_issue)
