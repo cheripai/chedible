@@ -367,3 +367,10 @@ Scenario: Add issue route returns error when not sending id
     When we log in
     And we visit "/report?type=dish&id=&reason=test"
     Then we should see the text "error"
+
+
+Scenario: Add issue route returns error when not sending type
+    Given chedible is set up
+    When we log in
+    And we visit "/report?type=&id=1&reason=test"
+    Then we should see the text "error"

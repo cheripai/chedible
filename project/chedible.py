@@ -572,7 +572,7 @@ def vote():
 
 @app.route('/comment')
 def comment():
-    if not 'content' in request.args and not 'id' in request.args:
+    if not 'content' in request.args or not 'id' in request.args:
         return jsonify(error='Missing data')
     content = profanity.censor(unquote(request.args.get('content', type=str)))
     if len(content) > c.MAX_COMMENT_LENGTH:
@@ -601,9 +601,11 @@ def terms():
 
 @app.route('/report')
 def report():
-    if not 'type' in request.args and not 'id' in request.args:
+    if not 'type' in request.args or not 'id' in request.args:
         return jsonify(error='Missing data')
     type = request.args.get('type', type=str).lower()
+    if type == '':
+        return jsonify(error='Invalid type')
     id = request.args.get('id', type=int)
     if id is None:
         return jsonify(error='Invalid id')
