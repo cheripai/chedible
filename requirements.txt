@@ -3,7 +3,7 @@ decorator==4.0.6
 factual-api==1.7.0
 Flask==0.10.1
 Flask-Admin==1.4.0
--e git+https://github.com/CheriPai/Flask-GoogleMaps.git@2c09d3797bb8a376de6bed548a4afe5e07191267#egg=Flask_GoogleMaps-master
+-e git+https://github.com/CheriPai/Flask-GoogleMaps.git@2c09d3797bb8a376de6bed548a4afe5e07191267#egg=Flask_GoogleMaps
 Flask-SQLAlchemy==2.1
 Flask-WTF==0.12
 geopy==1.11.0
@@ -22,8 +22,8 @@ requests-oauthlib==0.6.0
 six==1.10.0
 SQLAlchemy==1.0.11
 SQLAlchemy-Searchable==0.9.3
-SQLAlchemy-Utils==0.31.4
-validators==0.9
+SQLAlchemy-Utils==0.31.6
+validators==0.10
 Werkzeug==0.11.3
 wheel==0.26.0
 WTForms==2.1
