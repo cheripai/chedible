@@ -601,6 +601,8 @@ def terms():
 
 @app.route('/report')
 def report():
+    if g.user is None:
+        abort(404)
     if not 'type' in request.args or not 'id' in request.args:
         return jsonify(error='Missing data')
     type = request.args.get('type', type=str).lower()

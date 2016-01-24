@@ -374,3 +374,12 @@ Scenario: Add issue route returns error when not sending type
     When we log in
     And we visit "/report?type=&id=1&reason=test"
     Then we should see the text "error"
+
+
+Scenario: we cannot add an issue when not logged in
+    Given chedible is set up
+    When we log out
+    And we visit "/report?type=test&id=1&reason=test"
+    Then we should see the text "404"
+
+
