@@ -30,15 +30,12 @@ def load_user():
         g.user = User.query.filter_by(id=session['user_id']).first()
         if g.user.is_banned:
             logout()
-        first, last = g.user.name.split()
+        try:
+            first, last = g.user.name.split()
+        except ValueError:
+            first = g.user.name
         if len(g.user.name) > c.MAX_USERNAME_LENGTH:
             g.user.name = first
-        if len(g.user.name) > c.MAX_USERNAME_LENGTH:
-            charlist = []
-            charlist[:0] = first
-            while len(charlist) > c.MAX_USERNAME_LENGTH - 3:
-                del charlist[-1]
-            g.user.name = ''.join(charlist) + '...'
     else:
         g.user = None
 
