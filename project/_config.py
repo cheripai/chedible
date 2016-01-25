@@ -16,7 +16,7 @@ FACTUAL_SECRET = 'B6xI29wWd7lWvHg6gbxEMcrsW16c3Pt5kJQGhSav'
 WTF_CSRF_ENABLED = True    # cross-site request forgery prevention
 
 # Constants
-MAX_USERNAME_LENGTH = 12
+MAX_USERNAME_LENGTH = 32
 MAX_COMMENT_LENGTH = 512
 MAX_QUERIES = 100
 PER_PAGE = 10
