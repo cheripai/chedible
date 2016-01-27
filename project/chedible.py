@@ -45,10 +45,10 @@ def load_search_form():
     g.search_form = SearchForm()
 
     if not g.search_form.location.data:
-        if 'address' in session:
+        try:
             # Sets the location input as the last searched location
             g.search_form.location.data = session['address']
-        else:
+        except KeyError:
             # If no location data available, use default city
             g.search_form.location.data = c.DEFAULT_CITY
 
