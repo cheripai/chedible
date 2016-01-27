@@ -321,14 +321,14 @@ def add_location_page(id, coords):
 @login_required
 def add_location(id):
     args = request.args
-    if 'api_id' in args and 'lat' in args and 'lng' in args and 'address' in args:
+    try:
         api_id = unquote(args.get('api_id', type=str))
         lat = args.get('lat', type=float)
         lng = args.get('lng', type=float)
         address = args.get('address', type=str)
         if not api_id or lat == None or lng == None or not address:
             return jsonify(status='error')
-    else:
+    except (KeyError, TypeError):
         return jsonify(status='error')
     new_location = Location(id, api_id, lat, lng, address)
     db.session.add(new_location)
