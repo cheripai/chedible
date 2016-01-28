@@ -452,10 +452,11 @@ def edit_dish(restaurant_id, dish_id):
 @app.route('/user/<id>')
 def user_profile(id):
     user = User.query.filter_by(id=id).first()
-    user_dict = rowtodict(user)
-
     if user is None:
         abort(404)
+
+    user_dict = rowtodict(user)
+
     month_day_year = User.query.filter_by(id=id).first().\
         date.strftime("%B %d, %Y")
 
@@ -525,43 +526,45 @@ def edit_user(id):
 
 
 @app.route('/vote')
+@login_required
 def vote():
     v = request.args.get('vote', type=str)
+    if v == '':
+        abort(404)
     id = request.args.get('id', type=int)
-    if not v or id is None:
-        abort(404)
     dish = Dish.query.filter_by(id=id)
-    if dish.first() is None or g.user is None:
+    try:
+        voters = dish.first().voters
+        if g.user.id not in voters:
+            voters[g.user.id] = None
+        # Case 1: User upvotes an unvoted dish
+        if v == 'upvote' and voters[g.user.id] is None:
+            dish.update({'score': dish.first().score+1})
+            voters[g.user.id] = True
+        # Case 2: User removes their upvote
+        elif v == 'upvote' and voters[g.user.id] is True:
+            dish.update({'score': dish.first().score-1})
+            voters[g.user.id] = None
+        # Case 3: User downvotes an unvoted dish
+        elif v == 'downvote' and voters[g.user.id] is None:
+            dish.update({'score': dish.first().score-1})
+            voters[g.user.id] = False
+        # Case 4: User removes their downvote
+        elif v == 'downvote' and voters[g.user.id] is False:
+            dish.update({'score': dish.first().score+1})
+            voters[g.user.id] = None
+        # Case 5: User upvotes downvoted dish
+        elif v == 'upvote' and voters[g.user.id] is False:
+            dish.update({'score': dish.first().score+2})
+            voters[g.user.id] = True
+        # Case 6: User downvotes upvoted dish
+        elif v == 'downvote' and voters[g.user.id] is True:
+            dish.update({'score': dish.first().score-2})
+            voters[g.user.id] = False
+        else:
+            return jsonify(error='Invalid type of vote')
+    except (AttributeError, KeyError, TypeError):
         abort(404)
-    voters = dish.first().voters
-    if g.user.id not in voters:
-        voters[g.user.id] = None
-    # Case 1: User upvotes an unvoted dish
-    if v == 'upvote' and voters[g.user.id] is None:
-        dish.update({'score': dish.first().score+1})
-        voters[g.user.id] = True
-    # Case 2: User removes their upvote
-    elif v == 'upvote' and voters[g.user.id] is True:
-        dish.update({'score': dish.first().score-1})
-        voters[g.user.id] = None
-    # Case 3: User downvotes an unvoted dish
-    elif v == 'downvote' and voters[g.user.id] is None:
-        dish.update({'score': dish.first().score-1})
-        voters[g.user.id] = False
-    # Case 4: User removes their downvote
-    elif v == 'downvote' and voters[g.user.id] is False:
-        dish.update({'score': dish.first().score+1})
-        voters[g.user.id] = None
-    # Case 5: User upvotes downvoted dish
-    elif v == 'upvote' and voters[g.user.id] is False:
-        dish.update({'score': dish.first().score+2})
-        voters[g.user.id] = True
-    # Case 6: User downvotes upvoted dish
-    elif v == 'downvote' and voters[g.user.id] is True:
-        dish.update({'score': dish.first().score-2})
-        voters[g.user.id] = False
-    else:
-        return jsonify(error='Invalid type of vote')
     dish.update({'voters': voters})
     db.session.commit()
     return jsonify(result=dish.first().score)

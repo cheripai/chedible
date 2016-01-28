@@ -180,7 +180,7 @@ Scenario: we cannot vote when not logged in
     Given chedible is set up
     When we log out
     And we visit "/vote?vote=downvote&id=4"
-    Then we should see the text "404"
+    Then we should see the text "You need to be logged in to do that!"
 
 
 Scenario: type of vote must be correct
