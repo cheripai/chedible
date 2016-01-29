@@ -571,6 +571,7 @@ def vote():
 
 
 @app.route('/comment')
+@login_required
 def comment():
     if not 'content' in request.args or not 'id' in request.args:
         return jsonify(error='Missing data')
@@ -580,8 +581,7 @@ def comment():
     id = request.args.get('id', type=int)
     if id is None:
         return jsonify(error='Invalid id')
-    if Dish.query.filter_by(id=id).first() is None or \
-            g.user is None or not content:
+    if Dish.query.filter_by(id=id).first() is None or not content:
         abort(404)
     if post_interval_exists():
         time_remaining = c.MIN_POST_INTERVAL - (int(time()) - g.user.last_activity)

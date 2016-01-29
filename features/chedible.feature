@@ -222,7 +222,7 @@ Scenario: we cannot comment when not logged in
     Given chedible is set up
     When we log out
     And we visit "/comment?content=Test&id=1"
-    Then we should see the text "404"
+    Then we should see the text "You must be logged in to do that!"
 
 
 Scenario: comment must contain text
