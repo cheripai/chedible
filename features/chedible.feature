@@ -229,7 +229,7 @@ Scenario: comment must contain text
     Given chedible is set up
     When we log in
     And we visit "/comment?content=&id=1"
-    Then we should see the text "404"
+    Then we should see the text "error"
 
 
 Scenario: comment must contain id
