@@ -693,7 +693,7 @@ def coords_to_city(lat, lng):
         lat, lng
     ))
     data = json.loads(response.read().decode('utf-8'))
-    if data and 'address' in data and 'city' in data['address']:
+    try:
         return data['address']['city']
-    else:
+    except KeyError:
         return ''
