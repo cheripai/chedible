@@ -603,15 +603,16 @@ def terms():
 @app.route('/report')
 @login_required
 def report():
-    if not 'type' in request.args or not 'id' in request.args:
-        return jsonify(error='Missing data')
-    type = request.args.get('type', type=str).lower()
+    try:
+        type = request.args.get('type', type=str).lower()
+        id = request.args.get('id', type=int)
+        reason = request.args.get('reason', type=str)
+    except (KeyError, TypeError):
+        return jsonify(error='Invalid arguments')
     if type == '':
-        return jsonify(error='Invalid type')
-    id = request.args.get('id', type=int)
+        return jsonify(error='Type must not be empty')
     if id is None:
         return jsonify(error='Invalid id')
-    reason = request.args.get('reason', type=str)
     new_issue = Issue(session['user_id'], type, id, reason)
     db.session.add(new_issue)
     db.session.commit()
