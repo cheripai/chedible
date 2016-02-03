@@ -529,8 +529,6 @@ def edit_user(id):
 @login_required
 def vote():
     v = request.args.get('vote', type=str)
-    if v == '':
-        abort(404)
     id = request.args.get('id', type=int)
     dish = Dish.query.filter_by(id=id)
     try:
