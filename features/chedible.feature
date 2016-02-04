@@ -166,7 +166,7 @@ Scenario: vote must contain id
     Given chedible is set up
     When we log in
     And we visit "/vote?vote=upvote&id="
-    Then we should see the text "404"
+    Then we should see the text "error"
 
 
 Scenario: vote must contain type of vote

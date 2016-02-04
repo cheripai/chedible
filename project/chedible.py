@@ -561,11 +561,11 @@ def vote():
             voters[g.user.id] = False
         else:
             return jsonify(error='Invalid type of vote')
-    except (AttributeError, KeyError, TypeError):
-        abort(404)
-    dish.update({'voters': voters})
-    db.session.commit()
-    return jsonify(result=dish.first().score)
+        dish.update({'voters': voters})
+        db.session.commit()
+        return jsonify(result=dish.first().score)
+    except (AttributeError, KeyError, TypeError, UnboundLocalError):
+        return jsonify(error='Invalid vote or id')
 
 
 @app.route('/comment')
