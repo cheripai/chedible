@@ -574,23 +574,23 @@ def comment():
     try:
         content = profanity.censor(unquote(request.args.get('content', type=str)))
         id = request.args.get('id', type=int)
+        if len(content) > c.MAX_COMMENT_LENGTH:
+            return jsonify(error='Comment exceeds 512 characters')
+        if content == '':
+            return jsonify(error='Comment must contain text')
+        if Dish.query.filter_by(id=id).first() is None:
+            return jsonify(error='Dish {} does not exist'.format(id))
+        if post_interval_exists():
+            time_remaining = c.MIN_POST_INTERVAL - (int(time()) - g.user.last_activity)
+            return jsonify(error='Please wait {} seconds before posting again'.format(time_remaining))
+        new_comment = Comment(g.user.id, id, content)
+        db.session.add(new_comment)
+        update_score(c.ADD_COMMENT_SCORE)
+        db.session.commit()
+        date = new_comment.date.strftime("%B %d, %Y")
+        return jsonify(date=date)
     except (KeyError, TypeError):
         return jsonify(error='Invalid content or id')
-    if len(content) > c.MAX_COMMENT_LENGTH:
-        return jsonify(error='Comment exceeds 512 characters')
-    if content == '':
-        return jsonify(error='Comment must contain text')
-    if Dish.query.filter_by(id=id).first() is None:
-        return jsonify(error='Dish {} does not exist'.format(id))
-    if post_interval_exists():
-        time_remaining = c.MIN_POST_INTERVAL - (int(time()) - g.user.last_activity)
-        return jsonify(error='Please wait {} seconds before posting again'.format(time_remaining))
-    new_comment = Comment(g.user.id, id, content)
-    db.session.add(new_comment)
-    update_score(c.ADD_COMMENT_SCORE)
-    db.session.commit()
-    date = new_comment.date.strftime("%B %d, %Y")
-    return jsonify(date=date)
 
 
 @app.route('/terms')
