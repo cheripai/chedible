@@ -605,16 +605,16 @@ def report():
         type = request.args.get('type', type=str).lower()
         id = request.args.get('id', type=int)
         reason = request.args.get('reason', type=str)
+        if type == '':
+            return jsonify(error='Type must not contain text')
+        if id is None:
+            return jsonify(error='Invalid id')
+        new_issue = Issue(session['user_id'], type, id, reason)
+        db.session.add(new_issue)
+        db.session.commit()
+        return jsonify(status='success')
     except (KeyError, TypeError):
-        return jsonify(error='Invalid arguments')
-    if type == '':
-        return jsonify(error='Type must not be empty')
-    if id is None:
-        return jsonify(error='Invalid id')
-    new_issue = Issue(session['user_id'], type, id, reason)
-    db.session.add(new_issue)
-    db.session.commit()
-    return jsonify(status='success')
+        return jsonify(error='Invalid type or id')
 
 
 # Convert string value from HTML form to boolean value
