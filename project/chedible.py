@@ -328,12 +328,12 @@ def add_location(id):
         address = args.get('address', type=str)
         if not api_id or lat == None or lng == None or not address:
             return jsonify(status='error')
+        new_location = Location(id, api_id, lat, lng, address)
+        db.session.add(new_location)
+        db.session.commit()
+        return jsonify(status='success')
     except (KeyError, TypeError):
-        return jsonify(status='error')
-    new_location = Location(id, api_id, lat, lng, address)
-    db.session.add(new_location)
-    db.session.commit()
-    return jsonify(status='success')
+        return jsonify(error='Invalid arguments')
 
 
 @app.route('/restaurant/<id>/add', methods=('GET', 'POST'))
