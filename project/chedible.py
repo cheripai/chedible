@@ -43,7 +43,6 @@ def load_user():
 @app.before_request
 def load_search_form():
     g.search_form = SearchForm()
-
     if not g.search_form.location.data:
         try:
             # Sets the location input as the last searched location
@@ -184,6 +183,13 @@ def search_results(table, query, coords, radius, page):
 
     if data.first() is not None:
         message = ""
+
+    # Remove places not matched in database from map
+    data_names = [d.name for d in data]
+    for i, place in enumerate(places_names):
+        if place not in data_names:
+            # REMOVE INDEXES FROM PLACES.DATA
+            print(i, place)
 
     pagination = Pagination(page, c.PER_PAGE, data.count())
     data = split_data(data, page, c.PER_PAGE, data.count())
