@@ -115,3 +115,9 @@ class Places(object):
             elif dec >= 0.66:
                 stars += '<i class=\'fa fa-star\'></i>'
         return stars
+
+
+    # Removes specified indices from self.data
+    def remove_indices(self, indices):
+        for i in sorted(indices, reverse=True):
+            del self.data[i]

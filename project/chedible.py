@@ -157,8 +157,6 @@ def search_results(table, query, coords, radius, page):
     if table != 'users':
         places = Places(new_query, lat, lng, radius)
         places_names = places.get_names()
-        places_coords = places.get_coords()
-        places_info = places.get_info_boxes()
 
     if table == "dishes":
         data = Dish.query.search(query, sort=True).limit(c.MAX_QUERIES)
@@ -186,10 +184,13 @@ def search_results(table, query, coords, radius, page):
 
     # Remove places not matched in database from map
     data_names = [d.name for d in data]
-    for i, place in enumerate(places_names):
-        if place not in data_names:
-            # REMOVE INDEXES FROM PLACES.DATA
-            print(i, place)
+    places.remove_indices(
+        [i for i, name in enumerate(places_names) if name not in data_names]
+    )
+
+    places_names = places.get_names()
+    places_coords = places.get_coords()
+    places_info = places.get_info_boxes()
 
     pagination = Pagination(page, c.PER_PAGE, data.count())
     data = split_data(data, page, c.PER_PAGE, data.count())
