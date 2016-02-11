@@ -92,6 +92,12 @@ $(document).ready(function() {
     if(query.val().toLowerCase() == "restaurants") {
         searchAll.prop("checked", true);
     }
+    // Unchecks searchAll if text isn't equal to "restaurants"
+    query.on("input", function() {
+        if(query.val().toLowerCase() != "restaurants") {
+            searchAll.prop("checked", false);
+        }
+    });
 });
 
 
