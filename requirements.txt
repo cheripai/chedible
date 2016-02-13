@@ -1,5 +1,5 @@
 behave==1.2.5
-decorator==4.0.6
+decorator==4.0.9
 factual-api==1.7.0
 Flask==0.10.1
 Flask-Admin==1.4.0
@@ -15,7 +15,7 @@ parse==1.6.6
 parse-type==0.3.4
 profanity==1.1
 psycopg2==2.6.1
-pyparsing==2.0.7
+pyparsing==2.1.0
 rauth==0.7.2
 requests==2.9.1
 requests-oauthlib==0.6.0
@@ -25,5 +25,5 @@ SQLAlchemy-Searchable==0.9.3
 SQLAlchemy-Utils==0.31.6
 validators==0.10
 Werkzeug==0.11.3
-wheel==0.26.0
+wheel==0.29.0
 WTForms==2.1
