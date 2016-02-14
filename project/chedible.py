@@ -600,6 +600,11 @@ def comment():
         return jsonify(error='Invalid content or id')
 
 
+@app.route('/siftly')
+def siftly():
+    return render_template('siftly.html')
+
+
 @app.route('/terms')
 def terms():
     return render_template('terms.html')
