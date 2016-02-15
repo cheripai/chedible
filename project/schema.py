@@ -200,6 +200,7 @@ class User(db.Model):
         viewonly=True,
         secondary=dishes_users
     )
+    bookmarks = db.Column(db.PickleType, nullable=True)
     last_edited = db.Column(db.Integer, nullable=False)
     last_activity = db.Column(db.Integer, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False)
@@ -234,6 +235,7 @@ class User(db.Model):
         self.is_admin = False
         self.is_banned = False
         self.about = "I love chedible!"
+        self.voters = {}
 
     def __repr__(self):
         return '<User {}>'.format(self.id)
