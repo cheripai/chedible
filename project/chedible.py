@@ -163,7 +163,6 @@ def search_results(table, query, coords, radius, page):
         for dish in data:
             chedibilitylist.append(is_chedible(dish, g.user))
     elif table == "restaurants":
-        # data = Restaurant.query.search(query, sort=True).limit(c.MAX_QUERIES)
         data = Restaurant.query.filter(Restaurant.name.ilike('%'+query+'%'))
         data = data.union(
             Restaurant.query.filter(Restaurant.tags.ilike('%'+query+'%'))
