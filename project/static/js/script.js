@@ -267,6 +267,16 @@ $("[id^=downvote]").click(function(){
 });
 
 
+// For adding bookmark
+$("bookmark").click(function() {
+    var restaurant_id = window.location.pathname.replace(/\/\s*$/,'').split('/')[2];
+    $.getJSON($SCRIPT_ROOT + '/bookmark', {
+        id: restaurant_id
+    }, function(data) {
+    });
+});
+
+
 // Fixes bug where opening a modal shifts contents of the page
 $(document).ready(function(){
     $(window).load(function(){
