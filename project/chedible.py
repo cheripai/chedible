@@ -628,6 +628,18 @@ def report():
         return jsonify(error='Invalid type or id')
 
 
+@app.route('/bookmark')
+@login_required
+def bookmark():
+    try:
+        id = request.args.get('id', type=int)
+        user = User.query.filter_by(id=g.user.id).first()
+        # FIXME: convert bookmark to list and add restaurant id
+        return jsonify(status='success')
+    except KeyError:
+        return jsonify(error='Invalid id')
+
+
 # Convert string value from HTML form to boolean value
 def stb(s):
     if s == 'True':
