@@ -635,11 +635,10 @@ def bookmark():
         id = request.args.get('id', type=int)
         user = User.query.filter_by(id=g.user.id)
         dish = Dish.query.filter_by(id=id).first()
-        bookmarks = user.first().bookmarks
-        bookmarks.append(id)
-        # FIXME: don't allow for repeats of bookmarks
+        bookmarks = set(user.first().bookmarks)
+        bookmarks.add(id)
         # FIXME: add error checking for dish existence
-        user.update({'bookmarks': bookmarks})
+        user.update({'bookmarks': set(bookmarks)})
         db.session.commit()
         return jsonify(status='success')
     except KeyError:
