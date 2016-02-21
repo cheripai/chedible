@@ -633,8 +633,14 @@ def report():
 def bookmark():
     try:
         id = request.args.get('id', type=int)
-        user = User.query.filter_by(id=g.user.id).first()
-        # FIXME: convert bookmark to list and add restaurant id
+        user = User.query.filter_by(id=g.user.id)
+        dish = Dish.query.filter_by(id=id).first()
+        bookmarks = user.first().bookmarks
+        bookmarks.append(id)
+        # FIXME: don't allow for repeats of bookmarks
+        # FIXME: add error checking for dish existence
+        user.update({'bookmarks': bookmarks})
+        db.session.commit()
         return jsonify(status='success')
     except KeyError:
         return jsonify(error='Invalid id')

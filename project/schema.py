@@ -236,6 +236,7 @@ class User(db.Model):
         self.is_banned = False
         self.about = "I love chedible!"
         self.voters = {}
+        self.bookmarks = {}
 
     def __repr__(self):
         return '<User {}>'.format(self.id)
