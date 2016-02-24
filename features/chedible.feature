@@ -388,3 +388,10 @@ Scenario: we cannot add a bookmark when not logged in
     When we log out
     And we visit "/bookmark?id=1"
     Then we should see the text "You must be logged in to do that!"
+
+
+Scenario: we cannot bookmark a restaurant that does not exist
+    Given chedible is set up
+    When we log in
+    And we visit "/bookmark?id=9999"
+    Then we should see the text "error"
