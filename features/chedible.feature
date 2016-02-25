@@ -383,6 +383,13 @@ Scenario: we cannot add an issue when not logged in
     Then we should see the text "You must be logged in to do that!"
 
 
+Scenario: we can add a bookmark
+    Given chedible is set up
+    When we log in
+    And we visit "/bookmark?id=1"
+    Then we should see the text "success"
+
+
 Scenario: we cannot add a bookmark when not logged in
     Given chedible is set up
     When we log out
