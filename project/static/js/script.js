@@ -268,7 +268,7 @@ $("[id^=downvote]").click(function(){
 
 
 // For adding bookmark
-$("bookmark").click(function() {
+$("#bookmark").click(function() {
     var restaurant_id = window.location.pathname.replace(/\/\s*$/,'').split('/')[2];
     $.getJSON($SCRIPT_ROOT + '/bookmark', {
         id: restaurant_id

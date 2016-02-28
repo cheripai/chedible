@@ -32,7 +32,7 @@
                                         <a href="{{ url_for('edit_restaurant', id=restaurant.id) }}">Edit</a> /
                                         <a href="{{ url_for('add_dish', id=restaurant.id) }}">Add a dish</a> /
                                         <a href="{{ url_for('add_location_page', id=restaurant.id, coords='{},{}'.format(lat, lng)) }}">Edit locations</a> /
-                                        <a href="">Bookmark</a>
+                                        <a class="clickable" id="bookmark">Bookmark</a>
                                     {% else %}
                                         <a href="#mustlogin" data-toggle="modal">Add a dish</a>
                                     {% endif %}
