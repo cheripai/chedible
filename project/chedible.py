@@ -276,6 +276,14 @@ def restaurant_profile(id, page):
     places = Places(restaurant.name, lat, lng, c.DEFAULT_RADIUS)
     places_info = places.get_info_boxes()
 
+    if g.user is not None:
+        user = User.query.filter_by(id=g.user.id)
+        bookmarks = user.first().bookmarks
+        if int(id) in bookmarks:
+            pass
+        else:
+            pass
+
     return render_template(
         'restaurant_profile.html',
         message=message,
@@ -634,8 +642,8 @@ def bookmark():
     try:
         id = request.args.get('id', type=int)
         user = User.query.filter_by(id=g.user.id)
-        dish = Dish.query.filter_by(id=id).first()
-        if dish is None:
+        restaurant = Restaurant.query.filter_by(id=id).first()
+        if restaurant is None:
             return jsonify(error='Invalid id')
         bookmarks = set(user.first().bookmarks)
         bookmarks.add(id)
