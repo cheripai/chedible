@@ -276,13 +276,12 @@ def restaurant_profile(id, page):
     places = Places(restaurant.name, lat, lng, c.DEFAULT_RADIUS)
     places_info = places.get_info_boxes()
 
+    bookmarked = False
     if g.user is not None:
         user = User.query.filter_by(id=g.user.id)
         bookmarks = user.first().bookmarks
         if int(id) in bookmarks:
-            pass
-        else:
-            pass
+            bookmarked = True
 
     return render_template(
         'restaurant_profile.html',
@@ -297,6 +296,7 @@ def restaurant_profile(id, page):
         contents=c.CONTENTS,
         coords=coords,
         places_info=places_info,
+        bookmarked=bookmarked,
         MAX_COMMENT_LENGTH=c.MAX_COMMENT_LENGTH
     )
 
@@ -646,7 +646,10 @@ def bookmark():
         if restaurant is None:
             return jsonify(error='Invalid id')
         bookmarks = set(user.first().bookmarks)
-        bookmarks.add(id)
+        if id in bookmarks:
+            bookmarks.remove(id)
+        else:
+            bookmarks.add(id)
         user.update({'bookmarks': set(bookmarks)})
         db.session.commit()
         return jsonify(status='success')
