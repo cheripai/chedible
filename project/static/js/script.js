@@ -270,10 +270,19 @@ $("[id^=downvote]").click(function(){
 // For adding bookmark
 $("#bookmark").click(function() {
     var restaurant_id = window.location.pathname.replace(/\/\s*$/,'').split('/')[2];
+    var bookmark = $("#bookmark");
     $.getJSON($SCRIPT_ROOT + '/bookmark', {
         id: restaurant_id
     }, function(data) {
     });
+    if(bookmark.text() === "Unbookmark")
+    {
+        bookmark.text("Bookmark");
+    }
+    else 
+    {
+        bookmark.text("Unbookmark");
+    }
 });
 
 
