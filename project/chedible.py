@@ -657,6 +657,16 @@ def bookmark():
         return jsonify(error='Invalid id')
 
 
+@app.route('/bookmarks/<id>')
+@login_required
+def bookmarks(id):
+    if g.user.id != int(id):
+        abort(404)
+    user = User.query.filter_by(id=g.user.id)
+    bookmarks = user.first().bookmarks
+    return render_template('bookmarks.html', bookmarks=bookmarks)
+
+
 # Convert string value from HTML form to boolean value
 def stb(s):
     if s == 'True':
