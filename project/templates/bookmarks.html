@@ -10,6 +10,11 @@
 {% block content %}
 
     <div class="container">
+        <ul>
+            {% for id, name in bookmarks %}
+                <li>{{ id }} {{ name }}</li>   
+            {% endfor %}
+        </ul>
     </div>
 
 {% endblock %}

@@ -665,7 +665,8 @@ def bookmarks(id):
     user = User.query.filter_by(id=g.user.id)
     bookmarks = user.first().bookmarks
     bookmark_names = [Restaurant.query.filter_by(id=restaurant).first().name for restaurant in bookmarks] 
-    return render_template('bookmarks.html', bookmarks=bookmarks, bookmark_names=bookmark_names)
+    bookmarks = zip(bookmarks, bookmark_names)
+    return render_template('bookmarks.html', bookmarks=bookmarks)
 
 
 # Convert string value from HTML form to boolean value
