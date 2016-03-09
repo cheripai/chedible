@@ -404,6 +404,13 @@ Scenario: we cannot bookmark a restaurant that does not exist
     Then we should see the text "error"
 
 
+Scenario: Add bookmark route returns error when not sending id
+    Given chedible is set up
+    When we log in
+    And we visit "/bookmark?id="
+    Then we should see the text "error"
+
+
 Scenario: we can not view bookmarks when not logged in
     Given chedible is set up
     When we log out
