@@ -10,11 +10,31 @@
 {% block content %}
 
     <div class="container">
-        <ul>
-            {% for id, name in bookmarks %}
-                <li>{{ id }} {{ name }}</li>   
-            {% endfor %}
-        </ul>
+        <div class="col-md-8">
+            <legend>Bookmarks</legend>
+            <ul>
+                {% for id, name in bookmarks %}
+                    <li>{{ id }} {{ name }}</li>   
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="col-md-1">
+        </div>
+
+        <div class="col-md-3">
+            <div class="list-group">
+                <a href="#" class="list-group-item">
+                    <h4 class="list-group-item-heading">Ads n stuff</h4>
+                    <p class="list-group-item-text">
+Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel. 
+Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel. 
+Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel. 
+Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel. 
+                    </p>
+                </a>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
