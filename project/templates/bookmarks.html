@@ -14,7 +14,7 @@
             <legend>Bookmarks</legend>
             <ul>
                 {% for id, name in bookmarks %}
-                    <li>{{ id }} {{ name }}</li>   
+                    <li><a href="/restaurant/{{ id }}">{{ name }}</a></li>   
                 {% endfor %}
             </ul>
         </div>
