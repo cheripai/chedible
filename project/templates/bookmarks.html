@@ -28,7 +28,9 @@
                             <h4 class="media-heading">
                                 <a href="{{ url_for('restaurant_profile', id=d.id) }}">{{ d.name }}</a>
                             </h4>
-                            <p class="text-muted">{{ d.category }}</p>
+                            <p class="text-muted">{{ d.category }}<br>
+                                <a class="clickable" id="bookmark">Unbookmark</a>
+                            </p>
                             <hr class="featurette-divider"></hr>
                         </div>
                     </div>
