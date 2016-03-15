@@ -286,6 +286,24 @@ $("#bookmark").click(function() {
 });
 
 
+// For updating bookmarks page
+$("[id^=bookmark]").click(function(){
+    var restaurant_id = parseInt($(this).attr('id').replace('bookmark', ''), 10);
+    $.getJSON($SCRIPT_ROOT + '/bookmark', {
+        id: restaurant_id,
+    }, function(data) {
+    });
+    if(bookmark.text() === "Unbookmark")
+    {
+        bookmark.text("Bookmark");
+    }
+    else 
+    {
+        bookmark.text("Unbookmark");
+    }
+});
+
+
 // Fixes bug where opening a modal shifts contents of the page
 $(document).ready(function(){
     $(window).load(function(){
