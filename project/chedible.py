@@ -662,10 +662,13 @@ def bookmark():
 def bookmarks(id):
     if g.user.id != int(id):
         abort(404)
+    message = "No entries found"
     user = User.query.filter_by(id=g.user.id)
     bookmarks = user.first().bookmarks
+    if len(bookmarks) != 0:
+        message = ""
     data = Restaurant.query.filter(Restaurant.id.in_(bookmarks)).all()
-    return render_template('bookmarks.html', data=data)
+    return render_template('bookmarks.html', data=data, message=message)
 
 
 # Convert string value from HTML form to boolean value

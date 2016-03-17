@@ -16,6 +16,9 @@
         <div class="col-md-8">
             <legend>Bookmarks</legend>
             <div class="media">
+                {% if message %}
+                    <p>{{ message }}</p>
+                {% endif %}
                 {% for d in data %}
                     <div class="entry">
                         <div class="pull-left media-middle">
