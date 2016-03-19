@@ -28,8 +28,8 @@ simplegeneric==0.8.1
 six==1.10.0
 SQLAlchemy==1.0.12
 SQLAlchemy-Searchable==0.9.3
-SQLAlchemy-Utils==0.31.6
-traitlets==4.1.0
+SQLAlchemy-Utils==0.32.0
+traitlets==4.2.1
 validators==0.10
 Werkzeug==0.11.4
 WTForms==2.1
