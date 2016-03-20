@@ -41,7 +41,7 @@ class AddRestaurantForm(Form):
             Optional(),
             URL(message="Invalid URL"),
             Regexp(
-                '([^\s]+(\.(?i)(jpg|png|gif|bmp))$)',
+                '([^\s]+(\.(?i)(jpg|jpeg|png|gif|bmp))$)',
                 message="Invalid image path"
             )
         ]
