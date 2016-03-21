@@ -671,6 +671,17 @@ def bookmarks(id):
     return render_template('bookmarks.html', data=data, message=message)
 
 
+@app.route('/upload', methods=('GET', 'POST'))
+def upload():
+    form = PhotoForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.photo.data.filename)
+        form.photo.data.save('uploads/' + filename)
+    else:
+        filename = None
+    return render_template('upload.html', form=form, filename=filename)
+
+
 # Convert string value from HTML form to boolean value
 def stb(s):
     if s == 'True':

@@ -4,6 +4,7 @@
 
 
 from flask_wtf import Form
+from flask_wtf.file import FileField
 from wtforms import StringField, TextAreaField, BooleanField
 from wtforms.validators import DataRequired, Length, Optional, Regexp, URL
 
@@ -189,3 +190,7 @@ class AddLocationForm(Form):
             )
         ]
     )
+
+
+class PhotoForm(Form):
+    photo = FileField('Photo')
