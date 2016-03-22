@@ -9,17 +9,19 @@ from functools import wraps
 from geopy.geocoders import GoogleV3
 import json
 from locale import currency
+import os
 from profanity import profanity
 from project import app, db
 import project._config as c
 from project.forms import AddRestaurantForm, AddDishForm, SearchForm
-from project.forms import EditUserForm, AddLocationForm
+from project.forms import EditUserForm, AddLocationForm, PhotoForm
 from project.factual_places import Places
 from project.pagination import Pagination
 from project.schema import Restaurant, Dish, User, Comment, Location, Issue
 from time import time
 from urllib.request import urlopen
 from urllib.parse import unquote, quote_plus
+from werkzeug import secure_filename
 
 
 # This function runs before each request
@@ -674,11 +676,6 @@ def bookmarks(id):
 @app.route('/upload', methods=('GET', 'POST'))
 def upload():
     form = PhotoForm()
-    if form.validate_on_submit():
-        filename = secure_filename(form.photo.data.filename)
-        form.photo.data.save('uploads/' + filename)
-    else:
-        filename = None
     return render_template('upload.html', form=form, filename=filename)
 
 

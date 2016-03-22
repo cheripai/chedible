@@ -1,0 +1,41 @@
+{# - This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. 
+#}
+
+
+{% extends "_base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="col-md-8">
+            <form class="form-horizontal" id="upload_form" method="post" action="{{ url_for('upload') }}", enctype="multipart/form-data">
+                {{ form.csrf_token }}
+                {{ form.photo() }}
+                <div class="form-row">
+                    <div class="form-group">
+                        <button class="form-control btn btn-primary submit-button" type="submit" style="margin-top:12px;">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-1">
+        </div>
+
+        <div class="col-md-3">
+            <div class="list-group">
+                <a href="#" class="list-group-item">
+                    <h4 class="list-group-item-heading">Ads n stuff</h4>
+                    <p class="list-group-item-text">
+Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel. 
+Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel. 
+Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel. 
+Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel. 
+                    </p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

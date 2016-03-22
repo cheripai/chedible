@@ -193,4 +193,4 @@ class AddLocationForm(Form):
 
 
 class PhotoForm(Form):
-    photo = FileField('Photo')
+    photo = FileField('photo')
