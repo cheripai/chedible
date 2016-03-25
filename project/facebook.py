@@ -2,7 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
 from flask import redirect, url_for, request, flash, session
 import json
 from project import app
@@ -10,14 +9,10 @@ from project.schema import User
 from rauth.service import OAuth2Service
 from urllib.request import urlopen
 
-
 USER_RETURN_URL = ""
 
-app.config.update(
-    FACEBOOK_CLIENT_ID='1659176284311034',
-    FACEBOOK_CLIENT_SECRET='81219aaf2059e1ebd760bdb1fb0387a1',
-)
-
+app.config.update(FACEBOOK_CLIENT_ID='1659176284311034',
+                  FACEBOOK_CLIENT_SECRET='81219aaf2059e1ebd760bdb1fb0387a1', )
 
 facebook = OAuth2Service(
     name='facebook',
@@ -60,23 +55,17 @@ def facebook_authorized():
 
     me = user_session.get('me').json()
 
-    picture_json = json.loads(
-        urlopen(
-            'https://graph.facebook.com/' +
-            me['id'] +
-            '/picture?redirect=false&height=480&width=480'
-        ).readall().decode('utf-8')
-    )
+    picture_json = json.loads(urlopen('https://graph.facebook.com/' + me[
+        'id'] + '/picture?redirect=false&height=480&width=480').readall(
+        ).decode('utf-8'))
     picture_url = picture_json['data']['url']
 
     if me['name']:
-        user = User.get_or_create(
-            me['name'], me['id'], picture_url, me['email']
-        )
+        user = User.get_or_create(me['name'], me['id'], picture_url,
+                                  me['email'])
     else:
-        user = User.get_or_create(
-            me['email'], me['id'], picture_url, me['email']
-        )
+        user = User.get_or_create(me['email'], me['id'], picture_url,
+                                  me['email'])
 
     if not user.is_banned:
         # Update user profile picture in case it may have changed

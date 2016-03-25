@@ -2,7 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
 from flask import render_template, abort, redirect, url_for, request, flash
 from flask import session, g, jsonify
 from functools import wraps
@@ -68,6 +67,7 @@ def login_required(test):
         else:
             flash('You need to be logged in to do that!')
             return redirect(url_for('main'))
+
     return wrap
 
 
@@ -110,33 +110,31 @@ def search(table):
         radius = g.search_form.radius.data
         search_all = g.search_form.searchAll.data
         if search_all:
-            query='Restaurants'
+            query = 'Restaurants'
         if location:
             session['address'] = location.address
             session['coords'] = (location.latitude, location.longitude)
-            return redirect(url_for(
-                'search_results',
-                table=table,
-                query=query,
-                coords='{},{}'.format(location.latitude, location.longitude),
-                radius=radius
-            ))
+            return redirect(url_for('search_results',
+                                    table=table,
+                                    query=query,
+                                    coords='{},{}'.format(location.latitude,
+                                                          location.longitude),
+                                    radius=radius))
         else:
             return render_template(
                 'search.html',
                 query=query,
                 message='Error: Could not find location {}'.format(
-                    g.search_form.location.data
-                ),
+                    g.search_form.location.data),
                 lat='0',
                 lng='0',
-                table=table
-            )
+                table=table)
     else:
         return redirect(request.referrer)
 
 
-@app.route('/search_results/<table>/<query>/<coords>/<radius>', defaults={'page': 1})
+@app.route('/search_results/<table>/<query>/<coords>/<radius>',
+           defaults={'page': 1})
 @app.route('/search_results/<table>/<query>/<coords>/<radius>/<int:page>')
 def search_results(table, query, coords, radius, page):
     message = "No entries found"
@@ -146,15 +144,13 @@ def search_results(table, query, coords, radius, page):
     new_query = quote_plus(query)
 
     if not new_query:
-        return render_template(
-            'search.html',
-            message=message,
-            query=query,
-            lat=lat,
-            lng=lng,
-            table=table,
-            radius=radius
-        )
+        return render_template('search.html',
+                               message=message,
+                               query=query,
+                               lat=lat,
+                               lng=lng,
+                               table=table,
+                               radius=radius)
 
     if table != 'users':
         places = Places(new_query, lat, lng, radius)
@@ -165,16 +161,14 @@ def search_results(table, query, coords, radius, page):
         for dish in data:
             chedibilitylist.append(is_chedible(dish, g.user))
     elif table == "restaurants":
-        data = Restaurant.query.filter(Restaurant.name.ilike('%'+query+'%'))
-        data = data.union(
-            Restaurant.query.filter(Restaurant.tags.ilike('%'+query+'%'))
-        )
-        data = data.union(
-            Restaurant.query.filter(Restaurant.category.ilike('%'+query+'%'))
-        )
-        data = data.union(
-            Restaurant.query.filter(Restaurant.name.in_(places_names))
-        )
+        data = Restaurant.query.filter(Restaurant.name.ilike('%' + query +
+                                                             '%'))
+        data = data.union(Restaurant.query.filter(Restaurant.tags.ilike(
+            '%' + query + '%')))
+        data = data.union(Restaurant.query.filter(Restaurant.category.ilike(
+            '%' + query + '%')))
+        data = data.union(Restaurant.query.filter(Restaurant.name.in_(
+            places_names)))
     elif table == "users":
         data = User.query.search(query, sort=True).limit(c.MAX_QUERIES)
     else:
@@ -186,8 +180,7 @@ def search_results(table, query, coords, radius, page):
     # Remove places not matched in database from map
     data_names = [d.name for d in data]
     places.remove_indices(
-        [i for i, name in enumerate(places_names) if name not in data_names]
-    )
+        [i for i, name in enumerate(places_names) if name not in data_names])
 
     places_names = places.get_names()
     places_coords = places.get_coords()
@@ -199,22 +192,20 @@ def search_results(table, query, coords, radius, page):
     if not data and page != 1:
         abort(404)
 
-    return render_template(
-        'search.html',
-        message=message,
-        data=data,
-        chedibilitylist=chedibilitylist,
-        query=query,
-        lat=lat,
-        lng=lng,
-        table=table,
-        radius=radius,
-        pagination=pagination,
-        Restaurant=Restaurant,
-        places_coords=places_coords,
-        places_info=places_info,
-        city_name=city_name
-    )
+    return render_template('search.html',
+                           message=message,
+                           data=data,
+                           chedibilitylist=chedibilitylist,
+                           query=query,
+                           lat=lat,
+                           lng=lng,
+                           table=table,
+                           radius=radius,
+                           pagination=pagination,
+                           Restaurant=Restaurant,
+                           places_coords=places_coords,
+                           places_info=places_info,
+                           city_name=city_name)
 
 
 @app.route('/add', methods=('GET', 'POST'))
@@ -223,13 +214,9 @@ def add_restaurant():
     form = AddRestaurantForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            new_restaurant = Restaurant(
-                form.name.data,
-                form.category.data,
-                form.image.data,
-                form.tags.data,
-                session['user_id']
-            )
+            new_restaurant = Restaurant(form.name.data, form.category.data,
+                                        form.image.data, form.tags.data,
+                                        session['user_id'])
             if post_interval_exists():
                 return render_template('restaurant_form.html', form=form)
             new_restaurant.last_editor = session['user_id']
@@ -237,9 +224,8 @@ def add_restaurant():
             update_score(c.ADD_RESTAURANT_SCORE)
             db.session.commit()
             flash('Thank you for your addition!')
-            return redirect(
-                url_for('restaurant_profile', id=new_restaurant.id)
-            )
+            return redirect(url_for('restaurant_profile',
+                                    id=new_restaurant.id))
     return render_template('restaurant_form.html', form=form)
 
 
@@ -274,7 +260,7 @@ def restaurant_profile(id, page):
         session['coords'] = c.DEFAULT_COORDS
 
     lat, lng = session['coords']
-        
+
     places = Places(restaurant.name, lat, lng, c.DEFAULT_RADIUS)
     places_info = places.get_info_boxes()
 
@@ -285,22 +271,20 @@ def restaurant_profile(id, page):
         if int(id) in bookmarks:
             bookmarked = True
 
-    return render_template(
-        'restaurant_profile.html',
-        message=message,
-        restaurant=restaurant,
-        dishes=dishes,
-        pagination=pagination,
-        comments=comments,
-        User=User,
-        lat=lat,
-        lng=lng,
-        contents=c.CONTENTS,
-        coords=coords,
-        places_info=places_info,
-        bookmarked=bookmarked,
-        MAX_COMMENT_LENGTH=c.MAX_COMMENT_LENGTH
-    )
+    return render_template('restaurant_profile.html',
+                           message=message,
+                           restaurant=restaurant,
+                           dishes=dishes,
+                           pagination=pagination,
+                           comments=comments,
+                           User=User,
+                           lat=lat,
+                           lng=lng,
+                           contents=c.CONTENTS,
+                           coords=coords,
+                           places_info=places_info,
+                           bookmarked=bookmarked,
+                           MAX_COMMENT_LENGTH=c.MAX_COMMENT_LENGTH)
 
 
 @app.route('/restaurant/<id>/<coords>/add_location', methods=('GET', 'POST'))
@@ -322,15 +306,13 @@ def add_location_page(id, coords):
     places_coords = places.get_coords()
     places_info = places.get_add_location_boxes()
 
-    return render_template(
-        'restaurant_location.html',
-        form=form,
-        restaurant=restaurant,
-        lat=lat,
-        lng=lng,
-        places_coords=places_coords,
-        places_info=places_info,
-    )
+    return render_template('restaurant_location.html',
+                           form=form,
+                           restaurant=restaurant,
+                           lat=lat,
+                           lng=lng,
+                           places_coords=places_coords,
+                           places_info=places_info, )
 
 
 @app.route('/restaurant/<id>/add_location')
@@ -358,16 +340,14 @@ def add_dish(id):
     form = AddDishForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            new_dish = Dish(
-                form.name.data, form.price.data, form.image.data,
-                stb(form.beef.data), stb(form.dairy.data), stb(form.egg.data),
-                stb(form.fish.data), stb(form.gluten.data),
-                stb(form.meat.data), stb(form.nut.data),
-                stb(form.non_organic.data), stb(form.pork.data),
-                stb(form.poultry.data), stb(form.shellfish.data),
-                stb(form.soy.data), stb(form.wheat.data), id,
-                session['user_id']
-            )
+            new_dish = Dish(form.name.data, form.price.data, form.image.data,
+                            stb(form.beef.data), stb(form.dairy.data),
+                            stb(form.egg.data), stb(form.fish.data),
+                            stb(form.gluten.data), stb(form.meat.data),
+                            stb(form.nut.data), stb(form.non_organic.data),
+                            stb(form.pork.data), stb(form.poultry.data),
+                            stb(form.shellfish.data), stb(form.soy.data),
+                            stb(form.wheat.data), id, session['user_id'])
             if post_interval_exists():
                 return render_template('dish_form.html', form=form, id=id)
             new_dish.last_editor = session['user_id']
@@ -377,7 +357,10 @@ def add_dish(id):
             flash('Thank you for your addition!')
             return redirect(url_for('restaurant_profile', id=id))
     restaurant = Restaurant.query.filter_by(id=id).first()
-    return render_template('dish_form.html', form=form, restaurant=restaurant, id=id)
+    return render_template('dish_form.html',
+                           form=form,
+                           restaurant=restaurant,
+                           id=id)
 
 
 @app.route('/restaurant/<id>/edit', methods=('GET', 'POST'))
@@ -387,7 +370,9 @@ def edit_restaurant(id):
     if request.method == 'POST':
         if form.validate_on_submit():
             if post_interval_exists():
-                return render_template('restaurant_form.html', form=form, id=id)
+                return render_template('restaurant_form.html',
+                                       form=form,
+                                       id=id)
             restaurant = Restaurant.query.filter_by(id=id)
             for entry in form:
                 if entry.id != "csrf_token":
@@ -420,14 +405,18 @@ def edit_dish(restaurant_id, dish_id):
     if request.method == 'POST':
         if form.validate_on_submit():
             if post_interval_exists():
-                return render_template('dish_form.html', form=form, id=restaurant_id, dish_id=dish_id)
+                return render_template('dish_form.html',
+                                       form=form,
+                                       id=restaurant_id,
+                                       dish_id=dish_id)
             dish = Dish.query.filter_by(id=dish_id)
             for entry in form:
                 if entry.id in c.CONTENTS:
                     dish.update({entry.id: stb(form[entry.id].data)})
                 elif entry.id == 'price' and form[entry.id].data:
-                    dish.update({entry.id: currency(float(form[entry.id].data),
-                                grouping=True)})
+                    dish.update({entry.id: currency(
+                        float(form[entry.id].data),
+                        grouping=True)})
                 elif entry.id != 'csrf_token':
                     dish.update({entry.id: form[entry.id].data})
             dish.update({'last_edited': int(time())})
@@ -438,12 +427,10 @@ def edit_dish(restaurant_id, dish_id):
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=restaurant_id))
-        return render_template(
-            'dish_form.html',
-            form=form,
-            id=restaurant_id,
-            dish_id=dish_id
-        )
+        return render_template('dish_form.html',
+                               form=form,
+                               id=restaurant_id,
+                               dish_id=dish_id)
     if request.method == 'GET':
         dish = Dish.query.filter_by(id=dish_id).first()
         restaurant = Restaurant.query.filter_by(id=restaurant_id).first()
@@ -456,13 +443,11 @@ def edit_dish(restaurant_id, dish_id):
                     replace(',', '')
             elif entry.id != "csrf_token":
                 form[entry.id].data = str(dish[entry.id])
-        return render_template(
-            'dish_form.html',
-            form=form,
-            id=restaurant_id,
-            dish_id=dish_id,
-            restaurant=restaurant
-        )
+        return render_template('dish_form.html',
+                               form=form,
+                               id=restaurant_id,
+                               dish_id=dish_id,
+                               restaurant=restaurant)
 
 
 @app.route('/user/<id>')
@@ -478,11 +463,10 @@ def user_profile(id):
 
     user_opts = [(entry, user_dict[entry]) for entry in c.CONTENTS]
 
-    return render_template(
-        'user_profile.html',
-        month_day_year=month_day_year,
-        user=user, user_opts=user_opts
-    )
+    return render_template('user_profile.html',
+                           month_day_year=month_day_year,
+                           user=user,
+                           user_opts=user_opts)
 
 
 @app.route('/user/<id>/edit', methods=('GET', 'POST'))
@@ -500,12 +484,10 @@ def edit_user(id):
     if request.method == 'POST':
         if form.validate_on_submit():
             if post_interval_exists():
-                return render_template(
-                    'edit_user.html',
-                    form=form,
-                    month_day_year=month_day_year,
-                    user=user
-                )
+                return render_template('edit_user.html',
+                                       form=form,
+                                       month_day_year=month_day_year,
+                                       user=user)
             user = User.query.filter_by(id=id)
             for entry in form:
                 if entry.id in c.CONTENTS:
@@ -533,12 +515,10 @@ def edit_user(id):
             elif entry.id != "csrf_token":
                 form[entry.id].data = str(user_dict[entry.id])
 
-    return render_template(
-        'edit_user.html',
-        form=form,
-        month_day_year=month_day_year,
-        user=user
-    )
+    return render_template('edit_user.html',
+                           form=form,
+                           month_day_year=month_day_year,
+                           user=user)
 
 
 @app.route('/vote')
@@ -553,27 +533,27 @@ def vote():
             voters[g.user.id] = None
         # Case 1: User upvotes an unvoted dish
         if v == 'upvote' and voters[g.user.id] is None:
-            dish.update({'score': dish.first().score+1})
+            dish.update({'score': dish.first().score + 1})
             voters[g.user.id] = True
         # Case 2: User removes their upvote
         elif v == 'upvote' and voters[g.user.id] is True:
-            dish.update({'score': dish.first().score-1})
+            dish.update({'score': dish.first().score - 1})
             voters[g.user.id] = None
         # Case 3: User downvotes an unvoted dish
         elif v == 'downvote' and voters[g.user.id] is None:
-            dish.update({'score': dish.first().score-1})
+            dish.update({'score': dish.first().score - 1})
             voters[g.user.id] = False
         # Case 4: User removes their downvote
         elif v == 'downvote' and voters[g.user.id] is False:
-            dish.update({'score': dish.first().score+1})
+            dish.update({'score': dish.first().score + 1})
             voters[g.user.id] = None
         # Case 5: User upvotes downvoted dish
         elif v == 'upvote' and voters[g.user.id] is False:
-            dish.update({'score': dish.first().score+2})
+            dish.update({'score': dish.first().score + 2})
             voters[g.user.id] = True
         # Case 6: User downvotes upvoted dish
         elif v == 'downvote' and voters[g.user.id] is True:
-            dish.update({'score': dish.first().score-2})
+            dish.update({'score': dish.first().score - 2})
             voters[g.user.id] = False
         else:
             return jsonify(error='Invalid type of vote')
@@ -588,7 +568,8 @@ def vote():
 @login_required
 def comment():
     try:
-        content = profanity.censor(unquote(request.args.get('content', type=str)))
+        content = profanity.censor(unquote(request.args.get('content',
+                                                            type=str)))
         id = request.args.get('id', type=int)
         if len(content) > c.MAX_COMMENT_LENGTH:
             return jsonify(error='Comment exceeds 512 characters')
@@ -597,8 +578,11 @@ def comment():
         if Dish.query.filter_by(id=id).first() is None:
             return jsonify(error='Dish {} does not exist'.format(id))
         if post_interval_exists():
-            time_remaining = c.MIN_POST_INTERVAL - (int(time()) - g.user.last_activity)
-            return jsonify(error='Please wait {} seconds before posting again'.format(time_remaining))
+            time_remaining = c.MIN_POST_INTERVAL - (int(time()) -
+                                                    g.user.last_activity)
+            return jsonify(
+                error='Please wait {} seconds before posting again'.format(
+                    time_remaining))
         new_comment = Comment(g.user.id, id, content)
         db.session.add(new_comment)
         update_score(c.ADD_COMMENT_SCORE)
@@ -702,7 +686,7 @@ def rowtodict(row):
 # Splits data from query for pagination
 def split_data(data, cur_page, per_page, total):
     split = [d for d in data]
-    begin = (cur_page-1) * per_page
+    begin = (cur_page - 1) * per_page
     if begin + per_page < total:
         end = begin + per_page
     else:
@@ -740,8 +724,10 @@ def post_interval_exists():
     if app.config['TESTING']:
         return False
     if int(time()) - g.user.last_activity < c.MIN_POST_INTERVAL:
-        time_remaining = c.MIN_POST_INTERVAL - (int(time()) - g.user.last_activity)
-        message = 'Please wait {} seconds before posting again'.format(time_remaining)
+        time_remaining = c.MIN_POST_INTERVAL - (int(time()) -
+                                                g.user.last_activity)
+        message = 'Please wait {} seconds before posting again'.format(
+            time_remaining)
         flash(message)
         return True
     return False
@@ -749,9 +735,7 @@ def post_interval_exists():
 
 def coords_to_city(lat, lng):
     openstreetmap = 'https://nominatim.openstreetmap.org/reverse?format=json&lat={}&lon={}'
-    response = urlopen(openstreetmap.format(
-        lat, lng
-    ))
+    response = urlopen(openstreetmap.format(lat, lng))
     data = json.loads(response.read().decode('utf-8'))
     try:
         return data['address']['city']

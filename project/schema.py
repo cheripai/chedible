@@ -2,7 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
 from datetime import datetime
 from flask.ext.sqlalchemy import BaseQuery
 from locale import currency
@@ -12,24 +11,19 @@ from sqlalchemy_utils.types import TSVectorType
 from sqlalchemy_searchable import make_searchable
 from time import time
 
-
 make_searchable()
-
 
 restaurants_users = db.Table(
     'restaurants_users',
     db.Column('restaurants_id', db.Integer, db.ForeignKey('restaurants.id')),
     db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
-    db.PrimaryKeyConstraint('restaurants_id', 'users_id')
-)
-
+    db.PrimaryKeyConstraint('restaurants_id', 'users_id'))
 
 dishes_users = db.Table(
     'dishes_users',
     db.Column('dishes_id', db.Integer, db.ForeignKey('dishes.id')),
     db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
-    db.PrimaryKeyConstraint('dishes_id', 'users_id')
-)
+    db.PrimaryKeyConstraint('dishes_id', 'users_id'))
 
 
 class RestaurantQuery(BaseQuery, SearchQueryMixin):
@@ -45,27 +39,22 @@ class Restaurant(db.Model):
     date = db.Column(db.Date, nullable=False)
     category = db.Column(db.String, nullable=True)
     image = db.Column(db.String, nullable=True)
-    dishes = db.relationship(
-        'Dish',
-        cascade="all, delete, delete-orphan",
-        backref='restaurant'
-    )
+    dishes = db.relationship('Dish',
+                             cascade="all, delete, delete-orphan",
+                             backref='restaurant')
     tags = db.Column(db.String, nullable=True)
-    editors = db.relationship(
-        'User',
-        backref='restaurant',
-        secondary=restaurants_users
-    )
-    locations = db.relationship(
-        'Location',
-        backref='restaurant'
-    )
+    editors = db.relationship('User',
+                              backref='restaurant',
+                              secondary=restaurants_users)
+    locations = db.relationship('Location', backref='restaurant')
     last_edited = db.Column(db.Integer, nullable=False)
     last_editor = db.Column(db.Integer)
-    search_vector = db.Column(
-        TSVectorType('name', 'category', 'tags',
-                     weights={'name': 'A', 'category': 'C', 'tags': 'B'})
-    )
+    search_vector = db.Column(TSVectorType('name',
+                                           'category',
+                                           'tags',
+                                           weights={'name': 'A',
+                                                    'category': 'C',
+                                                    'tags': 'B'}))
 
     def __init__(self, name, category, image, tags, user_id):
         self.name = name
@@ -111,20 +100,16 @@ class Dish(db.Model):
     wheat = db.Column(db.Boolean, nullable=True)
     score = db.Column(db.Integer)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
-    editors = db.relationship(
-        'User',
-        backref='dish',
-        secondary=dishes_users
-    )
+    editors = db.relationship('User', backref='dish', secondary=dishes_users)
     last_edited = db.Column(db.Integer, nullable=False)
     voters = db.Column(db.PickleType, nullable=True)
     last_editor = db.Column(db.Integer)
     commenters = db.relationship('Comment', backref='dish')
     search_vector = db.Column(TSVectorType('name'))
 
-    def __init__(self, name, price, image, beef, dairy, egg,
-                 fish, gluten, meat, nut, non_organic, pork, poultry, shellfish,
-                 soy, wheat, restaurant_id, user_id):
+    def __init__(self, name, price, image, beef, dairy, egg, fish, gluten,
+                 meat, nut, non_organic, pork, poultry, shellfish, soy, wheat,
+                 restaurant_id, user_id):
         self.name = name
         self.date = datetime.utcnow()
         if price:
@@ -188,27 +173,25 @@ class User(db.Model):
     wheat = db.Column(db.Boolean, nullable=True)
     about = db.Column(db.String, nullable=True)
     score = db.Column(db.Integer, default=0)
-    restaurants = db.relationship(
-        'Restaurant',
-        backref='user',
-        viewonly=True,
-        secondary=restaurants_users
-    )
-    dishes = db.relationship(
-        'Dish',
-        backref='user',
-        viewonly=True,
-        secondary=dishes_users
-    )
+    restaurants = db.relationship('Restaurant',
+                                  backref='user',
+                                  viewonly=True,
+                                  secondary=restaurants_users)
+    dishes = db.relationship('Dish',
+                             backref='user',
+                             viewonly=True,
+                             secondary=dishes_users)
     bookmarks = db.Column(db.PickleType, nullable=True)
     last_edited = db.Column(db.Integer, nullable=False)
     last_activity = db.Column(db.Integer, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False)
     is_banned = db.Column(db.Boolean, nullable=False)
-    search_vector = db.Column(
-        TSVectorType('name', 'email', 'username',
-                     weights={'name': 'B', 'email': 'A', 'username': 'A'})
-    )
+    search_vector = db.Column(TSVectorType('name',
+                                           'email',
+                                           'username',
+                                           weights={'name': 'B',
+                                                    'email': 'A',
+                                                    'username': 'A'}))
 
     def __init__(self, name, auth_id, image, email):
         self.name = name

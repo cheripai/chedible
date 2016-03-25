@@ -2,11 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_googlemaps import GoogleMaps
-
 
 # config
 app = Flask(__name__)
