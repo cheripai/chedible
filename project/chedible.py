@@ -4,13 +4,14 @@
 
 from flask import render_template, abort, redirect, url_for, request, flash
 from flask import session, g, jsonify
+import flask_uploads
 from functools import wraps
 from geopy.geocoders import GoogleV3
 import json
 from locale import currency
 import os
 from profanity import profanity
-from project import app, db
+from project import app, db, photos
 import project._config as c
 from project.forms import AddRestaurantForm, AddDishForm, SearchForm
 from project.forms import EditUserForm, AddLocationForm, PhotoForm
@@ -660,7 +661,12 @@ def bookmarks(id):
 @app.route('/upload', methods=('GET', 'POST'))
 def upload():
     form = PhotoForm()
-    return render_template('upload.html', form=form, filename=filename)
+    if request.method == 'POST' and 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        # FIXME: Add Photo to db
+        # rec = Photo(filename=filename, user=g.user.id)
+        # rec.store()
+    return render_template('upload.html', form=form)
 
 
 # Convert string value from HTML form to boolean value
