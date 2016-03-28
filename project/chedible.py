@@ -12,7 +12,6 @@ from locale import currency
 import os
 from profanity import profanity
 from project import app, db, photos
-import project._config as c
 from project.forms import AddRestaurantForm, AddDishForm, SearchForm
 from project.forms import EditUserForm, AddLocationForm, PhotoForm
 from project.factual_places import Places
@@ -36,7 +35,7 @@ def load_user():
             first, last = g.user.name.split()
         except ValueError:
             first = g.user.name
-        if len(g.user.name) > c.MAX_USERNAME_LENGTH:
+        if len(g.user.name) > app.config['MAX_USERNAME_LENGTH']:
             g.user.name = first
     else:
         g.user = None
@@ -51,7 +50,7 @@ def load_search_form():
             g.search_form.location.data = session['address']
         except KeyError:
             # If no location data available, use default city
-            g.search_form.location.data = c.DEFAULT_CITY
+            g.search_form.location.data = app.config['DEFAULT_CITY']
 
 
 @app.errorhandler(404)
@@ -158,7 +157,8 @@ def search_results(table, query, coords, radius, page):
         places_names = places.get_names()
 
     if table == "dishes":
-        data = Dish.query.search(query, sort=True).limit(c.MAX_QUERIES)
+        data = Dish.query.search(query,
+                                 sort=True).limit(app.config['MAX_QUERIES'])
         for dish in data:
             chedibilitylist.append(is_chedible(dish, g.user))
     elif table == "restaurants":
@@ -171,7 +171,8 @@ def search_results(table, query, coords, radius, page):
         data = data.union(Restaurant.query.filter(Restaurant.name.in_(
             places_names)))
     elif table == "users":
-        data = User.query.search(query, sort=True).limit(c.MAX_QUERIES)
+        data = User.query.search(query,
+                                 sort=True).limit(app.config['MAX_QUERIES'])
     else:
         abort(404)
 
@@ -187,8 +188,8 @@ def search_results(table, query, coords, radius, page):
     places_coords = places.get_coords()
     places_info = places.get_info_boxes()
 
-    pagination = Pagination(page, c.PER_PAGE, data.count())
-    data = split_data(data, page, c.PER_PAGE, data.count())
+    pagination = Pagination(page, app.config['PER_PAGE'], data.count())
+    data = split_data(data, page, app.config['PER_PAGE'], data.count())
 
     if not data and page != 1:
         abort(404)
@@ -222,7 +223,7 @@ def add_restaurant():
                 return render_template('restaurant_form.html', form=form)
             new_restaurant.last_editor = session['user_id']
             db.session.add(new_restaurant)
-            update_score(c.ADD_RESTAURANT_SCORE)
+            update_score(app.config['ADD_RESTAURANT_SCORE'])
             db.session.commit()
             flash('Thank you for your addition!')
             return redirect(url_for('restaurant_profile',
@@ -251,18 +252,18 @@ def restaurant_profile(id, page):
         for d in dishes
     ]
 
-    pagination = Pagination(page, c.PER_PAGE, dishes.count())
-    dishes = split_data(dishes, page, c.PER_PAGE, dishes.count())
+    pagination = Pagination(page, app.config['PER_PAGE'], dishes.count())
+    dishes = split_data(dishes, page, app.config['PER_PAGE'], dishes.count())
     if not dishes and page != 1:
         abort(404)
 
     # Sets default location to San Francisco
     if 'coords' not in session:
-        session['coords'] = c.DEFAULT_COORDS
+        session['coords'] = app.config['DEFAULT_COORDS']
 
     lat, lng = session['coords']
 
-    places = Places(restaurant.name, lat, lng, c.DEFAULT_RADIUS)
+    places = Places(restaurant.name, lat, lng, app.config['DEFAULT_RADIUS'])
     places_info = places.get_info_boxes()
 
     bookmarked = False
@@ -281,11 +282,11 @@ def restaurant_profile(id, page):
                            User=User,
                            lat=lat,
                            lng=lng,
-                           contents=c.CONTENTS,
+                           contents=app.config['CONTENTS'],
                            coords=coords,
                            places_info=places_info,
                            bookmarked=bookmarked,
-                           MAX_COMMENT_LENGTH=c.MAX_COMMENT_LENGTH)
+                           MAX_COMMENT_LENGTH=app.config['MAX_COMMENT_LENGTH'])
 
 
 @app.route('/restaurant/<id>/<coords>/add_location', methods=('GET', 'POST'))
@@ -303,7 +304,7 @@ def add_location_page(id, coords):
     restaurant = Restaurant.query.filter_by(id=id).first()
     lat, lng = coords.split(',')
 
-    places = Places(restaurant.name, lat, lng, c.DEFAULT_RADIUS)
+    places = Places(restaurant.name, lat, lng, app.config['DEFAULT_RADIUS'])
     places_coords = places.get_coords()
     places_info = places.get_add_location_boxes()
 
@@ -353,7 +354,7 @@ def add_dish(id):
                 return render_template('dish_form.html', form=form, id=id)
             new_dish.last_editor = session['user_id']
             db.session.add(new_dish)
-            update_score(c.ADD_DISH_SCORE)
+            update_score(app.config['ADD_DISH_SCORE'])
             db.session.commit()
             flash('Thank you for your addition!')
             return redirect(url_for('restaurant_profile', id=id))
@@ -382,7 +383,7 @@ def edit_restaurant(id):
             restaurant.update({'last_editor': session['user_id']})
             r = Restaurant.query.get(id)
             r.editors.append(User.query.get(session['user_id']))
-            update_score(c.EDIT_RESTAURANT_SCORE)
+            update_score(app.config['EDIT_RESTAURANT_SCORE'])
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=id))
@@ -412,7 +413,7 @@ def edit_dish(restaurant_id, dish_id):
                                        dish_id=dish_id)
             dish = Dish.query.filter_by(id=dish_id)
             for entry in form:
-                if entry.id in c.CONTENTS:
+                if entry.id in app.config['CONTENTS']:
                     dish.update({entry.id: stb(form[entry.id].data)})
                 elif entry.id == 'price' and form[entry.id].data:
                     dish.update({entry.id: currency(
@@ -424,7 +425,7 @@ def edit_dish(restaurant_id, dish_id):
             dish.update({'last_editor': session['user_id']})
             d = Dish.query.get(dish_id)
             d.editors.append(User.query.get(session['user_id']))
-            update_score(c.EDIT_DISH_SCORE)
+            update_score(app.config['EDIT_DISH_SCORE'])
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=restaurant_id))
@@ -462,7 +463,7 @@ def user_profile(id):
     month_day_year = User.query.filter_by(id=id).first().\
         date.strftime("%B %d, %Y")
 
-    user_opts = [(entry, user_dict[entry]) for entry in c.CONTENTS]
+    user_opts = [(entry, user_dict[entry]) for entry in app.config['CONTENTS']]
 
     return render_template('user_profile.html',
                            month_day_year=month_day_year,
@@ -491,7 +492,7 @@ def edit_user(id):
                                        user=user)
             user = User.query.filter_by(id=id)
             for entry in form:
-                if entry.id in c.CONTENTS:
+                if entry.id in app.config['CONTENTS']:
                     user.update({entry.id: stb(form[entry.id].data)})
                 elif entry.id != 'csrf_token':
                     user.update({entry.id: form[entry.id].data})
@@ -572,21 +573,21 @@ def comment():
         content = profanity.censor(unquote(request.args.get('content',
                                                             type=str)))
         id = request.args.get('id', type=int)
-        if len(content) > c.MAX_COMMENT_LENGTH:
+        if len(content) > app.config['MAX_COMMENT_LENGTH']:
             return jsonify(error='Comment exceeds 512 characters')
         if content == '':
             return jsonify(error='Comment must contain text')
         if Dish.query.filter_by(id=id).first() is None:
             return jsonify(error='Dish {} does not exist'.format(id))
         if post_interval_exists():
-            time_remaining = c.MIN_POST_INTERVAL - (int(time()) -
-                                                    g.user.last_activity)
+            time_remaining = app.config['MIN_POST_INTERVAL'] - (
+                int(time()) - g.user.last_activity)
             return jsonify(
                 error='Please wait {} seconds before posting again'.format(
                     time_remaining))
         new_comment = Comment(g.user.id, id, content)
         db.session.add(new_comment)
-        update_score(c.ADD_COMMENT_SCORE)
+        update_score(app.config['ADD_COMMENT_SCORE'])
         db.session.commit()
         date = new_comment.date.strftime("%B %d, %Y")
         return jsonify(date=date)
@@ -665,7 +666,7 @@ def upload():
         filename = photos.save(request.files['photo'])
         # FIXME: Add Photo to db
         # rec = Photo(filename=filename, user=g.user.id)
-        # rec.store()
+        # reapp.config['store()
     return render_template('upload.html', form=form)
 
 
@@ -711,7 +712,7 @@ def is_chedible(dish, user):
         return None
     dish = rowtodict(dish)
     user = rowtodict(user)
-    for entry in c.CONTENTS:
+    for entry in app.config['CONTENTS']:
         if (dish[entry] and not user[entry]) or \
            (dish[entry] is None and not user[entry]):
             return False
@@ -729,9 +730,9 @@ def post_interval_exists():
     # Allows test cases to post without waiting for interval
     if app.config['TESTING']:
         return False
-    if int(time()) - g.user.last_activity < c.MIN_POST_INTERVAL:
-        time_remaining = c.MIN_POST_INTERVAL - (int(time()) -
-                                                g.user.last_activity)
+    if int(time()) - g.user.last_activity < app.config['MIN_POST_INTERVAL']:
+        time_remaining = app.config['MIN_POST_INTERVAL'] - (
+            int(time()) - g.user.last_activity)
         message = 'Please wait {} seconds before posting again'.format(
             time_remaining)
         flash(message)
