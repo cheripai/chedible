@@ -30,6 +30,7 @@ DEFAULT_RADIUS = 3220
 CONTENTS = ['beef', 'dairy', 'egg', 'fish', 'gluten', 'meat', 'nut',
             'non_organic', 'pork', 'poultry', 'shellfish', 'soy', 'wheat']
 UPLOADED_PHOTOS_DEST='photos/'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 # sets locale for pricing
 # may need to modify for internationalization
