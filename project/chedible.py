@@ -663,10 +663,11 @@ def bookmarks(id):
 def upload():
     form = PhotoForm()
     if request.method == 'POST' and 'photo' in request.files:
-        filename = photos.save(request.files['photo'])
-        # FIXME: Add Photo to db
-        # rec = Photo(filename=filename, user=g.user.id)
-        # reapp.config['store()
+        photo = request.files['photo']
+        if photo:
+            # FIXME: Generate random string for filename and check file for extension
+            filename = photo.filename
+            photo.save(os.path.join(app.config['UPLOADED_PHOTOS_DEST'], filename))
     return render_template('upload.html', form=form)
 
 
