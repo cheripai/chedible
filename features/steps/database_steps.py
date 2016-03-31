@@ -6,7 +6,7 @@
 from behave import *
 import parse
 
-from project.chedible import rowtodict
+from project.helpers import rowtodict
 from project.schema import Restaurant, Dish, User, Comment, Location, Issue
 from time import time
 

@@ -10,6 +10,7 @@ import parse
 from project import app
 from project.schema import Restaurant, Dish, User
 import project.chedible as chedible
+import project.helpers as h
 
 #using steps from database_steps.py
 #       @when(u'we add "{text}" to "{table}"')
@@ -75,7 +76,7 @@ def is_chedible_eval(context, user, dish):
     user_result = context.db.session.query(User).filter_by(name=user).first()
     dish_result = context.db.session.query(Dish).filter_by(name=dish).first()
 
-    chedibility = chedible.is_chedible(dish_result, user_result)
+    chedibility = h.is_chedible(dish_result, user_result)
     assert chedibility
 
 
@@ -85,7 +86,7 @@ def is_chedible_eval(context, user, dish):
     user_result = context.db.session.query(User).filter_by(name=user).first()
     dish_result = context.db.session.query(Dish).filter_by(name=dish).first()
 
-    chedibility = chedible.is_chedible(dish_result, user_result)
+    chedibility = h.is_chedible(dish_result, user_result)
     assert not chedibility
 
 

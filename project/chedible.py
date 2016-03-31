@@ -4,23 +4,20 @@
 
 from flask import render_template, abort, redirect, url_for, request, flash
 from flask import session, g, jsonify
-import flask_uploads
 from functools import wraps
 from geopy.geocoders import GoogleV3
-import json
 from locale import currency
-import os
+from os import path
 from profanity import profanity
-from project import app, db, photos
+from project import app, db
 from project.forms import AddRestaurantForm, AddDishForm, SearchForm
 from project.forms import EditUserForm, AddLocationForm, PhotoForm
 from project.factual_places import Places
+import project.helpers as h
 from project.pagination import Pagination
 from project.schema import Restaurant, Dish, User, Comment, Location, Issue
 from time import time
-from urllib.request import urlopen
 from urllib.parse import unquote, quote_plus
-from werkzeug import secure_filename
 
 
 # This function runs before each request
@@ -139,7 +136,7 @@ def search(table):
 def search_results(table, query, coords, radius, page):
     message = "No entries found"
     lat, lng = coords.split(',')
-    city_name = coords_to_city(lat, lng)
+    city_name = h.coords_to_city(lat, lng)
     chedibilitylist, places_coords, places_info = [], [], []
     new_query = quote_plus(query)
 
@@ -160,7 +157,7 @@ def search_results(table, query, coords, radius, page):
         data = Dish.query.search(query,
                                  sort=True).limit(app.config['MAX_QUERIES'])
         for dish in data:
-            chedibilitylist.append(is_chedible(dish, g.user))
+            chedibilitylist.append(h.is_chedible(dish, g.user))
     elif table == "restaurants":
         data = Restaurant.query.filter(Restaurant.name.ilike('%' + query +
                                                              '%'))
@@ -189,7 +186,7 @@ def search_results(table, query, coords, radius, page):
     places_info = places.get_info_boxes()
 
     pagination = Pagination(page, app.config['PER_PAGE'], data.count())
-    data = split_data(data, page, app.config['PER_PAGE'], data.count())
+    data = h.split_data(data, page, app.config['PER_PAGE'], data.count())
 
     if not data and page != 1:
         abort(404)
@@ -219,11 +216,11 @@ def add_restaurant():
             new_restaurant = Restaurant(form.name.data, form.category.data,
                                         form.image.data, form.tags.data,
                                         session['user_id'])
-            if post_interval_exists():
+            if h.post_interval_exists():
                 return render_template('restaurant_form.html', form=form)
             new_restaurant.last_editor = session['user_id']
             db.session.add(new_restaurant)
-            update_score(app.config['ADD_RESTAURANT_SCORE'])
+            h.update_score(app.config['ADD_RESTAURANT_SCORE'])
             db.session.commit()
             flash('Thank you for your addition!')
             return redirect(url_for('restaurant_profile',
@@ -253,7 +250,7 @@ def restaurant_profile(id, page):
     ]
 
     pagination = Pagination(page, app.config['PER_PAGE'], dishes.count())
-    dishes = split_data(dishes, page, app.config['PER_PAGE'], dishes.count())
+    dishes = h.split_data(dishes, page, app.config['PER_PAGE'], dishes.count())
     if not dishes and page != 1:
         abort(404)
 
@@ -343,18 +340,18 @@ def add_dish(id):
     if request.method == 'POST':
         if form.validate_on_submit():
             new_dish = Dish(form.name.data, form.price.data, form.image.data,
-                            stb(form.beef.data), stb(form.dairy.data),
-                            stb(form.egg.data), stb(form.fish.data),
-                            stb(form.gluten.data), stb(form.meat.data),
-                            stb(form.nut.data), stb(form.non_organic.data),
-                            stb(form.pork.data), stb(form.poultry.data),
-                            stb(form.shellfish.data), stb(form.soy.data),
-                            stb(form.wheat.data), id, session['user_id'])
-            if post_interval_exists():
+                            h.stb(form.beef.data), h.stb(form.dairy.data),
+                            h.stb(form.egg.data), h.stb(form.fish.data),
+                            h.stb(form.gluten.data), h.stb(form.meat.data),
+                            h.stb(form.nut.data), h.stb(form.non_organic.data),
+                            h.stb(form.pork.data), h.stb(form.poultry.data),
+                            h.stb(form.shellfish.data), h.stb(form.soy.data),
+                            h.stb(form.wheat.data), id, session['user_id'])
+            if h.post_interval_exists():
                 return render_template('dish_form.html', form=form, id=id)
             new_dish.last_editor = session['user_id']
             db.session.add(new_dish)
-            update_score(app.config['ADD_DISH_SCORE'])
+            h.update_score(app.config['ADD_DISH_SCORE'])
             db.session.commit()
             flash('Thank you for your addition!')
             return redirect(url_for('restaurant_profile', id=id))
@@ -371,7 +368,7 @@ def edit_restaurant(id):
     form = AddRestaurantForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            if post_interval_exists():
+            if h.post_interval_exists():
                 return render_template('restaurant_form.html',
                                        form=form,
                                        id=id)
@@ -383,7 +380,7 @@ def edit_restaurant(id):
             restaurant.update({'last_editor': session['user_id']})
             r = Restaurant.query.get(id)
             r.editors.append(User.query.get(session['user_id']))
-            update_score(app.config['EDIT_RESTAURANT_SCORE'])
+            h.update_score(app.config['EDIT_RESTAURANT_SCORE'])
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=id))
@@ -392,7 +389,7 @@ def edit_restaurant(id):
         restaurant = Restaurant.query.filter_by(id=id).first()
         if restaurant is None:
             abort(404)
-        restaurant = rowtodict(restaurant)
+        restaurant = h.rowtodict(restaurant)
         for entry in form:
             if entry.id != "csrf_token":
                 form[entry.id].data = str(restaurant[entry.id])
@@ -406,7 +403,7 @@ def edit_dish(restaurant_id, dish_id):
     form = AddDishForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            if post_interval_exists():
+            if h.post_interval_exists():
                 return render_template('dish_form.html',
                                        form=form,
                                        id=restaurant_id,
@@ -414,7 +411,7 @@ def edit_dish(restaurant_id, dish_id):
             dish = Dish.query.filter_by(id=dish_id)
             for entry in form:
                 if entry.id in app.config['CONTENTS']:
-                    dish.update({entry.id: stb(form[entry.id].data)})
+                    dish.update({entry.id: h.stb(form[entry.id].data)})
                 elif entry.id == 'price' and form[entry.id].data:
                     dish.update({entry.id: currency(
                         float(form[entry.id].data),
@@ -425,7 +422,7 @@ def edit_dish(restaurant_id, dish_id):
             dish.update({'last_editor': session['user_id']})
             d = Dish.query.get(dish_id)
             d.editors.append(User.query.get(session['user_id']))
-            update_score(app.config['EDIT_DISH_SCORE'])
+            h.update_score(app.config['EDIT_DISH_SCORE'])
             db.session.commit()
             flash('Thank you for your update!')
             return redirect(url_for('restaurant_profile', id=restaurant_id))
@@ -438,7 +435,7 @@ def edit_dish(restaurant_id, dish_id):
         restaurant = Restaurant.query.filter_by(id=restaurant_id).first()
         if dish is None:
             abort(404)
-        dish = rowtodict(dish)
+        dish = h.rowtodict(dish)
         for entry in form:
             if entry.id == 'price':
                 form[entry.id].data = str(dish[entry.id]).replace('$', '').\
@@ -458,7 +455,7 @@ def user_profile(id):
     if user is None:
         abort(404)
 
-    user_dict = rowtodict(user)
+    user_dict = h.rowtodict(user)
 
     month_day_year = User.query.filter_by(id=id).first().\
         date.strftime("%B %d, %Y")
@@ -485,7 +482,7 @@ def edit_user(id):
 
     if request.method == 'POST':
         if form.validate_on_submit():
-            if post_interval_exists():
+            if h.post_interval_exists():
                 return render_template('edit_user.html',
                                        form=form,
                                        month_day_year=month_day_year,
@@ -493,7 +490,7 @@ def edit_user(id):
             user = User.query.filter_by(id=id)
             for entry in form:
                 if entry.id in app.config['CONTENTS']:
-                    user.update({entry.id: stb(form[entry.id].data)})
+                    user.update({entry.id: h.stb(form[entry.id].data)})
                 elif entry.id != 'csrf_token':
                     user.update({entry.id: form[entry.id].data})
             user.update({'last_edited': int(time())})
@@ -505,7 +502,7 @@ def edit_user(id):
             return redirect(url_for('user_profile', id=id))
 
     if request.method == 'GET':
-        user_dict = rowtodict(user)
+        user_dict = h.rowtodict(user)
         for entry in form:
             if entry.id == "username":
                 if user.username:
@@ -579,7 +576,7 @@ def comment():
             return jsonify(error='Comment must contain text')
         if Dish.query.filter_by(id=id).first() is None:
             return jsonify(error='Dish {} does not exist'.format(id))
-        if post_interval_exists():
+        if h.post_interval_exists():
             time_remaining = app.config['MIN_POST_INTERVAL'] - (
                 int(time()) - g.user.last_activity)
             return jsonify(
@@ -587,7 +584,7 @@ def comment():
                     time_remaining))
         new_comment = Comment(g.user.id, id, content)
         db.session.add(new_comment)
-        update_score(app.config['ADD_COMMENT_SCORE'])
+        h.update_score(app.config['ADD_COMMENT_SCORE'])
         db.session.commit()
         date = new_comment.date.strftime("%B %d, %Y")
         return jsonify(date=date)
@@ -667,85 +664,5 @@ def upload():
         if photo:
             # FIXME: Generate random string for filename and check file for extension
             filename = photo.filename
-            photo.save(os.path.join(app.config['UPLOADED_PHOTOS_DEST'], filename))
+            photo.save(path.join(app.config['UPLOADED_PHOTOS_DEST'], filename))
     return render_template('upload.html', form=form)
-
-
-# Convert string value from HTML form to boolean value
-def stb(s):
-    if s == 'True':
-        return True
-    elif s == 'False':
-        return False
-    elif s == 'None':
-        return None
-    else:
-        return ValueError
-
-
-# Converts a sqlalchemy row into a dictionary for iteration
-def rowtodict(row):
-    d = {}
-    for column in row.__table__.columns:
-        d[column.name] = getattr(row, column.name)
-    return d
-
-
-# Splits data from query for pagination
-def split_data(data, cur_page, per_page, total):
-    split = [d for d in data]
-    begin = (cur_page - 1) * per_page
-    if begin + per_page < total:
-        end = begin + per_page
-    else:
-        end = total
-    return split[begin:end]
-
-
-# If the dish contains an item, and the user does not want the item
-#   Not chedible
-# If the dish might contain the item, and the user does not want the item
-#   Not chedible
-# Else
-#   Chedible
-def is_chedible(dish, user):
-    if user is None or dish is None:
-        return None
-    dish = rowtodict(dish)
-    user = rowtodict(user)
-    for entry in app.config['CONTENTS']:
-        if (dish[entry] and not user[entry]) or \
-           (dish[entry] is None and not user[entry]):
-            return False
-    return True
-
-
-def update_score(amt):
-    user = User.query.filter_by(id=session['user_id']).first()
-    user.score += amt
-    # Updating the user's score also updates their last activity
-    user.last_activity = int(time())
-
-
-def post_interval_exists():
-    # Allows test cases to post without waiting for interval
-    if app.config['TESTING']:
-        return False
-    if int(time()) - g.user.last_activity < app.config['MIN_POST_INTERVAL']:
-        time_remaining = app.config['MIN_POST_INTERVAL'] - (
-            int(time()) - g.user.last_activity)
-        message = 'Please wait {} seconds before posting again'.format(
-            time_remaining)
-        flash(message)
-        return True
-    return False
-
-
-def coords_to_city(lat, lng):
-    openstreetmap = 'https://nominatim.openstreetmap.org/reverse?format=json&lat={}&lon={}'
-    response = urlopen(openstreetmap.format(lat, lng))
-    data = json.loads(response.read().decode('utf-8'))
-    try:
-        return data['address']['city']
-    except KeyError:
-        return ''
