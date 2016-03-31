@@ -5,15 +5,12 @@
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_googlemaps import GoogleMaps
-from flask_uploads import configure_uploads, IMAGES, UploadSet
 
 # config
 app = Flask(__name__)
 app.config.from_pyfile('_config.py')
 db = SQLAlchemy(app)
 GoogleMaps(app)
-photos = UploadSet('photos', IMAGES)
-configure_uploads(app, photos)
 
 from project.schema import *
 from project.chedible import *

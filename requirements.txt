@@ -5,7 +5,6 @@ Flask==0.10.1
 Flask-Admin==1.4.0
 -e git+https://github.com/CheriPai/Flask-GoogleMaps.git@2c09d3797bb8a376de6bed548a4afe5e07191267#egg=Flask_GoogleMaps
 Flask-SQLAlchemy==2.1
-Flask-Uploads==0.2.0
 Flask-WTF==0.12
 geopy==1.11.0
 ipython-genutils==0.1.0
