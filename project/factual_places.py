@@ -4,7 +4,7 @@
 
 from factual import Factual
 from factual.utils import circle
-import project._config as c
+from project import app
 from project.schema import Location
 
 
@@ -13,7 +13,7 @@ class Places(object):
     data = None
 
     def __init__(self, query, lat, lng, radius):
-        factual = Factual(c.FACTUAL_KEY, c.FACTUAL_SECRET)
+        factual = Factual(app.config['FACTUAL_KEY'], app.config['FACTUAL_SECRET'])
         places = factual.table('places')
         # Searches for all restaurants
         if query.lower() == 'restaurants':
