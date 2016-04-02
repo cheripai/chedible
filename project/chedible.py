@@ -661,8 +661,11 @@ def upload():
     form = PhotoForm()
     if request.method == 'POST' and 'photo' in request.files:
         photo = request.files['photo']
-        if photo:
-            # FIXME: Generate random string for filename and check file for extension
+        if photo and h.allowed_file(photo.filename):
+            # FIXME: Generate random string for filename
             filename = photo.filename
             photo.save(path.join(app.config['UPLOADED_PHOTOS_DEST'], filename))
+            flash('File uploaded')
+        else:
+            flash('Invalid file')
     return render_template('upload.html', form=form)
