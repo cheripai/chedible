@@ -18,6 +18,7 @@ from project.pagination import Pagination
 from project.schema import Restaurant, Dish, User, Comment, Location, Issue
 from time import time
 from urllib.parse import unquote, quote_plus
+from uuid import uuid4
 
 
 # This function runs before each request
@@ -662,10 +663,12 @@ def upload():
     if request.method == 'POST' and 'photo' in request.files:
         photo = request.files['photo']
         if photo and h.allowed_file(photo.filename):
-            # FIXME: Generate random string for filename
-            filename = photo.filename
-            photo.save(path.join(app.config['UPLOADED_PHOTOS_DEST'], filename))
-            flash('File uploaded')
+            filename = str(uuid4()) + path.splitext(photo.filename)[-1]
+            if path.isfile(path.join(app.config['UPLOADED_PHOTOS_DEST'], filename)):
+                flash('An error has occured. Please try again.')
+            else:
+                photo.save(path.join(app.config['UPLOADED_PHOTOS_DEST'], filename))
+                flash('File uploaded')
         else:
             flash('Invalid file')
     return render_template('upload.html', form=form)
