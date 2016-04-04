@@ -19,6 +19,7 @@ from project.schema import Restaurant, Dish, User, Comment, Location, Issue
 from time import time
 from urllib.parse import unquote, quote_plus
 from uuid import uuid4
+from werkzeug import secure_filename
 
 
 # This function runs before each request
@@ -663,7 +664,7 @@ def upload():
     if request.method == 'POST' and 'photo' in request.files:
         photo = request.files['photo']
         if photo and h.allowed_file(photo.filename):
-            filename = str(uuid4()) + path.splitext(photo.filename)[-1]
+            filename = str(uuid4()) + path.splitext(secure_filename(photo.filename))[-1]
             if path.isfile(path.join(app.config['UPLOADED_PHOTOS_DEST'], filename)):
                 flash('An error has occured. Please try again.')
             else:
