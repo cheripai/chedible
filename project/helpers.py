@@ -4,6 +4,7 @@
 
 from flask import session, g, flash
 import json
+from imghdr import what
 from project import app, db
 from project.schema import Restaurant, Dish, User, Comment, Location, Issue
 from time import time
@@ -90,6 +91,16 @@ def coords_to_city(lat, lng):
         return ''
 
 
-def allowed_file(filename):
+# Checks whether file extension is in list of allowed extensions
+def allowed_file_extension(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+
+
+# Checks file header to see if it is an image file
+def allowed_file(filepath):
+    image_type = what(filepath)
+    if not image_type:
+        return False
+    else:
+        return True

@@ -7,7 +7,7 @@ from flask import session, g, jsonify
 from functools import wraps
 from geopy.geocoders import GoogleV3
 from locale import currency
-from os import path
+from os import path, remove
 from profanity import profanity
 from project import app, db
 from project.forms import AddRestaurantForm, AddDishForm, SearchForm
@@ -663,13 +663,18 @@ def upload():
     form = PhotoForm()
     if request.method == 'POST' and 'photo' in request.files:
         photo = request.files['photo']
-        if photo and h.allowed_file(photo.filename):
+        if photo and h.allowed_file_extension(photo.filename):
             filename = str(uuid4()) + path.splitext(secure_filename(photo.filename))[-1]
-            if path.isfile(path.join(app.config['UPLOADED_PHOTOS_DEST'], filename)):
+            filepath = path.join(app.config['UPLOADED_PHOTOS_DEST'], filename)
+            if path.isfile(filepath):
                 flash('An error has occured. Please try again.')
             else:
-                photo.save(path.join(app.config['UPLOADED_PHOTOS_DEST'], filename))
-                flash('File uploaded')
+                photo.save(filepath)
+                if not h.allowed_file(filepath):
+                    remove(filepath)
+                    flash('Invalid file')
+                else:
+                    flash('File uploaded')
         else:
             flash('Invalid file')
     return render_template('upload.html', form=form)
