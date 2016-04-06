@@ -9,9 +9,47 @@ from project import db
 from sqlalchemy_searchable import SearchQueryMixin
 from sqlalchemy_utils.types import TSVectorType
 from sqlalchemy_searchable import make_searchable
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.types import TypeDecorator, CHAR
 from time import time
+import uuid
 
 make_searchable()
+
+
+class GUID(TypeDecorator):
+    """Platform-independent GUID type.
+
+    Uses Postgresql's UUID type, otherwise uses
+    CHAR(32), storing as stringified hex values.
+
+    """
+    impl = CHAR
+
+    def load_dialect_impl(self, dialect):
+        if dialect.name == 'postgresql':
+            return dialect.type_descriptor(UUID())
+        else:
+            return dialect.type_descriptor(CHAR(32))
+
+    def process_bind_param(self, value, dialect):
+        if value is None:
+            return value
+        elif dialect.name == 'postgresql':
+            return str(value)
+        else:
+            if not isinstance(value, uuid.UUID):
+                return "%.32x" % uuid.UUID(value).int
+            else:
+                # hexstring
+                return "%.32x" % value.int
+
+    def process_result_value(self, value, dialect):
+        if value is None:
+            return value
+        else:
+            return uuid.UUID(value)
+
 
 restaurants_users = db.Table(
     'restaurants_users',
@@ -214,7 +252,7 @@ class User(db.Model):
         self.email = email
         self.score = 0
         self.last_edited = int(time())
-        self.last_activity = int(time())
+        self.last_activity = int(time()-100)
         self.is_admin = False
         self.is_banned = False
         self.about = "I love chedible!"
@@ -298,3 +336,5 @@ class Issue(db.Model):
 
     def __repr__(self):
         return '<Issue {}>'.format(self.id)
+
+
