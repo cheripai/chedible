@@ -6,49 +6,13 @@ from datetime import datetime
 from flask.ext.sqlalchemy import BaseQuery
 from locale import currency
 from project import db
-from sqlalchemy_searchable import SearchQueryMixin
+from sqlalchemy_searchable import SearchQueryMixin, make_searchable
+from sqlalchemy_utils import UUIDType
 from sqlalchemy_utils.types import TSVectorType
-from sqlalchemy_searchable import make_searchable
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.types import TypeDecorator, CHAR
 from time import time
 import uuid
 
 make_searchable()
-
-
-class GUID(TypeDecorator):
-    """Platform-independent GUID type.
-
-    Uses Postgresql's UUID type, otherwise uses
-    CHAR(32), storing as stringified hex values.
-
-    """
-    impl = CHAR
-
-    def load_dialect_impl(self, dialect):
-        if dialect.name == 'postgresql':
-            return dialect.type_descriptor(UUID())
-        else:
-            return dialect.type_descriptor(CHAR(32))
-
-    def process_bind_param(self, value, dialect):
-        if value is None:
-            return value
-        elif dialect.name == 'postgresql':
-            return str(value)
-        else:
-            if not isinstance(value, uuid.UUID):
-                return "%.32x" % uuid.UUID(value).int
-            else:
-                # hexstring
-                return "%.32x" % value.int
-
-    def process_result_value(self, value, dialect):
-        if value is None:
-            return value
-        else:
-            return uuid.UUID(value)
 
 
 restaurants_users = db.Table(
@@ -320,7 +284,7 @@ class Issue(db.Model):
 
     __tablename__ = "issues"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(UUIDType(binary=False), primary_key=True)
     date = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, nullable=False)
     type = db.Column(db.String, nullable=False)
@@ -328,6 +292,7 @@ class Issue(db.Model):
     content = db.Column(db.String)
 
     def __init__(self, user_id, type, type_id, content):
+        self.id = uuid.uuid4()
         self.date = datetime.utcnow()
         self.user_id = user_id
         self.type = type
@@ -336,5 +301,3 @@ class Issue(db.Model):
 
     def __repr__(self):
         return '<Issue {}>'.format(self.id)
-
-
