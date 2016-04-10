@@ -260,7 +260,7 @@ class Location(db.Model):
 
     __tablename__ = "locations"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(UUIDType(binary=False), primary_key=True)
     date = db.Column(db.Date, nullable=False)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
     api_id = db.Column(db.String, nullable=False)
@@ -269,6 +269,7 @@ class Location(db.Model):
     address = db.Column(db.String, nullable=False)
 
     def __init__(self, restaurant_id, api_id, lat, lng, address):
+        self.id = uuid.uuid4()
         self.date = datetime.utcnow()
         self.restaurant_id = restaurant_id
         self.api_id = api_id
