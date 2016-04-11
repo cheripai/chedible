@@ -240,13 +240,14 @@ class Comment(db.Model):
 
     __tablename__ = "comments"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(UUIDType(binary=False), primary_key=True)
     date = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id'))
     content = db.Column(db.String, nullable=False)
 
     def __init__(self, user_id, dish_id, content):
+        self.id = uuid.uuid4()
         self.date = datetime.utcnow()
         self.user_id = user_id
         self.dish_id = dish_id
