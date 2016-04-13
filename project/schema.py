@@ -14,7 +14,6 @@ import uuid
 
 make_searchable()
 
-
 restaurants_users = db.Table(
     'restaurants_users',
     db.Column('restaurants_id', db.Integer, db.ForeignKey('restaurants.id')),
@@ -216,7 +215,7 @@ class User(db.Model):
         self.email = email
         self.score = 0
         self.last_edited = int(time())
-        self.last_activity = int(time()-100)
+        self.last_activity = int(time() - 100)
         self.is_admin = False
         self.is_banned = False
         self.about = "I love chedible!"
