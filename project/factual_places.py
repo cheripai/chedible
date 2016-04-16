@@ -13,7 +13,8 @@ class Places(object):
     data = None
 
     def __init__(self, query, lat, lng, radius):
-        factual = Factual(app.config['FACTUAL_KEY'], app.config['FACTUAL_SECRET'])
+        factual = Factual(app.config['FACTUAL_KEY'],
+                          app.config['FACTUAL_SECRET'])
         places = factual.table('places')
         # Searches for all restaurants
         if query.lower() == 'restaurants':
