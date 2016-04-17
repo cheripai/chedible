@@ -5,7 +5,8 @@
 from datetime import datetime
 from flask.ext.sqlalchemy import BaseQuery
 from locale import currency
-from project import db
+import os
+from project import app, db
 from sqlalchemy_searchable import SearchQueryMixin, make_searchable
 from sqlalchemy_utils import UUIDType
 from sqlalchemy_utils.types import TSVectorType
@@ -239,14 +240,18 @@ class Comment(db.Model):
 
     __tablename__ = "comments"
 
-    id = db.Column(UUIDType(binary=False), primary_key=True)
+    if int(os.environ['TESTING']) == 1:
+        id = db.Column(db.Integer, primary_key=True)
+    else:
+        id = db.Column(UUIDType(binary=False), primary_key=True)
     date = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id'))
     content = db.Column(db.String, nullable=False)
 
     def __init__(self, user_id, dish_id, content):
-        self.id = uuid.uuid4()
+        if int(os.environ['TESTING']) != 1:
+            self.id = uuid.uuid4()
         self.date = datetime.utcnow()
         self.user_id = user_id
         self.dish_id = dish_id
@@ -260,7 +265,10 @@ class Location(db.Model):
 
     __tablename__ = "locations"
 
-    id = db.Column(UUIDType(binary=False), primary_key=True)
+    if int(os.environ['TESTING']) == 1:
+        id = db.Column(db.Integer, primary_key=True)
+    else:
+        id = db.Column(UUIDType(binary=False), primary_key=True)
     date = db.Column(db.Date, nullable=False)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
     api_id = db.Column(db.String, nullable=False)
@@ -269,7 +277,8 @@ class Location(db.Model):
     address = db.Column(db.String, nullable=False)
 
     def __init__(self, restaurant_id, api_id, lat, lng, address):
-        self.id = uuid.uuid4()
+        if int(os.environ['TESTING']) != 1:
+            self.id = uuid.uuid4()
         self.date = datetime.utcnow()
         self.restaurant_id = restaurant_id
         self.api_id = api_id
@@ -285,7 +294,10 @@ class Issue(db.Model):
 
     __tablename__ = "issues"
 
-    id = db.Column(UUIDType(binary=False), primary_key=True)
+    if int(os.environ['TESTING']) == 1:
+        id = db.Column(db.Integer, primary_key=True)
+    else:
+        id = db.Column(UUIDType(binary=False), primary_key=True)
     date = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, nullable=False)
     type = db.Column(db.String, nullable=False)
@@ -293,7 +305,8 @@ class Issue(db.Model):
     content = db.Column(db.String)
 
     def __init__(self, user_id, type, type_id, content):
-        self.id = uuid.uuid4()
+        if int(os.environ['TESTING']) != 1:
+            self.id = uuid.uuid4()
         self.date = datetime.utcnow()
         self.user_id = user_id
         self.type = type
