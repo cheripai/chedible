@@ -250,7 +250,7 @@ class Comment(db.Model):
     content = db.Column(db.String, nullable=False)
 
     def __init__(self, user_id, dish_id, content):
-        if int(os.environ['TESTING']) != 1:
+        if app.config['TESTING'] == False:
             self.id = uuid.uuid4()
         self.date = datetime.utcnow()
         self.user_id = user_id
@@ -277,7 +277,7 @@ class Location(db.Model):
     address = db.Column(db.String, nullable=False)
 
     def __init__(self, restaurant_id, api_id, lat, lng, address):
-        if int(os.environ['TESTING']) != 1:
+        if app.config['TESTING'] == False:
             self.id = uuid.uuid4()
         self.date = datetime.utcnow()
         self.restaurant_id = restaurant_id
@@ -305,7 +305,7 @@ class Issue(db.Model):
     content = db.Column(db.String)
 
     def __init__(self, user_id, type, type_id, content):
-        if int(os.environ['TESTING']) != 1:
+        if app.config['TESTING'] == False:
             self.id = uuid.uuid4()
         self.date = datetime.utcnow()
         self.user_id = user_id
