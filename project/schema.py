@@ -240,7 +240,7 @@ class Comment(db.Model):
 
     __tablename__ = "comments"
 
-    if int(os.environ['TESTING']) == 1:
+    if 'TESTING' in os.environ and int(os.environ['TESTING']) == 1:
         id = db.Column(db.Integer, primary_key=True)
     else:
         id = db.Column(UUIDType(binary=False), primary_key=True)
@@ -265,7 +265,7 @@ class Location(db.Model):
 
     __tablename__ = "locations"
 
-    if int(os.environ['TESTING']) == 1:
+    if 'TESTING' in os.environ and int(os.environ['TESTING']) == 1:
         id = db.Column(db.Integer, primary_key=True)
     else:
         id = db.Column(UUIDType(binary=False), primary_key=True)
@@ -294,7 +294,7 @@ class Issue(db.Model):
 
     __tablename__ = "issues"
 
-    if int(os.environ['TESTING']) == 1:
+    if 'TESTING' in os.environ and int(os.environ['TESTING']) == 1:
         id = db.Column(db.Integer, primary_key=True)
     else:
         id = db.Column(UUIDType(binary=False), primary_key=True)
