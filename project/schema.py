@@ -240,9 +240,10 @@ class Comment(db.Model):
 
     __tablename__ = "comments"
 
-    if 'TESTING' in os.environ and int(os.environ['TESTING']) == 1:
-        id = db.Column(db.Integer, primary_key=True)
-    else:
+    try:
+        if int(os.environ['TESTING']) == 1:
+            id = db.Column(db.Integer, primary_key=True)
+    except KeyError:
         id = db.Column(UUIDType(binary=False), primary_key=True)
     date = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -265,9 +266,10 @@ class Location(db.Model):
 
     __tablename__ = "locations"
 
-    if 'TESTING' in os.environ and int(os.environ['TESTING']) == 1:
-        id = db.Column(db.Integer, primary_key=True)
-    else:
+    try:
+        if int(os.environ['TESTING']) == 1:
+            id = db.Column(db.Integer, primary_key=True)
+    except KeyError:
         id = db.Column(UUIDType(binary=False), primary_key=True)
     date = db.Column(db.Date, nullable=False)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
@@ -294,9 +296,10 @@ class Issue(db.Model):
 
     __tablename__ = "issues"
 
-    if 'TESTING' in os.environ and int(os.environ['TESTING']) == 1:
-        id = db.Column(db.Integer, primary_key=True)
-    else:
+    try:
+        if int(os.environ['TESTING']) == 1:
+            id = db.Column(db.Integer, primary_key=True)
+    except KeyError:
         id = db.Column(UUIDType(binary=False), primary_key=True)
     date = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, nullable=False)
