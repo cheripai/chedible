@@ -252,7 +252,7 @@ Scenario: Comment route returns error when posting twice within post interval
     When we log in
     When we disable testing
     And we visit "/comment?content=test&id=1"
-    And we visit "/comment?content=test&id=1"
+    And we enable testing
     Then we should see the text "error"
 
 
