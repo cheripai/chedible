@@ -18,13 +18,13 @@ make_searchable()
 restaurants_users = db.Table(
     'restaurants_users',
     db.Column('restaurants_id', db.Integer, db.ForeignKey('restaurants.id')),
-    db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('users_id', UUIDType, db.ForeignKey('users.id')),
     db.PrimaryKeyConstraint('restaurants_id', 'users_id'))
 
 dishes_users = db.Table(
     'dishes_users',
     db.Column('dishes_id', db.Integer, db.ForeignKey('dishes.id')),
-    db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('users_id', UUIDType, db.ForeignKey('users.id')),
     db.PrimaryKeyConstraint('dishes_id', 'users_id'))
 
 
@@ -50,7 +50,7 @@ class Restaurant(db.Model):
                               secondary=restaurants_users)
     locations = db.relationship('Location', backref='restaurant')
     last_edited = db.Column(db.Integer, nullable=False)
-    last_editor = db.Column(db.Integer)
+    last_editor = db.Column(UUIDType)
     search_vector = db.Column(TSVectorType('name',
                                            'category',
                                            'tags',
@@ -153,7 +153,11 @@ class User(db.Model):
     query_class = UserQuery
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, primary_key=True)
+    try:
+        if int(os.environ['TESTING']) == 1:
+            id = db.Column(db.Integer, primary_key=True)
+    except KeyError:
+        id = db.Column(UUIDType(binary=False), primary_key=True)
     name = db.Column(db.String, nullable=False)
     username = db.Column(db.String, nullable=True)
     email = db.Column(db.String)
@@ -196,6 +200,8 @@ class User(db.Model):
                                                     'username': 'A'}))
 
     def __init__(self, name, auth_id, image, email):
+        if app.config['TESTING'] != True:
+            self.id = uuid.uuid4()
         self.name = name
         self.auth_id = auth_id
         self.date = datetime.utcnow()
@@ -246,7 +252,7 @@ class Comment(db.Model):
     except KeyError:
         id = db.Column(UUIDType(binary=False), primary_key=True)
     date = db.Column(db.Date, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(UUIDType, db.ForeignKey('users.id'))
     dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id'))
     content = db.Column(db.String, nullable=False)
 
@@ -302,7 +308,7 @@ class Issue(db.Model):
     except KeyError:
         id = db.Column(UUIDType(binary=False), primary_key=True)
     date = db.Column(db.Date, nullable=False)
-    user_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(UUIDType, nullable=False)
     type = db.Column(db.String, nullable=False)
     type_id = db.Column(db.Integer, nullable=False)
     content = db.Column(db.String)

@@ -647,7 +647,7 @@ def bookmark():
 @app.route('/bookmarks/<id>')
 @login_required
 def bookmarks(id):
-    if g.user.id != int(id):
+    if str(g.user.id) != id:
         abort(404)
     message = "No entries found"
     user = User.query.filter_by(id=g.user.id)
