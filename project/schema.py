@@ -105,7 +105,7 @@ class Dish(db.Model):
     editors = db.relationship('User', backref='dish', secondary=dishes_users)
     last_edited = db.Column(db.Integer, nullable=False)
     voters = db.Column(db.PickleType, nullable=True)
-    last_editor = db.Column(db.Integer)
+    last_editor = db.Column(UUIDType)
     commenters = db.relationship('Comment', backref='dish')
     search_vector = db.Column(TSVectorType('name'))
 
