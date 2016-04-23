@@ -15,17 +15,32 @@ import uuid
 
 make_searchable()
 
-restaurants_users = db.Table(
-    'restaurants_users',
-    db.Column('restaurants_id', db.Integer, db.ForeignKey('restaurants.id')),
-    db.Column('users_id', UUIDType, db.ForeignKey('users.id')),
-    db.PrimaryKeyConstraint('restaurants_id', 'users_id'))
+try:
+    if int(os.environ['TESTING']) == 1:
+        restaurants_users = db.Table(
+            'restaurants_users',
+            db.Column('restaurants_id', db.Integer, db.ForeignKey('restaurants.id')),
+            db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
+            db.PrimaryKeyConstraint('restaurants_id', 'users_id'))
 
-dishes_users = db.Table(
-    'dishes_users',
-    db.Column('dishes_id', db.Integer, db.ForeignKey('dishes.id')),
-    db.Column('users_id', UUIDType, db.ForeignKey('users.id')),
-    db.PrimaryKeyConstraint('dishes_id', 'users_id'))
+        dishes_users = db.Table(
+            'dishes_users',
+            db.Column('dishes_id', db.Integer, db.ForeignKey('dishes.id')),
+            db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
+            db.PrimaryKeyConstraint('dishes_id', 'users_id'))
+except KeyError:
+    restaurants_users = db.Table(
+        'restaurants_users',
+        db.Column('restaurants_id', db.Integer, db.ForeignKey('restaurants.id')),
+        db.Column('users_id', UUIDType, db.ForeignKey('users.id')),
+        db.PrimaryKeyConstraint('restaurants_id', 'users_id'))
+
+    dishes_users = db.Table(
+        'dishes_users',
+        db.Column('dishes_id', db.Integer, db.ForeignKey('dishes.id')),
+        db.Column('users_id', UUIDType, db.ForeignKey('users.id')),
+        db.PrimaryKeyConstraint('dishes_id', 'users_id'))
+    
 
 
 class RestaurantQuery(BaseQuery, SearchQueryMixin):
@@ -50,7 +65,11 @@ class Restaurant(db.Model):
                               secondary=restaurants_users)
     locations = db.relationship('Location', backref='restaurant')
     last_edited = db.Column(db.Integer, nullable=False)
-    last_editor = db.Column(UUIDType)
+    try:
+        if int(os.environ['TESTING']) == 1:
+            last_editor = db.Column(db.Integer)
+    except KeyError:
+        last_editor = db.Column(UUIDType)
     search_vector = db.Column(TSVectorType('name',
                                            'category',
                                            'tags',
@@ -105,7 +124,11 @@ class Dish(db.Model):
     editors = db.relationship('User', backref='dish', secondary=dishes_users)
     last_edited = db.Column(db.Integer, nullable=False)
     voters = db.Column(db.PickleType, nullable=True)
-    last_editor = db.Column(UUIDType)
+    try:
+        if int(os.environ['TESTING']) == 1:
+            last_editor = db.Column(db.Integer)
+    except KeyError:
+        last_editor = db.Column(UUIDType)
     commenters = db.relationship('Comment', backref='dish')
     search_vector = db.Column(TSVectorType('name'))
 
@@ -249,10 +272,11 @@ class Comment(db.Model):
     try:
         if int(os.environ['TESTING']) == 1:
             id = db.Column(db.Integer, primary_key=True)
+            user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     except KeyError:
         id = db.Column(UUIDType(binary=False), primary_key=True)
+        user_id = db.Column(UUIDType, db.ForeignKey('users.id'))
     date = db.Column(db.Date, nullable=False)
-    user_id = db.Column(UUIDType, db.ForeignKey('users.id'))
     dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id'))
     content = db.Column(db.String, nullable=False)
 
