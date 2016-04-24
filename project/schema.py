@@ -329,10 +329,11 @@ class Issue(db.Model):
     try:
         if int(os.environ['TESTING']) == 1:
             id = db.Column(db.Integer, primary_key=True)
+            user_id = db.Column(db.Integer, nullable=False)
     except KeyError:
         id = db.Column(UUIDType(binary=False), primary_key=True)
+        user_id = db.Column(UUIDType, nullable=False)
     date = db.Column(db.Date, nullable=False)
-    user_id = db.Column(UUIDType, nullable=False)
     type = db.Column(db.String, nullable=False)
     type_id = db.Column(db.Integer, nullable=False)
     content = db.Column(db.String)
