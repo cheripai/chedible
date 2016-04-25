@@ -15,7 +15,7 @@ MarkupSafe==0.23
 oauthlib==1.0.3
 parse==1.6.6
 parse-type==0.3.4
-path.py==8.2
+path.py==8.2.1
 pexpect==4.0.1
 pickleshare==0.7.2
 profanity==1.1
@@ -28,9 +28,9 @@ requests-oauthlib==0.6.1
 simplegeneric==0.8.1
 six==1.10.0
 SQLAlchemy==1.0.12
-SQLAlchemy-Searchable==0.10.0
-SQLAlchemy-Utils==0.32.1
+SQLAlchemy-Searchable==0.10.1
+SQLAlchemy-Utils==0.32.3
 traitlets==4.2.1
 validators==0.10
-Werkzeug==0.11.5
+Werkzeug==0.11.9
 WTForms==2.1
