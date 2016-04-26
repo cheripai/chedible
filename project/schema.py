@@ -37,7 +37,7 @@ except KeyError:
 
     dishes_users = db.Table(
         'dishes_users',
-        db.Column('dishes_id', db.Integer, db.ForeignKey('dishes.id')),
+        db.Column('dishes_id', UUIDType, db.ForeignKey('dishes.id')),
         db.Column('users_id', UUIDType, db.ForeignKey('users.id')),
         db.PrimaryKeyConstraint('dishes_id', 'users_id'))
     
@@ -101,7 +101,11 @@ class Dish(db.Model):
     query_class = DishQuery
     __tablename__ = "dishes"
 
-    id = db.Column(db.Integer, primary_key=True)
+    try:
+        if int(os.environ['TESTING']) == 1:
+            id = db.Column(db.Integer, primary_key=True)
+    except KeyError:
+        id = db.Column(UUIDType(binary=False), primary_key=True)
     name = db.Column(db.String, nullable=False)
     date = db.Column(db.Date, nullable=False)
     price = db.Column(db.String, nullable=True)
@@ -273,11 +277,12 @@ class Comment(db.Model):
         if int(os.environ['TESTING']) == 1:
             id = db.Column(db.Integer, primary_key=True)
             user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+            dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id'))
     except KeyError:
         id = db.Column(UUIDType(binary=False), primary_key=True)
         user_id = db.Column(UUIDType, db.ForeignKey('users.id'))
+        dish_id = db.Column(UUIDType, db.ForeignKey('dishes.id'))
     date = db.Column(db.Date, nullable=False)
-    dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id'))
     content = db.Column(db.String, nullable=False)
 
     def __init__(self, user_id, dish_id, content):
