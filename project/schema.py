@@ -139,6 +139,8 @@ class Dish(db.Model):
     def __init__(self, name, price, image, beef, dairy, egg, fish, gluten,
                  meat, nut, non_organic, pork, poultry, shellfish, soy, wheat,
                  restaurant_id, user_id):
+        if app.config['TESTING'] != True:
+            self.id = uuid.uuid4()
         self.name = name
         self.date = datetime.utcnow()
         if price:
