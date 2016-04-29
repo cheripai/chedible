@@ -186,7 +186,7 @@ addLocation = function(button, api_id, lat, lng, address) {
 // For changing value of voting system
 $("[id^=upvote]").click(function(){
     // Gets id of dish clicked
-    var dish_id = parseInt($(this).attr('id').replace('upvote', ''), 10);
+    var dish_id = $(this).attr('id').replace('upvote', '');
     $.getJSON($SCRIPT_ROOT + '/vote', {
         vote: 'upvote',
         id: dish_id
@@ -210,7 +210,7 @@ $("[id^=upvote]").click(function(){
 $("[id^=downvote]").click(function(){
     // Gets id of dish clicked
     var reason = prompt('Why would like to report this dish as inaccurate?');
-    var dish_id = parseInt($(this).attr('id').replace('downvote', ''), 10);
+    var dish_id = $(this).attr('id').replace('downvote', '');
     $.getJSON($SCRIPT_ROOT + '/report', {
         id: dish_id,
         type: 'dish',

@@ -526,8 +526,9 @@ def edit_user(id):
 @login_required
 def vote():
     v = request.args.get('vote', type=str)
-    # FIXME: Change to approriate type for UUID
-    id = request.args.get('id', type=int)
+    id = request.args.get('id', type=str)
+    if id == '':
+        return jsonify(error='Invalid vote or id')
     dish = Dish.query.filter_by(id=id)
     try:
         voters = dish.first().voters
@@ -572,7 +573,7 @@ def comment():
     try:
         content = profanity.censor(unquote(request.args.get('content',
                                                             type=str)))
-        # FIXME: Change to approriate type for UUID
+        # FIXME: Change to appropriate type for UUID
         id = request.args.get('id', type=int)
         if len(content) > app.config['MAX_COMMENT_LENGTH']:
             return jsonify(error='Comment exceeds 512 characters')
@@ -611,7 +612,7 @@ def terms():
 def report():
     try:
         type = request.args.get('type', type=str).lower()
-        # FIXME: Change to approriate type for UUID
+        # FIXME: Change to appropriate type for UUID
         id = request.args.get('id', type=int)
         reason = request.args.get('reason', type=str)
         if type == '':
@@ -630,7 +631,7 @@ def report():
 @login_required
 def bookmark():
     try:
-        # FIXME: Change to approriate type for UUID
+        # FIXME: Change to appropriate type for UUID
         id = request.args.get('id', type=int)
         user = User.query.filter_by(id=g.user.id)
         restaurant = Restaurant.query.filter_by(id=id).first()
