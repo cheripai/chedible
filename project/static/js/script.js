@@ -206,6 +206,28 @@ $("[id^=upvote]").click(function(){
 });
 
 
+// For changing value of voting system
+$("[id^=downvote]").click(function(){
+    var dish_id = parseInt($(this).attr('id').replace('downvote', ''), 10);
+    $.getJSON($SCRIPT_ROOT + '/vote', {
+        vote: 'downvote',
+        id: dish_id
+    }, function(data) {
+        var count = $('#count' + index);
+        var uparrow = $('#upvote' + index);
+        var downarrow = $('#downvote' + index);
+        if(count.text() > data.result){
+            downarrow.addClass('active');
+            uparrow.removeClass('active');
+        }
+        else{
+            downarrow.removeClass('active');
+        }
+        count.text(data.result);
+    });
+});
+
+
 // For reporting inaccurate dishes
 $("[id^=downvote]").click(function(){
     // Gets id of dish clicked
@@ -241,28 +263,6 @@ $("[id^=post]").click(function(){
         $('#content'+index).attr('placeholder', 'Submitted!');
         $('#post'+index).attr('disabled', true);
         $('#hidden-date'+index).text(data.date);
-    });
-});
-
-
-// For changing value of voting system
-$("[id^=downvote]").click(function(){
-    var dish_id = parseInt($(this).attr('id').replace('downvote', ''), 10);
-    $.getJSON($SCRIPT_ROOT + '/vote', {
-        vote: 'downvote',
-        id: dish_id
-    }, function(data) {
-        var count = $('#count' + index);
-        var uparrow = $('#upvote' + index);
-        var downarrow = $('#downvote' + index);
-        if(count.text() > data.result){
-            downarrow.addClass('active');
-            uparrow.removeClass('active');
-        }
-        else{
-            downarrow.removeClass('active');
-        }
-        count.text(data.result);
     });
 });
 
