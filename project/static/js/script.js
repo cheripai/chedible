@@ -208,7 +208,7 @@ $("[id^=upvote]").click(function(){
 
 // For changing value of voting system
 $("[id^=downvote]").click(function(){
-    var dish_id = parseInt($(this).attr('id').replace('downvote', ''), 10);
+    var dish_id = $(this).attr('id').replace('downvote', '');
     $.getJSON($SCRIPT_ROOT + '/vote', {
         vote: 'downvote',
         id: dish_id

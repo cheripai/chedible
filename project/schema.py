@@ -342,7 +342,7 @@ class Issue(db.Model):
         user_id = db.Column(UUIDType, nullable=False)
     date = db.Column(db.Date, nullable=False)
     type = db.Column(db.String, nullable=False)
-    type_id = db.Column(db.Integer, nullable=False)
+    type_id = db.Column(UUIDType, nullable=False)
     content = db.Column(db.String)
 
     def __init__(self, user_id, type, type_id, content):

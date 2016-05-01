@@ -612,12 +612,11 @@ def terms():
 def report():
     try:
         type = request.args.get('type', type=str).lower()
-        # FIXME: Change to appropriate type for UUID
-        id = request.args.get('id', type=int)
+        id = request.args.get('id', type=str)
         reason = request.args.get('reason', type=str)
         if type == '':
             return jsonify(error='Type must not contain text')
-        if id is None:
+        if id == '':
             return jsonify(error='Invalid id')
         new_issue = Issue(session['user_id'], type, id, reason)
         db.session.add(new_issue)
