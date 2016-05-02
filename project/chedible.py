@@ -573,8 +573,7 @@ def comment():
     try:
         content = profanity.censor(unquote(request.args.get('content',
                                                             type=str)))
-        # FIXME: Change to appropriate type for UUID
-        id = request.args.get('id', type=int)
+        id = request.args.get('id', type=str)
         if len(content) > app.config['MAX_COMMENT_LENGTH']:
             return jsonify(error='Comment exceeds 512 characters')
         if content == '':

@@ -244,7 +244,7 @@ $("[id^=downvote]").click(function(){
 
 // For posting comment to dish modal 
 $("[id^=post]").click(function(){
-    var index = parseInt($(this).attr('id').replace('post', ''), 10);
+    var index = $(this).attr('id').replace('post', '');
     var content = $('#content'+index).val();
     encoded_content = encodeURIComponent(content).replace(/[!'()]/g, escape).replace(/\*/g, "%2A");
     $.getJSON($SCRIPT_ROOT + '/comment', {
