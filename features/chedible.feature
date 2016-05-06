@@ -256,13 +256,6 @@ Scenario: Comment route returns error when not sending any data
     Then we should see the text "error"
 
 
-Scenario: Comment route returns error when id is not an integer
-    Given chedible is set up
-    When we log in
-    When we visit "/comment?content=test&id=test"
-    Then we should see the text "error"
-
-
 Scenario: we check the chediblity of a dish that contains nothing for a user that will eat anything
     Given chedible is set up
     When we log in
