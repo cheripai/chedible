@@ -528,7 +528,7 @@ def vote():
     v = request.args.get('vote', type=str)
     id = request.args.get('id', type=str)
     if id == '':
-        return jsonify(error='Invalid vote or id')
+        return jsonify(error='Invalid id')
     dish = Dish.query.filter_by(id=id)
     try:
         voters = dish.first().voters
@@ -574,6 +574,8 @@ def comment():
         content = profanity.censor(unquote(request.args.get('content',
                                                             type=str)))
         id = request.args.get('id', type=str)
+        if id == '':
+            return jsonify(error='Invalid id')
         if len(content) > app.config['MAX_COMMENT_LENGTH']:
             return jsonify(error='Comment exceeds 512 characters')
         if content == '':
