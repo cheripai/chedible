@@ -496,7 +496,6 @@ def edit_user(id):
                 elif entry.id != 'csrf_token':
                     user.update({entry.id: form[entry.id].data})
             user.update({'last_edited': int(time())})
-            # FIXME: This doesn't work
             user.update({'last_activity': int(time())})
             user.update({'about': profanity.censor(form['about'].data)})
             db.session.commit()
