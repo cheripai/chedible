@@ -31,7 +31,7 @@ try:
 except KeyError:
     restaurants_users = db.Table(
         'restaurants_users',
-        db.Column('restaurants_id', db.Integer, db.ForeignKey('restaurants.id')),
+        db.Column('restaurants_id', UUIDType, db.ForeignKey('restaurants.id')),
         db.Column('users_id', UUIDType, db.ForeignKey('users.id')),
         db.PrimaryKeyConstraint('restaurants_id', 'users_id'))
 
@@ -51,7 +51,11 @@ class Restaurant(db.Model):
     query_class = RestaurantQuery
     __tablename__ = "restaurants"
 
-    id = db.Column(db.Integer, primary_key=True)
+    try:
+        if int(os.environ['TESTING']) == 1:
+            id = db.Column(db.Integer, primary_key=True)
+    except KeyError:
+        id = db.Column(UUIDType(binary=False), primary_key=True)
     name = db.Column(db.String, nullable=False)
     date = db.Column(db.Date, nullable=False)
     category = db.Column(db.String, nullable=True)
@@ -78,6 +82,8 @@ class Restaurant(db.Model):
                                                     'tags': 'B'}))
 
     def __init__(self, name, category, image, tags, user_id):
+        if app.config['TESTING'] != True:
+            self.id = uuid.uuid4()
         self.name = name
         self.date = datetime.utcnow()
         self.category = category
@@ -104,8 +110,10 @@ class Dish(db.Model):
     try:
         if int(os.environ['TESTING']) == 1:
             id = db.Column(db.Integer, primary_key=True)
+            restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
     except KeyError:
         id = db.Column(UUIDType(binary=False), primary_key=True)
+        restaurant_id = db.Column(UUIDType, db.ForeignKey('restaurants.id'))
     name = db.Column(db.String, nullable=False)
     date = db.Column(db.Date, nullable=False)
     price = db.Column(db.String, nullable=True)
@@ -124,7 +132,6 @@ class Dish(db.Model):
     soy = db.Column(db.Boolean, nullable=True)
     wheat = db.Column(db.Boolean, nullable=True)
     score = db.Column(db.Integer)
-    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
     editors = db.relationship('User', backref='dish', secondary=dishes_users)
     last_edited = db.Column(db.Integer, nullable=False)
     voters = db.Column(db.PickleType, nullable=True)
@@ -306,10 +313,11 @@ class Location(db.Model):
     try:
         if int(os.environ['TESTING']) == 1:
             id = db.Column(db.Integer, primary_key=True)
+            restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
     except KeyError:
         id = db.Column(UUIDType(binary=False), primary_key=True)
+        restaurant_id = db.Column(UUIDType, db.ForeignKey('restaurants.id'))
     date = db.Column(db.Date, nullable=False)
-    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
     api_id = db.Column(db.String, nullable=False)
     lat = db.Column(db.Float, nullable=False)
     lng = db.Column(db.Float, nullable=False)
