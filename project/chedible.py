@@ -269,7 +269,7 @@ def restaurant_profile(id, page):
     if g.user is not None:
         user = User.query.filter_by(id=g.user.id)
         bookmarks = user.first().bookmarks
-        if int(id) in bookmarks:
+        if id in bookmarks:
             bookmarked = True
 
     return render_template('restaurant_profile.html',
@@ -630,8 +630,7 @@ def report():
 @login_required
 def bookmark():
     try:
-        # FIXME: Change to appropriate type for UUID
-        id = request.args.get('id', type=int)
+        id = request.args.get('id', type=str)
         user = User.query.filter_by(id=g.user.id)
         restaurant = Restaurant.query.filter_by(id=id).first()
         if restaurant is None:
