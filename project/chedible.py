@@ -631,6 +631,8 @@ def report():
 def bookmark():
     try:
         id = request.args.get('id', type=str)
+        if id == '':
+            return jsonify(error='Invalid id')
         user = User.query.filter_by(id=g.user.id)
         restaurant = Restaurant.query.filter_by(id=id).first()
         if restaurant is None:
