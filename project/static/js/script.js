@@ -288,7 +288,7 @@ $("#bookmark").click(function() {
 
 // For updating bookmarks page
 $("[id^=bookmark]").click(function(){
-    var restaurant_id = parseInt($(this).attr('id').replace('bookmark', ''), 10);
+    var restaurant_id = $(this).attr('id').replace('bookmark', '');
     var bookmark = $(this);
     $.getJSON($SCRIPT_ROOT + '/bookmark', {
         id: restaurant_id,
