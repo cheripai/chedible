@@ -294,6 +294,7 @@ $("[id^=bookmark]").click(function(){
         id: restaurant_id,
     }, function(data) {
     });
+    // FIXME: Text changes and changes back.
     if(bookmark.text() === "Unbookmark")
     {
         bookmark.text("Bookmark");
