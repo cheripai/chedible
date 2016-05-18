@@ -287,21 +287,23 @@ $("#bookmark").click(function() {
 
 
 // For updating bookmarks page
-$("[id^=bookmark]").click(function(){
+$("[id^=bookmark]").click(function() {
     var restaurant_id = $(this).attr('id').replace('bookmark', '');
-    var bookmark = $(this);
-    $.getJSON($SCRIPT_ROOT + '/bookmark', {
-        id: restaurant_id,
-    }, function(data) {
-    });
-    // FIXME: Text changes and changes back.
-    if(bookmark.text() === "Unbookmark")
-    {
-        bookmark.text("Bookmark");
-    }
-    else 
-    {
-        bookmark.text("Unbookmark");
+    if (restaurant_id.length == 36) {
+        var bookmark = $(this);
+        $.getJSON($SCRIPT_ROOT + '/bookmark', {
+            id: restaurant_id,
+        }, function(data) {
+        });
+        // FIXME: Text changes and changes back.
+        if(bookmark.text() === "Unbookmark")
+        {
+            bookmark.text("Bookmark");
+        }
+        else
+        {
+            bookmark.text("Unbookmark");
+        }
     }
 });
 
