@@ -22,10 +22,11 @@ from uuid import uuid4
 from werkzeug import secure_filename
 
 
-# This function runs before each request
-# If user is logged in, loads user info into global variable g.user
 @app.before_request
 def load_user():
+    """ This function runs before each request
+        If user is logged in, loads user info into global variable g.user
+    """
     if 'logged_in' in session and 'user_id' in session:
         g.user = User.query.filter_by(id=session['user_id']).first()
         if g.user.is_banned:
@@ -57,8 +58,9 @@ def page_not_found(error):
     return render_template('404.html'), 404
 
 
-# Creates decorator to restrict routes to logged in users
 def login_required(test):
+    """ Creates decorator to restrict routes to logged in users
+    """
     @wraps(test)
     def wrap(*args, **kwargs):
         if 'logged_in' in session:
@@ -83,20 +85,23 @@ def logout():
     return redirect(url_for('main'))
 
 
-# Used to log in a test user
-# Can only be accessed if the TESTING flag is true
 @app.route('/test_login/<id>')
 def test_login(id):
+    """ Used to log in a test user
+        Can only be accessed if the TESTING flag is true
+    """
+
     if app.config['TESTING']:
         session['logged_in'] = True
         session['user_id'] = id
     return redirect(url_for('main'))
 
 
-# Route is called when search is initiated on HTML page
-# If a query exists, routes user to search results page
 @app.route('/search/<table>', methods=['POST'])
 def search(table):
+    """ Route is called when search is initiated on HTML page
+        If a query exists, routes user to search results page
+    """
     # FIXME: add filtering based on preferences
     # Set geolocator to use Google Geoencoding API
     geolocator = GoogleV3()
