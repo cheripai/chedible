@@ -25,8 +25,9 @@ class Places(object):
             self.data = places.search(query).geo(circle(
                 lat, lng, radius)).limit(50).data()
 
-    # Constructs list of coordinates from query
     def get_coords(self):
+        """ Constructs list of coordinates from query
+        """
         coords = []
         marker = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
         for place in self.data:
@@ -34,8 +35,9 @@ class Places(object):
         coords = {marker: coords}
         return coords
 
-    # Constructs list of info boxes to be displayed above map markers
     def get_info_boxes(self):
+        """ Constructs list of info boxes to be displayed above map markers
+        """
         boxes = []
         for place in self.data:
             info_box = '<h6>{}<h6><small><p>{}</p><p>{}</p><p>{}</p></small>'
@@ -90,8 +92,9 @@ class Places(object):
     def get_names(self):
         return [place['name'] for place in self.data]
 
-    # Creates string of stars based on float input
     def generate_stars(self, rating):
+        """ Creates string of stars based on float input
+        """
         stars = ''
         if rating >= 0 and rating <= 5:
             for i in range(int(rating)):
@@ -103,7 +106,8 @@ class Places(object):
                 stars += '<i class=\'fa fa-star\'></i>'
         return stars
 
-    # Removes specified indices from self.data
     def remove_indices(self, indices):
+        """ Removes specified indices from self.data
+        """
         for i in sorted(indices, reverse=True):
             del self.data[i]
