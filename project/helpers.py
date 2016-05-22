@@ -11,8 +11,9 @@ from time import time
 from urllib.request import urlopen
 
 
-# Convert string value from HTML form to boolean value
 def stb(s):
+    """ Convert string value from HTML form to boolean value
+    """
     if s == 'True':
         return True
     elif s == 'False':
@@ -23,16 +24,18 @@ def stb(s):
         return ValueError
 
 
-# Converts a sqlalchemy row into a dictionary for iteration
 def rowtodict(row):
+    """ Converts a sqlalchemy row into a dictionary for iteration
+    """
     d = {}
     for column in row.__table__.columns:
         d[column.name] = getattr(row, column.name)
     return d
 
 
-# Splits data from query for pagination
 def split_data(data, cur_page, per_page, total):
+    """ Splits data from query for pagination
+    """
     split = [d for d in data]
     begin = (cur_page - 1) * per_page
     if begin + per_page < total:
@@ -42,13 +45,14 @@ def split_data(data, cur_page, per_page, total):
     return split[begin:end]
 
 
-# If the dish contains an item, and the user does not want the item
-#   Not chedible
-# If the dish might contain the item, and the user does not want the item
-#   Not chedible
-# Else
-#   Chedible
 def is_chedible(dish, user):
+    """ If the dish contains an item, and the user does not want the item
+            Not chedible
+        If the dish might contain the item, and the user does not want the item
+            Not chedible
+        Else
+            Chedible
+    """
     if user is None or dish is None:
         return None
     dish = rowtodict(dish)
@@ -91,14 +95,16 @@ def coords_to_city(lat, lng):
         return ''
 
 
-# Checks whether file extension is in list of allowed extensions
 def allowed_file_extension(filename):
+    """ Checks whether file extension is in list of allowed extensions
+    """
     return '.' in filename and \
         filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
 
 
-# Checks file header to see if it is an image file
 def allowed_file(filepath):
+    """ Checks file header to see if it is an image file
+    """
     image_type = what(filepath)
     if not image_type:
         return False
