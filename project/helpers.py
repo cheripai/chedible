@@ -65,6 +65,8 @@ def is_chedible(dish, user):
 
 
 def update_score(amt):
+    """ Updates user score
+    """
     user = User.query.filter_by(id=session['user_id']).first()
     user.score += amt
     # Updating the user's score also updates their last activity
@@ -72,6 +74,8 @@ def update_score(amt):
 
 
 def post_interval_exists():
+    """ Checks if user has posted recently
+    """
     # Allows test cases to post without waiting for interval
     if app.config['TESTING']:
         return False
@@ -86,6 +90,8 @@ def post_interval_exists():
 
 
 def coords_to_city(lat, lng):
+    """ Converts latitude and longitude coordinates to a city name
+    """
     openstreetmap = 'https://nominatim.openstreetmap.org/reverse?format=json&lat={}&lon={}'
     response = urlopen(openstreetmap.format(lat, lng))
     data = json.loads(response.read().decode('utf-8'))
