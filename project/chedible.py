@@ -61,6 +61,7 @@ def page_not_found(error):
 def login_required(test):
     """ Creates decorator to restrict routes to logged in users
     """
+
     @wraps(test)
     def wrap(*args, **kwargs):
         if 'logged_in' in session:
@@ -185,8 +186,8 @@ def search_results(table, query, coords, radius, page):
 
     # Remove places not matched in database from map
     data_names = [d.name for d in data]
-    places.remove_indices(
-        [i for i, name in enumerate(places_names) if name not in data_names])
+    places.remove_indices([i for i, name in enumerate(places_names)
+                           if name not in data_names])
 
     places_names = places.get_names()
     places_coords = places.get_coords()
