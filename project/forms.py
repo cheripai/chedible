@@ -29,9 +29,9 @@ class AddRestaurantForm(Form):
         ])
     image = StringField('Restaurant Image',
                         validators=[
-                            Optional(), URL(message="Invalid URL"), Regexp(
-                                '([^\s]+(\.(?i)(jpg|jpeg|png|gif|bmp))$)',
-                                message="Invalid image path")
+                            Optional(), URL(message="Invalid URL"),
+                            Regexp('([^\s]+(\.(?i)(jpg|jpeg|png|gif|bmp))$)',
+                                   message="Invalid image path")
                         ])
     tags = StringField(
         'Tags',
@@ -61,9 +61,9 @@ class AddDishForm(Form):
                         ])
     image = StringField('Dish Image',
                         validators=[
-                            Optional(), URL(message="Invalid URL"), Regexp(
-                                '([^\s]+(\.(?i)(jpg|png|gif|bmp))$)',
-                                message="Invalid image path")
+                            Optional(), URL(message="Invalid URL"),
+                            Regexp('([^\s]+(\.(?i)(jpg|png|gif|bmp))$)',
+                                   message="Invalid image path")
                         ])
     beef = StringField('Beef')
     dairy = StringField('Dairy')
@@ -91,8 +91,7 @@ class SearchForm(Form):
     location = StringField(
         'Location',
         validators=[
-            Length(max=128,
-                   message="Must be less than 128 characters")
+            Length(max=128, message="Must be less than 128 characters")
         ])
     radius = StringField('Radius')
     searchAll = BooleanField('SearchAll')
@@ -133,8 +132,7 @@ class AddLocationForm(Form):
     location = StringField(
         'Location',
         validators=[
-            Length(max=64,
-                   message="Must be less than 64 characters")
+            Length(max=64, message="Must be less than 64 characters")
         ])
 
 
