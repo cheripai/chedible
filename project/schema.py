@@ -18,8 +18,8 @@ make_searchable()
 try:
     if int(os.environ['TESTING']) == 1:
         restaurants_users = db.Table(
-            'restaurants_users',
-            db.Column('restaurants_id', db.Integer, db.ForeignKey('restaurants.id')),
+            'restaurants_users', db.Column('restaurants_id', db.Integer,
+                                           db.ForeignKey('restaurants.id')),
             db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
             db.PrimaryKeyConstraint('restaurants_id', 'users_id'))
 
@@ -40,7 +40,6 @@ except KeyError:
         db.Column('dishes_id', UUIDType, db.ForeignKey('dishes.id')),
         db.Column('users_id', UUIDType, db.ForeignKey('users.id')),
         db.PrimaryKeyConstraint('dishes_id', 'users_id'))
-    
 
 
 class RestaurantQuery(BaseQuery, SearchQueryMixin):
@@ -110,7 +109,8 @@ class Dish(db.Model):
     try:
         if int(os.environ['TESTING']) == 1:
             id = db.Column(db.Integer, primary_key=True)
-            restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
+            restaurant_id = db.Column(db.Integer,
+                                      db.ForeignKey('restaurants.id'))
     except KeyError:
         id = db.Column(UUIDType(binary=False), primary_key=True)
         restaurant_id = db.Column(UUIDType, db.ForeignKey('restaurants.id'))
@@ -313,7 +313,8 @@ class Location(db.Model):
     try:
         if int(os.environ['TESTING']) == 1:
             id = db.Column(db.Integer, primary_key=True)
-            restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
+            restaurant_id = db.Column(db.Integer,
+                                      db.ForeignKey('restaurants.id'))
     except KeyError:
         id = db.Column(UUIDType(binary=False), primary_key=True)
         restaurant_id = db.Column(UUIDType, db.ForeignKey('restaurants.id'))
