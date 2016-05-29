@@ -18,7 +18,7 @@
         <div class="col-sm-7">
             <div class="page-header">
                 <div class="row">
-                    <div class="col-sm-7">
+                    <div class="col-sm-8">
                         {% if restaurant.image %}
                             <img src="{{ restaurant.image }}" class="img-thumbnail" height="200" width="200"/>
                         {% else %}
@@ -32,6 +32,7 @@
                                         <a href="{{ url_for('edit_restaurant', id=restaurant.id) }}">Edit</a> /
                                         <a href="{{ url_for('add_dish', id=restaurant.id) }}">Add a dish</a> /
                                         <a href="{{ url_for('add_location_page', id=restaurant.id, coords='{},{}'.format(lat, lng)) }}">Edit locations</a> /
+                                        <a href="">Add a photo</a> /
                                         {% if bookmarked %}
                                             <a class="clickable" id="bookmark">Unbookmark</a>
                                         {% else %}
