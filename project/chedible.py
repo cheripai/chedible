@@ -341,6 +341,26 @@ def add_location(id):
         return jsonify(error='Invalid arguments')
 
 
+@app.route('/restaurant/<id>/upload', methods=('GET', 'POST'))
+def add_restaurant_photo(id):
+    form = PhotoForm()
+    if request.method == 'POST' and 'photo' in request.files:
+        photo = request.files['photo']
+        if photo and h.allowed_file_extension(photo.filename):
+            filename = str(uuid4()) + path.splitext(secure_filename(
+                photo.filename))[-1]
+            filepath = path.join(app.config['RESTURANT_PHOTOS'], filename)
+            photo.save(filepath)
+            if not h.allowed_file(filepath):
+                remove(filepath)
+                flash('Invalid file')
+            else:
+                flash('File uploaded')
+        else:
+            flash('Invalid file')
+    return render_template('upload.html', form=form, id=id)
+
+
 @app.route('/restaurant/<id>/add', methods=('GET', 'POST'))
 @login_required
 def add_dish(id):
@@ -669,21 +689,3 @@ def bookmarks(id):
     return render_template('bookmarks.html', data=data, message=message)
 
 
-@app.route('/upload', methods=('GET', 'POST'))
-def upload():
-    form = PhotoForm()
-    if request.method == 'POST' and 'photo' in request.files:
-        photo = request.files['photo']
-        if photo and h.allowed_file_extension(photo.filename):
-            filename = str(uuid4()) + path.splitext(secure_filename(
-                photo.filename))[-1]
-            filepath = path.join(app.config['UPLOADED_PHOTOS_DEST'], filename)
-            photo.save(filepath)
-            if not h.allowed_file(filepath):
-                remove(filepath)
-                flash('Invalid file')
-            else:
-                flash('File uploaded')
-        else:
-            flash('Invalid file')
-    return render_template('upload.html', form=form)
