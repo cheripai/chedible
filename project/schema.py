@@ -59,6 +59,7 @@ class Restaurant(db.Model):
     date = db.Column(db.Date, nullable=False)
     category = db.Column(db.String, nullable=True)
     image = db.Column(db.String, nullable=True)
+    images = db.Column(db.PickleType, nullable=True)
     dishes = db.relationship('Dish',
                              cascade="all, delete, delete-orphan",
                              backref='restaurant')
