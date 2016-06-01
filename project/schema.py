@@ -88,6 +88,7 @@ class Restaurant(db.Model):
         self.date = datetime.utcnow()
         self.category = category
         self.image = image
+        self.images = []
         self.tags = tags
         if user_id is None:
             self.editors = []

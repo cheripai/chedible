@@ -355,6 +355,11 @@ def add_restaurant_photo(id):
                 remove(filepath)
                 flash('Invalid file')
             else:
+                restaurant = Restaurant.query.filter_by(id=id)
+                images = list(restaurant.first().images)
+                images.append(filepath)
+                restaurant.update({'images': images})
+                db.session.commit()
                 flash('File uploaded')
         else:
             flash('Invalid file')
