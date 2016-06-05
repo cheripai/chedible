@@ -120,6 +120,7 @@ class Dish(db.Model):
     date = db.Column(db.Date, nullable=False)
     price = db.Column(db.String, nullable=True)
     image = db.Column(db.String, nullable=True)
+    images = db.Column(db.PickleType, nullable=True)
     beef = db.Column(db.Boolean, nullable=True)
     dairy = db.Column(db.Boolean, nullable=True)
     egg = db.Column(db.Boolean, nullable=True)
