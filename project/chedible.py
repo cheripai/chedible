@@ -341,8 +341,8 @@ def add_location(id):
         return jsonify(error='Invalid arguments')
 
 
-@app.route('/restaurant/<id>/upload', methods=('GET', 'POST'))
-def add_restaurant_photo(id):
+@app.route('/restaurant/<restaurant_id>/upload', methods=('GET', 'POST'))
+def add_restaurant_photo(restaurant_id):
     form = PhotoForm()
     if request.method == 'POST' and 'photo' in request.files:
         photo = request.files['photo']
@@ -363,7 +363,7 @@ def add_restaurant_photo(id):
                 flash('File uploaded')
         else:
             flash('Invalid file')
-    return render_template('upload.html', form=form, id=id)
+    return render_template('upload.html', type='restaurant', form=form, restaurant_id=restaurant_id)
 
 
 @app.route('/restaurant/<id>/add', methods=('GET', 'POST'))
@@ -480,6 +480,31 @@ def edit_dish(restaurant_id, dish_id):
                                id=restaurant_id,
                                dish_id=dish_id,
                                restaurant=restaurant)
+
+
+@app.route('/restaurant/<restaurant_id>/<dish_id>/upload', methods=('GET', 'POST'))
+def add_dish_photo(restaurant_id, dish_id):
+    form = PhotoForm()
+    if request.method == 'POST' and 'photo' in request.files:
+        photo = request.files['photo']
+        if photo and h.allowed_file_extension(photo.filename):
+            filename = str(uuid4()) + path.splitext(secure_filename(
+                photo.filename))[-1]
+            filepath = path.join(app.config['DISH_PHOTOS'], filename)
+            photo.save(filepath)
+            if not h.allowed_file(filepath):
+                remove(filepath)
+                flash('Invalid file')
+            else:
+                dish = Dish.query.filter_by(id=dish_id)
+                images = list(dish.first().images)
+                images.append(filepath)
+                dish.update({'images': images})
+                db.session.commit()
+                flash('File uploaded')
+        else:
+            flash('Invalid file')
+    return render_template('upload.html', form=form, type='dish', restaurant_id=restaurant_id, dish_id=dish_id)
 
 
 @app.route('/user/<id>')

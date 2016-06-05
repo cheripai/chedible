@@ -9,7 +9,11 @@
 {% block content %}
     <div class="container">
         <div class="col-md-8">
-            <form class="form-horizontal" id="upload_form" method="post" action="{{ url_for('add_restaurant_photo', id=id) }}", enctype="multipart/form-data">
+            {% if type == 'restaurant' %}
+                <form class="form-horizontal" id="upload_form" method="post" action="{{ url_for('add_restaurant_photo', restaurant_id=restaurant_id) }}", enctype="multipart/form-data">
+            {% else %}
+                <form class="form-horizontal" id="upload_form" method="post" action="{{ url_for('add_dish_photo', restaurant_id=restaurant_id, dish_id=dish_id) }}", enctype="multipart/form-data">
+            {% endif %}
                 {{ form.csrf_token }}
                 {{ form.photo() }}
                 <div class="form-row">
