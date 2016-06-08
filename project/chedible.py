@@ -497,7 +497,10 @@ def add_dish_photo(restaurant_id, dish_id):
                 flash('Invalid file')
             else:
                 dish = Dish.query.filter_by(id=dish_id)
-                images = list(dish.first().images)
+                if dish.first().images is None:
+                    images = []
+                else:
+                    images = list(dish.first().images)
                 images.append(filepath)
                 dish.update({'images': images})
                 db.session.commit()
