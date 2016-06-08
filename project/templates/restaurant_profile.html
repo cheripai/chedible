@@ -63,7 +63,7 @@
                                 <h4 class="media-heading">
                                     <a href="#dish_profile{{ d.id }}" data-toggle="modal">{{ d.name }}</a>
                                     {% if g.user %}
-                                        <small><small><small><a href="{{ url_for('edit_dish', restaurant_id=restaurant.id, dish_id=d.id) }}">Edit</a></small></small></small>
+                                        <small><small><small><a href="{{ url_for('edit_dish', restaurant_id=restaurant.id, dish_id=d.id) }}">Edit / </a></small></small></small>
                                         <small><small><small><a href="{{ url_for('add_dish_photo', restaurant_id=restaurant.id, dish_id=d.id) }}">Add a photo</a></small></small></small>
                                     {% endif %}
                                 </h4>
