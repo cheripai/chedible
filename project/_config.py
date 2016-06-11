@@ -29,13 +29,21 @@ DEFAULT_COORDS = (37.7749295, -122.4194155)
 DEFAULT_RADIUS = 3220
 CONTENTS = ['beef', 'dairy', 'egg', 'fish', 'gluten', 'meat', 'nut',
             'non_organic', 'pork', 'poultry', 'shellfish', 'soy', 'wheat']
-RESTURANT_PHOTOS = 'photos/restaurants/'
+RESTAURANT_PHOTOS = 'photos/restaurants/'
 DISH_PHOTOS = 'photos/dishes/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 # sets locale for pricing
 # may need to modify for internationalization
 setlocale(LC_ALL, '')
+
+
+# Create photos directory if necessary
+if not os.path.exists(RESTAURANT_PHOTOS):
+    os.makedirs(RESTAURANT_PHOTOS)
+if not os.path.exists(DISH_PHOTOS):
+    os.makedirs(DISH_PHOTOS)
+
 
 try:
     if int(os.environ['TESTING']) == 1:
