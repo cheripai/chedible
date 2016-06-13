@@ -59,12 +59,6 @@ class AddDishForm(Form):
                         Must be a number followed by 2 decimal places. \
                         Example: 12.34")
                         ])
-    image = StringField('Dish Image',
-                        validators=[
-                            Optional(), URL(message="Invalid URL"),
-                            Regexp('([^\s]+(\.(?i)(jpg|png|gif|bmp))$)',
-                                   message="Invalid image path")
-                        ])
     beef = StringField('Beef')
     dairy = StringField('Dairy')
     egg = StringField('Egg')

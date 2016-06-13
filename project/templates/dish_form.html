@@ -44,13 +44,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="control-label">{{ form.image.label }}:</label>
-                        {{ form.image(placeholder="URL for image", class="form-control", type="text") }}
-                    </div>
-                    <br>
-                </div>
 
                 {% for entry in form %}
                     {% if entry.id not in ['csrf_token', 'name', 'price', 'image'] %}
