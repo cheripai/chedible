@@ -372,7 +372,7 @@ def add_dish(id):
     form = AddDishForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            new_dish = Dish(form.name.data, form.price.data, form.image.data,
+            new_dish = Dish(form.name.data, form.price.data, 
                             h.stb(form.beef.data), h.stb(form.dairy.data),
                             h.stb(form.egg.data), h.stb(form.fish.data),
                             h.stb(form.gluten.data), h.stb(form.meat.data),

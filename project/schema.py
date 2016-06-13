@@ -119,7 +119,6 @@ class Dish(db.Model):
     name = db.Column(db.String, nullable=False)
     date = db.Column(db.Date, nullable=False)
     price = db.Column(db.String, nullable=True)
-    image = db.Column(db.String, nullable=True)
     images = db.Column(db.PickleType, nullable=True)
     beef = db.Column(db.Boolean, nullable=True)
     dairy = db.Column(db.Boolean, nullable=True)
@@ -146,7 +145,7 @@ class Dish(db.Model):
     commenters = db.relationship('Comment', backref='dish')
     search_vector = db.Column(TSVectorType('name'))
 
-    def __init__(self, name, price, image, beef, dairy, egg, fish, gluten,
+    def __init__(self, name, price, beef, dairy, egg, fish, gluten,
                  meat, nut, non_organic, pork, poultry, shellfish, soy, wheat,
                  restaurant_id, user_id):
         if app.config['TESTING'] != True:
@@ -157,7 +156,6 @@ class Dish(db.Model):
             self.price = currency(float(price), grouping=True)
         else:
             self.price = price
-        self.image = image
         self.images = []
         self.beef = beef
         self.dairy = dairy
