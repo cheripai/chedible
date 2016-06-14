@@ -16,7 +16,7 @@ def db_add(context, text, table):
     if table == "restaurants":
         entry = Restaurant(text, 'test', 'test', 'test', None)
     elif table == "dishes":
-        entry = Dish(text, 0.00, '', None, None, None, None, None, None,
+        entry = Dish(text, 0.00, None, None, None, None, None, None,
                      None, None, None, None, None, None, None, None, None)
     elif table == "users":
         entry = User(text, '', '', '')
