@@ -52,8 +52,8 @@
                 {% for d in dishes %}
                     <div class="entry">
                         <div class="pull-left media-middle">
-                            {% if d.image %}
-                                <img class="img-thumbnail media-object entry-thumbnail" src="{{ d.image }}" height="80" width="80"/>
+                            {% if d.images != [] %}
+                                <img class="img-thumbnail media-object entry-thumbnail" src="{{ d.images[0] }}" height="80" width="80"/>
                             {% else %}
                                 <img class="img-thumbnail media-object entry-thumbnail" src="http://www.indre-reisid.ee/wp-content/themes/envision/lib/images/default-placeholder.png" height="80" width="80"/>
                             {% endif %}
