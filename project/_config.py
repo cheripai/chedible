@@ -29,8 +29,8 @@ DEFAULT_COORDS = (37.7749295, -122.4194155)
 DEFAULT_RADIUS = 3220
 CONTENTS = ['beef', 'dairy', 'egg', 'fish', 'gluten', 'meat', 'nut',
             'non_organic', 'pork', 'poultry', 'shellfish', 'soy', 'wheat']
-RESTAURANT_PHOTOS = 'static/photos/restaurants/'
-DISH_PHOTOS = 'static/photos/dishes/'
+RESTAURANT_PHOTOS = 'project/static/photos/restaurants/'
+DISH_PHOTOS = 'project/static/photos/dishes/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 # sets locale for pricing
