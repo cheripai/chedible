@@ -357,7 +357,7 @@ def add_restaurant_photo(restaurant_id):
             else:
                 restaurant = Restaurant.query.filter_by(id=restaurant_id)
                 images = list(restaurant.first().images)
-                images.append(filepath)
+                images.append('/'.join(filepath.split('/')[2:]))
                 restaurant.update({'images': images})
                 db.session.commit()
                 flash('File uploaded')
@@ -498,7 +498,7 @@ def add_dish_photo(restaurant_id, dish_id):
             else:
                 dish = Dish.query.filter_by(id=dish_id)
                 images = list(dish.first().images)
-                images.append(filepath)
+                images.append('/'.join(filepath.split('/')[2:]))
                 dish.update({'images': images})
                 db.session.commit()
                 flash('File uploaded')
