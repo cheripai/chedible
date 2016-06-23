@@ -363,6 +363,7 @@ def add_restaurant_photo(restaurant_id):
                 flash('File uploaded')
         else:
             flash('Invalid file')
+        return redirect(url_for('add_restaurant_photo', restaurant_id=restaurant_id))
     return render_template('upload.html', type='restaurant', form=form, restaurant_id=restaurant_id)
 
 
