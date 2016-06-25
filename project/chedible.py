@@ -505,6 +505,7 @@ def add_dish_photo(restaurant_id, dish_id):
                 flash('File uploaded')
         else:
             flash('Invalid file')
+        return redirect(url_for('restaurant_profile', id=restaurant_id, page=1))
     return render_template('upload.html', form=form, type='dish', restaurant_id=restaurant_id, dish_id=dish_id)
 
 
