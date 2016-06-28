@@ -58,7 +58,6 @@ class Restaurant(db.Model):
     name = db.Column(db.String, nullable=False)
     date = db.Column(db.Date, nullable=False)
     category = db.Column(db.String, nullable=True)
-    image = db.Column(db.String, nullable=True)
     images = db.Column(db.PickleType, nullable=True)
     dishes = db.relationship('Dish',
                              cascade="all, delete, delete-orphan",
@@ -81,13 +80,12 @@ class Restaurant(db.Model):
                                                     'category': 'C',
                                                     'tags': 'B'}))
 
-    def __init__(self, name, category, image, tags, user_id):
+    def __init__(self, name, category, tags, user_id):
         if app.config['TESTING'] != True:
             self.id = uuid.uuid4()
         self.name = name
         self.date = datetime.utcnow()
         self.category = category
-        self.image = image
         self.images = []
         self.tags = tags
         if user_id is None:
