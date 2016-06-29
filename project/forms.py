@@ -27,12 +27,6 @@ class AddRestaurantForm(Form):
                        '(^([A-Za-z0-9_.\' ]*\,)*[A-Za-z0-9 ]*$)',
                        message="Must be a comma separated list")
         ])
-    image = StringField('Restaurant Image',
-                        validators=[
-                            Optional(), URL(message="Invalid URL"),
-                            Regexp('([^\s]+(\.(?i)(jpg|jpeg|png|gif|bmp))$)',
-                                   message="Invalid image path")
-                        ])
     tags = StringField(
         'Tags',
         validators=[
