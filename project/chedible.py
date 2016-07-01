@@ -222,8 +222,7 @@ def add_restaurant():
     if request.method == 'POST':
         if form.validate_on_submit():
             new_restaurant = Restaurant(form.name.data, form.category.data,
-                                        form.image.data, form.tags.data,
-                                        session['user_id'])
+                                        form.tags.data, session['user_id'])
             if h.post_interval_exists():
                 return render_template('restaurant_form.html', form=form)
             new_restaurant.last_editor = session['user_id']
