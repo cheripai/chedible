@@ -38,7 +38,7 @@ def visit_route(context, route):
 
 @when(u'we add restaurant "{text}" using the add restaurant page with tag "{tags}"')
 def add_restaurant_using_add_restaurant_page(context, text, tags):
-    context.page = context.client.post('/add', data=dict(name=text, category='category', image='', tags=tags), follow_redirects=True)
+    context.page = context.client.post('/add', data=dict(name=text, category='category', tags=tags), follow_redirects=True)
 
 
 @when(u'we add dish "{dish}" to restaurant "{restaurant}"')
