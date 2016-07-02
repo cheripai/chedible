@@ -362,8 +362,13 @@ def add_restaurant_photo(restaurant_id):
                 flash('File uploaded')
         else:
             flash('Invalid file')
-        return redirect(url_for('restaurant_profile', id=restaurant_id, page=1))
-    return render_template('upload.html', type='restaurant', form=form, restaurant_id=restaurant_id)
+        return redirect(url_for('restaurant_profile',
+                                id=restaurant_id,
+                                page=1))
+    return render_template('upload.html',
+                           type='restaurant',
+                           form=form,
+                           restaurant_id=restaurant_id)
 
 
 @app.route('/restaurant/<id>/add', methods=('GET', 'POST'))
@@ -372,7 +377,7 @@ def add_dish(id):
     form = AddDishForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            new_dish = Dish(form.name.data, form.price.data, 
+            new_dish = Dish(form.name.data, form.price.data,
                             h.stb(form.beef.data), h.stb(form.dairy.data),
                             h.stb(form.egg.data), h.stb(form.fish.data),
                             h.stb(form.gluten.data), h.stb(form.meat.data),
@@ -482,7 +487,8 @@ def edit_dish(restaurant_id, dish_id):
                                restaurant=restaurant)
 
 
-@app.route('/restaurant/<restaurant_id>/<dish_id>/upload', methods=('GET', 'POST'))
+@app.route('/restaurant/<restaurant_id>/<dish_id>/upload',
+           methods=('GET', 'POST'))
 def add_dish_photo(restaurant_id, dish_id):
     form = PhotoForm()
     if request.method == 'POST' and 'photo' in request.files:
@@ -504,8 +510,14 @@ def add_dish_photo(restaurant_id, dish_id):
                 flash('File uploaded')
         else:
             flash('Invalid file')
-        return redirect(url_for('restaurant_profile', id=restaurant_id, page=1))
-    return render_template('upload.html', form=form, type='dish', restaurant_id=restaurant_id, dish_id=dish_id)
+        return redirect(url_for('restaurant_profile',
+                                id=restaurant_id,
+                                page=1))
+    return render_template('upload.html',
+                           form=form,
+                           type='dish',
+                           restaurant_id=restaurant_id,
+                           dish_id=dish_id)
 
 
 @app.route('/user/<id>')
@@ -718,5 +730,3 @@ def bookmarks(id):
         message = ""
     data = Restaurant.query.filter(Restaurant.id.in_(bookmarks)).all()
     return render_template('bookmarks.html', data=data, message=message)
-
-
