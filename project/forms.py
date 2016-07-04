@@ -23,19 +23,19 @@ class AddRestaurantForm(Form):
             DataRequired(message="A category is required"),
             Length(min=2,
                    max=32,
-                   message="Must be between 2 and 32 characters"), Regexp(
-                       '(^([A-Za-z0-9_.\' ]*\,)*[A-Za-z0-9 ]*$)',
-                       message="Must be a comma separated list")
-        ])
-    tags = StringField(
-        'Tags',
-        validators=[
-            Optional(), Length(min=2,
-                               max=64,
-                               message="Must be between 2 and 64 characters"),
+                   message="Must be between 2 and 32 characters"),
             Regexp('(^([A-Za-z0-9_.\' ]*\,)*[A-Za-z0-9 ]*$)',
                    message="Must be a comma separated list")
         ])
+    tags = StringField('Tags',
+                       validators=[
+                           Optional(), Length(
+                               min=2,
+                               max=64,
+                               message="Must be between 2 and 64 characters"),
+                           Regexp('(^([A-Za-z0-9_.\' ]*\,)*[A-Za-z0-9 ]*$)',
+                                  message="Must be a comma separated list")
+                       ])
 
 
 class AddDishForm(Form):
