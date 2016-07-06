@@ -125,7 +125,7 @@ class AddLocationForm(Form):
 
 
 class PhotoForm(Form):
-    photo = FileField('photo')
+    photo = FileField('Photo')
     photo_url = StringField('Photo URL',
                         validators=[
                             Optional(), URL(message="Invalid URL"),

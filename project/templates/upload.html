@@ -19,14 +19,24 @@
                     {% endfor %}
                 </ul>
             {% endif %}
-            <label class="control-label">Photo:</label>
             {% if type == 'restaurant' %}
                 <form class="form-horizontal" id="upload_form" method="post" action="{{ url_for('add_restaurant_photo', restaurant_id=restaurant_id) }}", enctype="multipart/form-data">
             {% else %}
                 <form class="form-horizontal" id="upload_form" method="post" action="{{ url_for('add_dish_photo', restaurant_id=restaurant_id, dish_id=dish_id) }}", enctype="multipart/form-data">
             {% endif %}
                 {{ form.csrf_token }}
-                {{ form.photo() }}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="control-label">{{ form.photo_url.label }}:</label>
+                        {{ form.photo_url(placeholder="URL for image", class="form-control", type="text") }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label class="control-label">{{ form.photo.label }}:</label>
+                    <div class="form-group">
+                        {{ form.photo() }}
+                    </div>
+                </div>
                 <div class="form-row">
                     <div class="form-group">
                         <br>
