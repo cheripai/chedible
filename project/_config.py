@@ -37,13 +37,11 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 # may need to modify for internationalization
 setlocale(LC_ALL, '')
 
-
 # Create photos directory if necessary
 if not os.path.exists(RESTAURANT_PHOTOS):
     os.makedirs(RESTAURANT_PHOTOS)
 if not os.path.exists(DISH_PHOTOS):
     os.makedirs(DISH_PHOTOS)
-
 
 try:
     if int(os.environ['TESTING']) == 1:
