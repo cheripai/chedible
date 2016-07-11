@@ -127,8 +127,8 @@ class AddLocationForm(Form):
 class PhotoForm(Form):
     photo = FileField('Photo')
     photo_url = StringField('Photo URL',
-                        validators=[
-                            Optional(), URL(message="Invalid URL"),
-                            Regexp('([^\s]+(\.(?i)(jpg|jpeg|png|gif|bmp))$)',
-                            message="Invalid image path")
-    ])
+                            validators=[
+                                Optional(), URL(message="Invalid URL"), Regexp(
+                                    '([^\s]+(\.(?i)(jpg|jpeg|png|gif|bmp))$)',
+                                    message="Invalid image path")
+                            ])
