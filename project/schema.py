@@ -143,8 +143,8 @@ class Dish(db.Model):
     commenters = db.relationship('Comment', backref='dish')
     search_vector = db.Column(TSVectorType('name'))
 
-    def __init__(self, name, price, beef, dairy, egg, fish, gluten,
-                 meat, nut, non_organic, pork, poultry, shellfish, soy, wheat,
+    def __init__(self, name, price, beef, dairy, egg, fish, gluten, meat, nut,
+                 non_organic, pork, poultry, shellfish, soy, wheat,
                  restaurant_id, user_id):
         if app.config['TESTING'] != True:
             self.id = uuid.uuid4()
