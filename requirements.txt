@@ -19,11 +19,11 @@ psycopg2==2.6.2
 pyparsing==2.1.5
 rauth==0.7.2
 requests==2.10.0
-requests-oauthlib==0.6.1
+requests-oauthlib==0.6.2
 six==1.10.0
 SQLAlchemy==1.0.14
 SQLAlchemy-Searchable==0.10.1
-SQLAlchemy-Utils==0.32.7
+SQLAlchemy-Utils==0.32.8
 validators==0.10.3
 Werkzeug==0.11.10
 WTForms==2.1
