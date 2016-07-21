@@ -2,7 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
 from behave import *
 import parse
 
@@ -16,8 +15,8 @@ def db_add(context, text, table):
     if table == "restaurants":
         entry = Restaurant(text, 'test', 'test', None)
     elif table == "dishes":
-        entry = Dish(text, 0.00, None, None, None, None, None, None,
-                     None, None, None, None, None, None, None, None, None)
+        entry = Dish(text, 0.00, None, None, None, None, None, None, None,
+                     None, None, None, None, None, None, None, None)
     elif table == "users":
         entry = User(text, '', '', '')
     elif table == "comments":
@@ -79,7 +78,9 @@ def db_user_column_update(context, username, text):
     context.db.session.commit()
 
 
-@when(u'we set all of user "{user}" preferences to "{boolean}" except for "{food}"')
+@when(
+    u'we set all of user "{user}" preferences to "{boolean}" except for "{food}"'
+)
 def db_user_preferences_all(context, user, boolean, food):
     if boolean is "True":
         boolean = True
@@ -89,7 +90,7 @@ def db_user_preferences_all(context, user, boolean, food):
     entry = context.db.session.query(User).filter_by(name=user).first()
     entry.beef = boolean
     entry.dairy = boolean
-    entry.egg= boolean
+    entry.egg = boolean
     entry.fish = boolean
     entry.gluten = boolean
     entry.meat = boolean
@@ -107,7 +108,9 @@ def db_user_preferences_all(context, user, boolean, food):
     context.db.session.commit()
 
 
-@when(u'we set dish "{dish}" so contains is "{boolean}" for attribute/s "{food_attrs}"')
+@when(
+    u'we set dish "{dish}" so contains is "{boolean}" for attribute/s "{food_attrs}"'
+)
 def db_dish_attributes_all(context, dish, boolean, food_attrs):
     if boolean is "True":
         boolean = True
@@ -120,7 +123,7 @@ def db_dish_attributes_all(context, dish, boolean, food_attrs):
 
     entry.beef = boolean
     entry.dairy = boolean
-    entry.egg= boolean
+    entry.egg = boolean
     entry.fish = boolean
     entry.gluten = boolean
     entry.meat = boolean
@@ -138,33 +141,45 @@ def db_dish_attributes_all(context, dish, boolean, food_attrs):
 @then(u'we should see "{text}" in "{table}"')
 def db_add_check(context, text, table):
     if table == "restaurants":
-        assert context.db.session.query(Restaurant).filter_by(name=text).first() is not None
+        assert context.db.session.query(Restaurant).filter_by(
+            name=text).first() is not None
     elif table == "dishes":
-        assert context.db.session.query(Dish).filter_by(name=text).first() is not None
+        assert context.db.session.query(Dish).filter_by(
+            name=text).first() is not None
     elif table == "users":
-        assert context.db.session.query(User).filter_by(name=text).first() is not None
+        assert context.db.session.query(User).filter_by(
+            name=text).first() is not None
     elif table == "comments":
-        assert context.db.session.query(Comment).filter_by(content=text).first() is not None
+        assert context.db.session.query(Comment).filter_by(
+            content=text).first() is not None
     elif table == "locations":
-        assert context.db.session.query(Location).filter_by(address=text).first() is not None
+        assert context.db.session.query(Location).filter_by(
+            address=text).first() is not None
     elif table == "issues":
-        assert context.db.session.query(Issue).filter_by(content=text).first() is not None
+        assert context.db.session.query(Issue).filter_by(
+            content=text).first() is not None
 
 
 @then(u'we should not see "{text}" in "{table}"')
 def db_delete_check(context, text, table):
     if table == "restaurants":
-        assert context.db.session.query(Restaurant).filter_by(name=text).first() is None
+        assert context.db.session.query(Restaurant).filter_by(
+            name=text).first() is None
     elif table == "dishes":
-        assert context.db.session.query(Dish).filter_by(name=text).first() is None
+        assert context.db.session.query(Dish).filter_by(
+            name=text).first() is None
     elif table == "users":
-        assert context.db.session.query(User).filter_by(name=text).first() is None
+        assert context.db.session.query(User).filter_by(
+            name=text).first() is None
     elif table == "comments":
-        assert context.db.session.query(Comment).filter_by(content=text).first() is None
+        assert context.db.session.query(Comment).filter_by(
+            content=text).first() is None
     elif table == "locations":
-        assert context.db.session.query(Location).filter_by(address=text).first() is None
+        assert context.db.session.query(Location).filter_by(
+            address=text).first() is None
     elif table == "issues":
-        assert context.db.session.query(Issue).filter_by(content=text).first() is None
+        assert context.db.session.query(Issue).filter_by(
+            content=text).first() is None
 
 
 @then(u'we should see "{value}" as the "{column}" of "{table}" "{id}"')
